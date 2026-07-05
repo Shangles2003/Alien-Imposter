@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  ActivityIndicator,
   ScrollView,
   ScrollViewProps,
   StyleSheet,
@@ -8,10 +7,66 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView, Edge } from 'react-native-safe-area-context';
 import { colors, gradients, spacing, typography } from '@/theme';
+import { AlienIcon } from './AlienIcon';
 import { Starfield } from './Starfield';
+
+/** Slow-breathing nebula blob — pure ambience behind every screen. */
+function NebulaGlow({
+  color,
+  size,
+  top,
+  left,
+  duration = 9000,
+}: {
+  color: string;
+  size: number;
+  top: number;
+  left: number;
+  duration?: number;
+}) {
+  const pulse = useSharedValue(0);
+
+  useEffect(() => {
+    pulse.value = withRepeat(
+      withTiming(1, { duration, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true
+    );
+  }, [pulse, duration]);
+
+  const style = useAnimatedStyle(() => ({
+    opacity: 0.5 + pulse.value * 0.5,
+    transform: [{ scale: 0.92 + pulse.value * 0.16 }],
+  }));
+
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        {
+          position: 'absolute',
+          top,
+          left,
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          backgroundColor: color,
+        },
+        style,
+      ]}
+    />
+  );
+}
 
 interface ScreenShellProps {
   children: React.ReactNode;
@@ -54,6 +109,9 @@ export function ScreenShell({
   return (
     <View style={[styles.root, style]}>
       <LinearGradient colors={[...gradients.screen]} style={StyleSheet.absoluteFill} />
+      <NebulaGlow color={colors.glowPurple} size={340} top={-120} left={-100} duration={11000} />
+      <NebulaGlow color={colors.glowCyan} size={280} top={220} left={220} duration={9000} />
+      <NebulaGlow color={colors.glowPink} size={240} top={560} left={-90} duration={13000} />
       <Starfield />
       <SafeAreaView style={styles.fill} edges={edges}>
         {content}
@@ -62,17 +120,39 @@ export function ScreenShell({
   );
 }
 
+/** Loading screen — hovering alien beats a plain spinner. */
 export function LoadingState({ message = 'Loading...' }: { message?: string }) {
+  const bob = useSharedValue(0);
+
+  useEffect(() => {
+    bob.value = withRepeat(
+      withTiming(1, { duration: 1400, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true
+    );
+  }, [bob]);
+
+  const bobStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: (bob.value - 0.5) * 14 }],
+  }));
+
   return (
     <ScreenShell center>
-      <ActivityIndicator size="large" color={colors.primaryLight} />
+      <Animated.View style={bobStyle}>
+        <AlienIcon size={56} />
+      </Animated.View>
       <Text style={styles.loadingText}>{message}</Text>
     </ScreenShell>
   );
 }
 
 export function SectionLabel({ children }: { children: string }) {
-  return <Text style={styles.sectionLabel}>{children}</Text>;
+  return (
+    <View style={styles.sectionRow}>
+      <Text style={styles.sectionLabel}>{children}</Text>
+      <View style={styles.sectionLine} />
+    </View>
+  );
 }
 
 export function Divider() {
@@ -95,18 +175,23 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   loadingText: {
-    ...typography.body,
+    ...typography.caption,
     color: colors.textMuted,
     marginTop: spacing.sm,
+    letterSpacing: 1,
   },
-  sectionLabel: {
-    ...typography.small,
-    color: colors.textDim,
-    textTransform: 'uppercase',
-    letterSpacing: 1.5,
+  sectionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
     marginTop: spacing.sm,
     marginBottom: spacing.xs,
   },
+  sectionLabel: {
+    ...typography.label,
+    color: colors.textDim,
+  },
+  sectionLine: { flex: 1, height: 1, backgroundColor: colors.border },
   divider: {
     height: 1,
     backgroundColor: colors.border,

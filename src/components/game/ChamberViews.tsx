@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Avatar, Button } from '@/components/ui';
 import { formatChamberAnswer } from '@/components/game/chamberFormat';
 import { DrawingPreview } from '@/components/game/DrawingPreview';
@@ -17,9 +18,9 @@ const AGREEMENT: {
   sub: string;
   color: string;
 }[] = [
-  { value: 'strongly_disagree', label: 'Strong no', sub: 'Disagree', color: '#ef4444' },
-  { value: 'slightly_disagree', label: 'No', sub: 'Lean no', color: '#f97316' },
-  { value: 'slightly_agree', label: 'Yes', sub: 'Lean yes', color: '#22c55e' },
+  { value: 'strongly_disagree', label: 'Strong no', sub: 'Disagree', color: '#f43f5e' },
+  { value: 'slightly_disagree', label: 'No', sub: 'Lean no', color: '#fb923c' },
+  { value: 'slightly_agree', label: 'Yes', sub: 'Lean yes', color: '#4ade80' },
   { value: 'strongly_agree', label: 'Strong yes', sub: 'Agree', color: '#10b981' },
 ];
 
@@ -44,19 +45,24 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
     return (
       <ActiveTaskFrame game={game} prompt={promptText}>
         <View style={styles.opinionRow}>
-          {AGREEMENT.map((opt) => (
-            <Pressable
+          {AGREEMENT.map((opt, i) => (
+            <Animated.View
               key={opt.value}
-              style={({ pressed }) => [
-                styles.opinionBtn,
-                { borderColor: opt.color },
-                pressed && styles.opinionBtnPressed,
-              ]}
-              onPress={() => onSubmit(opt.value, {})}
+              entering={FadeInUp.delay(60 * i).duration(300)}
+              style={styles.opinionItem}
             >
-              <Text style={[styles.opinionMain, { color: opt.color }]}>{opt.label}</Text>
-              <Text style={styles.opinionSub}>{opt.sub}</Text>
-            </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.opinionBtn,
+                  { borderColor: opt.color, backgroundColor: `${opt.color}14` },
+                  pressed && { backgroundColor: `${opt.color}30`, transform: [{ scale: 0.96 }] },
+                ]}
+                onPress={() => onSubmit(opt.value, {})}
+              >
+                <Text style={[styles.opinionMain, { color: opt.color }]}>{opt.label}</Text>
+                <Text style={styles.opinionSub}>{opt.sub}</Text>
+              </Pressable>
+            </Animated.View>
           ))}
         </View>
       </ActiveTaskFrame>
@@ -70,16 +76,17 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
       <ActiveTaskFrame game={game} prompt={promptText}>
         <View style={styles.choiceCol}>
           {options.map((opt, i) => (
-            <Pressable
-              key={opt}
-              style={({ pressed }) => [styles.choiceBtn, pressed && styles.choiceBtnPressed]}
-              onPress={() => onSubmit(opt, {})}
-            >
-              <View style={styles.choiceNumWrap}>
-                <Text style={styles.choiceNum}>{i + 1}</Text>
-              </View>
-              <Text style={styles.choiceText}>{opt}</Text>
-            </Pressable>
+            <Animated.View key={opt} entering={FadeInUp.delay(70 * i).duration(300)}>
+              <Pressable
+                style={({ pressed }) => [styles.choiceBtn, pressed && styles.choiceBtnPressed]}
+                onPress={() => onSubmit(opt, {})}
+              >
+                <View style={styles.choiceNumWrap}>
+                  <Text style={styles.choiceNum}>{String.fromCharCode(65 + i)}</Text>
+                </View>
+                <Text style={styles.choiceText}>{opt}</Text>
+              </Pressable>
+            </Animated.View>
           ))}
         </View>
       </ActiveTaskFrame>
@@ -125,7 +132,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
         prompt={promptText}
         footer={
           <Button
-            title="Lock in vote"
+            title={selectedPlayer ? 'Lock in vote' : 'Pick someone first'}
             fullWidth
             size="md"
             disabled={!selectedPlayer}
@@ -134,19 +141,23 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
         }
       >
         <View style={styles.voteGrid}>
-          {candidates.map((c) => {
+          {candidates.map((c, i) => {
             const picked = selectedPlayer === c.uid;
             return (
-              <Pressable
-                key={c.uid}
-                style={[styles.voteCard, picked && styles.voteCardOn]}
-                onPress={() => setSelectedPlayer(c.uid)}
-              >
-                <Avatar name={c.displayName} color={c.avatarColor} size={44} ring={picked} />
-                <Text style={styles.voteName} numberOfLines={1}>
-                  {c.displayName.split(' ').pop()}
-                </Text>
-              </Pressable>
+              <Animated.View key={c.uid} entering={FadeInUp.delay(40 * i).duration(280)}>
+                <Pressable
+                  style={[styles.voteCard, picked && styles.voteCardOn]}
+                  onPress={() => setSelectedPlayer(c.uid)}
+                >
+                  <Avatar name={c.displayName} color={c.avatarColor} size={44} ring={picked} />
+                  <Text
+                    style={[styles.voteName, picked && styles.voteNameOn]}
+                    numberOfLines={1}
+                  >
+                    {c.displayName.split(' ').pop()}
+                  </Text>
+                </Pressable>
+              </Animated.View>
             );
           })}
         </View>
@@ -180,7 +191,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
           prompt="Tap symbols that match the captain"
           footer={
             <Button
-              title="Confirm match"
+              title={`Confirm match (${selectedGlyphs.length}/${game.bioscanner.captainGlyphs.length})`}
               fullWidth
               size="md"
               disabled={selectedGlyphs.length !== game.bioscanner.captainGlyphs.length}
@@ -192,7 +203,11 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
             {game.bioscanner.glyphSet.map((g) => (
               <Pressable
                 key={g}
-                style={[styles.glyphBtn, selectedGlyphs.includes(g) && styles.glyphBtnOn]}
+                style={({ pressed }) => [
+                  styles.glyphBtn,
+                  selectedGlyphs.includes(g) && styles.glyphBtnOn,
+                  pressed && { transform: [{ scale: 0.92 }] },
+                ]}
                 onPress={() => toggle(g)}
               >
                 <Text style={styles.glyph}>{GLYPH_SYMBOLS[g]}</Text>
@@ -250,19 +265,18 @@ const styles = StyleSheet.create({
   opinionRow: {
     flexDirection: 'row',
     gap: spacing.xs,
-    height: 72,
+    height: 76,
   },
+  opinionItem: { flex: 1 },
   opinionBtn: {
     flex: 1,
-    height: 72,
+    height: 76,
     borderRadius: radius.md,
-    backgroundColor: colors.surfaceSolid,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 4,
   },
-  opinionBtnPressed: { backgroundColor: colors.surfaceElevated },
   opinionMain: { ...typography.caption, fontWeight: '800', textAlign: 'center', fontSize: 11 },
   opinionSub: { ...typography.small, color: colors.textDim, fontSize: 9, marginTop: 2, textAlign: 'center' },
   choiceCol: { gap: spacing.sm },
@@ -284,6 +298,8 @@ const styles = StyleSheet.create({
     height: 28,
     borderRadius: 14,
     backgroundColor: colors.surfaceElevated,
+    borderWidth: 1,
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -296,8 +312,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   voteCard: {
-    width: '30%',
-    minWidth: 88,
+    width: 100,
     alignItems: 'center',
     gap: spacing.xs,
     paddingVertical: spacing.sm,
@@ -308,7 +323,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceSolid,
   },
   voteCardOn: { borderColor: colors.accent, backgroundColor: colors.glowCyan },
-  voteName: { ...typography.caption, color: colors.text, fontSize: 11, fontWeight: '600' },
+  voteName: { ...typography.caption, color: colors.textMuted, fontSize: 11, fontWeight: '600' },
+  voteNameOn: { color: colors.text, fontWeight: '800' },
   glyphPanel: {
     height: 88,
     flexDirection: 'row',
@@ -320,8 +336,8 @@ const styles = StyleSheet.create({
   glyph: { fontSize: 34, color: '#fff' },
   glyphGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, justifyContent: 'center' },
   glyphBtn: {
-    width: 50,
-    height: 50,
+    width: 52,
+    height: 52,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.md,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -8,8 +8,49 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, gradients, radius, shadows, spacing, typography } from '@/theme';
+import * as Clipboard from 'expo-clipboard';
+import { colors, fonts, gradients, radius, shadows, spacing, typography } from '@/theme';
+import { AlienIcon, HelmetIcon } from './AlienIcon';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+/** Pressable with a satisfying spring scale — base for every tappable element. */
+export function PressableScale({
+  children,
+  style,
+  scaleTo = 0.96,
+  disabled,
+  ...props
+}: PressableProps & { children: React.ReactNode; scaleTo?: number; style?: object }) {
+  const scale = useSharedValue(1);
+
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  return (
+    <AnimatedPressable
+      onPressIn={() => {
+        scale.value = withSpring(scaleTo, { damping: 18, stiffness: 400 });
+      }}
+      onPressOut={() => {
+        scale.value = withSpring(1, { damping: 14, stiffness: 300 });
+      }}
+      disabled={disabled}
+      style={[animStyle, style]}
+      {...props}
+    >
+      {children}
+    </AnimatedPressable>
+  );
+}
 
 interface ButtonProps extends PressableProps {
   title: string;
@@ -50,18 +91,13 @@ export function Button({
         : variant === 'success'
           ? gradients.success
           : gradients.primary;
+    const glow =
+      variant === 'danger' ? shadows.glowRed : variant === 'success' ? shadows.glowCyan : shadows.glow;
 
     return (
-      <Pressable
-        style={({ pressed }) => [
-          styles.base,
-          styles[`size_${size}`],
-          fullWidth && styles.fullWidth,
-          shadows.glow,
-          pressed && styles.pressed,
-          isDisabled && styles.disabled,
-          style as object,
-        ]}
+      <PressableScale
+        scaleTo={0.97}
+        style={[styles.base, fullWidth && styles.fullWidth, glow, style as object]}
         disabled={isDisabled}
         {...props}
       >
@@ -73,18 +109,18 @@ export function Button({
         >
           {content}
         </LinearGradient>
-      </Pressable>
+      </PressableScale>
     );
   }
 
   return (
-    <Pressable
-      style={({ pressed }) => [
+    <PressableScale
+      scaleTo={0.97}
+      style={[
         styles.base,
         styles[variant],
         styles[`size_${size}`],
         fullWidth && styles.fullWidth,
-        pressed && !isDisabled && styles.pressed,
         isDisabled && styles.disabled,
         style as object,
       ]}
@@ -92,26 +128,28 @@ export function Button({
       {...props}
     >
       {content}
-    </Pressable>
+    </PressableScale>
   );
 }
 
 interface GlowCardProps {
   children: React.ReactNode;
   style?: object;
-  accent?: 'purple' | 'cyan' | 'pink' | 'none';
+  accent?: 'purple' | 'cyan' | 'pink' | 'red' | 'none';
   padded?: boolean;
 }
 
 export function GlowCard({ children, style, accent = 'purple', padded = true }: GlowCardProps) {
   const borderColor =
     accent === 'cyan'
-      ? colors.borderBright
+      ? 'rgba(34,211,238,0.35)'
       : accent === 'pink'
         ? 'rgba(236,72,153,0.35)'
-        : accent === 'none'
-          ? colors.border
-          : colors.borderBright;
+        : accent === 'red'
+          ? 'rgba(251,113,133,0.4)'
+          : accent === 'none'
+            ? colors.border
+            : colors.borderBright;
 
   return (
     <View style={[cardStyles.outer, { borderColor }, style]}>
@@ -145,9 +183,13 @@ export function Input({
   autoCapitalize = 'none',
   error,
 }: InputProps) {
+  const [focused, setFocused] = useState(false);
+
   return (
     <View style={inputStyles.wrap}>
-      {label ? <Text style={inputStyles.label}>{label}</Text> : null}
+      {label ? (
+        <Text style={[inputStyles.label, focused && inputStyles.labelFocused]}>{label}</Text>
+      ) : null}
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -155,7 +197,13 @@ export function Input({
         placeholderTextColor={colors.textDim}
         secureTextEntry={secureTextEntry}
         autoCapitalize={autoCapitalize}
-        style={[inputStyles.field, error && inputStyles.fieldError]}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={[
+          inputStyles.field,
+          focused && inputStyles.fieldFocused,
+          error && inputStyles.fieldError,
+        ]}
       />
       {error ? <Text style={inputStyles.error}>{error}</Text> : null}
     </View>
@@ -180,7 +228,9 @@ export function Badge({
           : { backgroundColor: `${color}22`, borderColor: `${color}55` },
       ]}
     >
-      <Text style={[badgeStyles.text, { color: variant === 'solid' ? '#fff' : color }]}>{label}</Text>
+      <Text style={[badgeStyles.text, { color: variant === 'solid' ? '#04050d' : color }]}>
+        {label}
+      </Text>
     </View>
   );
 }
@@ -204,9 +254,11 @@ export function Avatar({
         { width: size + (ring ? 6 : 0), height: size + (ring ? 6 : 0), borderRadius: (size + 6) / 2 },
       ]}
     >
-      <View
+      <LinearGradient
+        colors={[color, shadeColor(color, -34)]}
+        start={{ x: 0.2, y: 0 }}
+        end={{ x: 0.8, y: 1 }}
         style={{
-          backgroundColor: color,
           width: size,
           height: size,
           borderRadius: size / 2,
@@ -217,7 +269,55 @@ export function Avatar({
         <Text style={{ color: '#fff', fontWeight: '800', fontSize: size * 0.38 }}>
           {name.charAt(0).toUpperCase()}
         </Text>
-      </View>
+      </LinearGradient>
+    </View>
+  );
+}
+
+/** Darken/lighten a hex color by pct (-100..100). */
+function shadeColor(hex: string, pct: number): string {
+  const clean = hex.replace('#', '');
+  if (clean.length !== 6) return hex;
+  const num = parseInt(clean, 16);
+  const amt = Math.round(2.55 * pct);
+  const r = Math.min(255, Math.max(0, (num >> 16) + amt));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amt));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + amt));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+export function BackButton({
+  onPress,
+  accessibilityLabel = 'Go back',
+}: {
+  onPress: () => void;
+  accessibilityLabel?: string;
+}) {
+  return (
+    <PressableScale
+      style={backBtnStyles.wrap}
+      onPress={onPress}
+      hitSlop={12}
+      accessibilityLabel={accessibilityLabel}
+    >
+      <Text style={backBtnStyles.icon}>←</Text>
+    </PressableScale>
+  );
+}
+
+/** Top row with optional back (left) and trailing action (right). */
+export function ScreenTopBar({
+  onBack,
+  right,
+}: {
+  onBack?: () => void;
+  right?: React.ReactNode;
+}) {
+  return (
+    <View style={topBarStyles.bar}>
+      {onBack ? <BackButton onPress={onBack} /> : <View style={topBarStyles.side} />}
+      <View style={topBarStyles.flex} />
+      {right ?? <View style={topBarStyles.side} />}
     </View>
   );
 }
@@ -263,15 +363,11 @@ export function ActionTile({
     variant === 'featured' ? colors.primary : variant === 'danger' ? colors.danger : colors.accent;
 
   return (
-    <Pressable
-      onPress={onPress}
-      disabled={loading}
-      style={({ pressed }) => [tileStyles.wrap, pressed && tileStyles.pressed, loading && tileStyles.disabled]}
-    >
+    <PressableScale onPress={onPress} disabled={loading} style={[tileStyles.wrap, loading && tileStyles.disabled]}>
       <LinearGradient
         colors={
           variant === 'featured'
-            ? ['rgba(124,58,237,0.35)', 'rgba(168,85,247,0.12)']
+            ? ['rgba(109,40,217,0.35)', 'rgba(139,92,246,0.1)']
             : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.02)']
         }
         style={tileStyles.gradient}
@@ -289,16 +385,39 @@ export function ActionTile({
         </View>
         <Text style={tileStyles.chevron}>›</Text>
       </LinearGradient>
-    </Pressable>
+    </PressableScale>
   );
 }
 
+/** Party code — terminal-style character cells, tap to copy. */
 export function LobbyCodeDisplay({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await Clipboard.setStringAsync(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // clipboard unavailable — ignore
+    }
+  };
+
   return (
     <GlowCard accent="cyan">
       <Text style={codeStyles.label}>PARTY CODE</Text>
-      <Text style={codeStyles.code}>{code}</Text>
-      <Text style={codeStyles.hint}>Share this code — friends join from the main menu</Text>
+      <PressableScale onPress={copy} scaleTo={0.97}>
+        <View style={codeStyles.cellRow}>
+          {code.split('').map((ch, i) => (
+            <View key={`${ch}-${i}`} style={codeStyles.cell}>
+              <Text style={codeStyles.cellChar}>{ch}</Text>
+            </View>
+          ))}
+        </View>
+      </PressableScale>
+      <Text style={[codeStyles.hint, copied && codeStyles.hintCopied]}>
+        {copied ? '✓ Copied — paste it to your crew' : 'Tap the code to copy · friends join from the main menu'}
+      </Text>
     </GlowCard>
   );
 }
@@ -316,11 +435,21 @@ export function CrewRow({
   isReady?: boolean;
   isMe?: boolean;
 }) {
+  const glow = useSharedValue(isReady ? 1 : 0);
+
+  React.useEffect(() => {
+    glow.value = withTiming(isReady ? 1 : 0, { duration: 260 });
+  }, [isReady, glow]);
+
+  const readyStyle = useAnimatedStyle(() => ({
+    borderColor: `rgba(52,211,153,${0.12 + glow.value * 0.45})`,
+  }));
+
   return (
-    <View style={[crewStyles.row, isMe && crewStyles.me]}>
+    <Animated.View style={[crewStyles.row, isMe && crewStyles.me, isReady && readyStyle]}>
       <Avatar name={name} color={color} size={40} ring={isMe} />
       <View style={crewStyles.info}>
-        <Text style={crewStyles.name}>
+        <Text style={crewStyles.name} numberOfLines={1}>
           {name}
           {isHost ? '  ★' : ''}
           {isMe ? '  (You)' : ''}
@@ -330,9 +459,8 @@ export function CrewRow({
       <Badge
         label={isReady ? 'READY' : 'HOLD'}
         color={isReady ? colors.success : colors.textDim}
-        variant={isReady ? 'soft' : 'soft'}
       />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -435,7 +563,7 @@ export function EmergencyButton({ onPress, used }: { onPress: () => void; used?:
   }
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>
+    <PressableScale onPress={onPress}>
       <LinearGradient colors={[...gradients.danger]} style={emergencyStyles.btn}>
         <Text style={emergencyStyles.icon}>🚨</Text>
         <View>
@@ -443,7 +571,7 @@ export function EmergencyButton({ onPress, used }: { onPress: () => void; used?:
           <Text style={emergencyStyles.sub}>Once per mission • Stops the clock</Text>
         </View>
       </LinearGradient>
-    </Pressable>
+    </PressableScale>
   );
 }
 
@@ -463,32 +591,39 @@ export function RoleCard({
   const isAlien = role === 'alien';
 
   return (
-    <LinearGradient
-      colors={isAlien ? [...gradients.alien] : [...gradients.human]}
-      style={[roleStyles.card, compact && roleStyles.cardCompact]}
+    <View
+      style={[
+        roleStyles.outer,
+        { borderColor: isAlien ? 'rgba(251,113,133,0.5)' : 'rgba(52,211,153,0.45)' },
+        isAlien ? shadows.glowRed : shadows.glowCyan,
+      ]}
     >
-      {!gameMode && (
-        <Text style={[roleStyles.emoji, compact && roleStyles.emojiCompact]}>
-          {isAlien ? '👽' : '🧑‍🚀'}
+      <LinearGradient
+        colors={isAlien ? [...gradients.alien] : [...gradients.human]}
+        style={[roleStyles.card, compact && roleStyles.cardCompact]}
+      >
+        {!gameMode &&
+          (isAlien ? (
+            <AlienIcon size={compact ? 44 : 60} mood="sus" />
+          ) : (
+            <HelmetIcon size={compact ? 44 : 60} />
+          ))}
+        <Badge
+          label={isAlien ? 'INFILTRATOR' : 'CREW'}
+          color={isAlien ? colors.alien : colors.human}
+          variant="solid"
+        />
+        {gameMode && <Text style={roleStyles.classified}>CLASSIFIED DOSSIER</Text>}
+        <Text style={roleStyles.desc} numberOfLines={compact ? 2 : undefined}>
+          {description}
         </Text>
-      )}
-      <Badge
-        label={isAlien ? 'INFILTRATOR' : 'CREW'}
-        color={isAlien ? colors.alien : colors.human}
-        variant="solid"
-      />
-      {gameMode && (
-        <Text style={roleStyles.classified}>CLASSIFIED DOSSIER</Text>
-      )}
-      <Text style={roleStyles.desc} numberOfLines={compact ? 2 : undefined}>
-        {description}
-      </Text>
-      {allies && allies.length > 0 && (
-        <Text style={roleStyles.ally} numberOfLines={1}>
-          Partner: {allies.join(', ')}
-        </Text>
-      )}
-    </LinearGradient>
+        {allies && allies.length > 0 && (
+          <Text style={roleStyles.ally} numberOfLines={1}>
+            Partner: {allies.join(', ')}
+          </Text>
+        )}
+      </LinearGradient>
+    </View>
   );
 }
 
@@ -498,6 +633,36 @@ function formatTime(ms: number): string {
   const s = totalSec % 60;
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
+
+const backBtnStyles = StyleSheet.create({
+  wrap: {
+    width: 44,
+    height: 44,
+    borderRadius: radius.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surfaceSolid,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  icon: {
+    fontSize: 24,
+    color: colors.text,
+    fontWeight: '300',
+    marginTop: -2,
+  },
+});
+
+const topBarStyles = StyleSheet.create({
+  bar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 44,
+    marginBottom: spacing.sm,
+  },
+  side: { width: 44 },
+  flex: { flex: 1 },
+});
 
 const styles = StyleSheet.create({
   base: { borderRadius: radius.lg, overflow: 'hidden' },
@@ -522,18 +687,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  danger: {},
-  success: {},
+  danger: {
+    backgroundColor: colors.dangerDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  success: {
+    backgroundColor: colors.humanDeep,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   ghost: { backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center' },
   size_sm: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md, minHeight: 40 },
   size_md: { paddingVertical: 14, paddingHorizontal: spacing.lg, minHeight: 52 },
   size_lg: { paddingVertical: spacing.md, paddingHorizontal: spacing.xl, minHeight: 58 },
   fullWidth: { width: '100%' },
-  pressed: { transform: [{ scale: 0.98 }], opacity: 0.92 },
   disabled: { opacity: 0.45 },
   btnInner: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   btnIcon: { fontSize: 18 },
-  btnText: { color: '#fff', fontWeight: '800', letterSpacing: 0.3 },
+  btnText: { color: '#fff', fontWeight: '800', letterSpacing: 0.4 },
   textSize_sm: { fontSize: 14 },
   textSize_md: { fontSize: 16 },
   textSize_lg: { fontSize: 18 },
@@ -552,7 +724,8 @@ const cardStyles = StyleSheet.create({
 
 const inputStyles = StyleSheet.create({
   wrap: { gap: spacing.sm },
-  label: { ...typography.small, color: colors.textMuted, textTransform: 'uppercase' },
+  label: { ...typography.label, color: colors.textMuted },
+  labelFocused: { color: colors.accentSoft },
   field: {
     backgroundColor: colors.surfaceSolid,
     borderWidth: 1.5,
@@ -565,6 +738,7 @@ const inputStyles = StyleSheet.create({
     fontWeight: '500',
     minHeight: 52,
   },
+  fieldFocused: { borderColor: colors.borderFocus },
   fieldError: { borderColor: colors.danger },
   error: { ...typography.small, color: colors.danger },
 });
@@ -595,7 +769,6 @@ const headerStyles = StyleSheet.create({
 
 const tileStyles = StyleSheet.create({
   wrap: { borderRadius: radius.xl, overflow: 'hidden', borderWidth: 1, borderColor: colors.border },
-  pressed: { opacity: 0.88, transform: [{ scale: 0.99 }] },
   disabled: { opacity: 0.6 },
   gradient: {
     flexDirection: 'row',
@@ -620,10 +793,30 @@ const tileStyles = StyleSheet.create({
 });
 
 const codeStyles = StyleSheet.create({
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  label: { ...typography.small, color: colors.accentSoft },
-  code: { ...typography.mono, color: colors.text, marginVertical: spacing.md, textAlign: 'center' },
+  label: { ...typography.label, color: colors.accentSoft, textAlign: 'center' },
+  cellRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    marginVertical: spacing.md,
+  },
+  cell: {
+    width: 42,
+    height: 52,
+    borderRadius: radius.sm,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    borderWidth: 1,
+    borderColor: 'rgba(34,211,238,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cellChar: {
+    fontFamily: fonts.mono,
+    fontSize: 24,
+    color: colors.text,
+  },
   hint: { ...typography.caption, color: colors.textDim, textAlign: 'center' },
+  hintCopied: { color: colors.success },
 });
 
 const crewStyles = StyleSheet.create({
@@ -639,7 +832,7 @@ const crewStyles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   me: { borderColor: colors.borderBright, backgroundColor: colors.glowPurple },
-  info: { flex: 1 },
+  info: { flex: 1, minWidth: 0 },
   name: { ...typography.heading, color: colors.text },
   status: { ...typography.small, color: colors.textMuted, marginTop: 2, textTransform: 'uppercase' },
 });
@@ -653,7 +846,7 @@ const timerStyles = StyleSheet.create({
     minWidth: 110,
   },
   label: { ...typography.small, color: 'rgba(255,255,255,0.85)' },
-  time: { fontSize: 26, fontWeight: '900', color: '#fff', letterSpacing: 1 },
+  time: { fontSize: 26, fontWeight: '900', color: '#fff', letterSpacing: 1, fontFamily: fonts.mono },
 });
 
 const phaseStyles = StyleSheet.create({
@@ -720,24 +913,26 @@ const emergencyStyles = StyleSheet.create({
 });
 
 const roleStyles = StyleSheet.create({
+  outer: {
+    borderRadius: radius.xxl,
+    borderWidth: 1.5,
+    overflow: 'hidden',
+  },
   card: {
     padding: spacing.xl,
-    borderRadius: radius.xxl,
     alignItems: 'center',
     gap: spacing.md,
   },
   cardCompact: {
     padding: spacing.md,
-    borderRadius: radius.xl,
     gap: spacing.sm,
     flex: 1,
     justifyContent: 'center',
   },
-  emoji: { fontSize: 56 },
-  emojiCompact: { fontSize: 40 },
   classified: { ...typography.small, color: 'rgba(255,255,255,0.5)', letterSpacing: 2 },
-  desc: { ...typography.body, color: 'rgba(255,255,255,0.9)', textAlign: 'center' },
+  desc: { ...typography.body, color: 'rgba(255,255,255,0.92)', textAlign: 'center' },
   ally: { ...typography.caption, color: colors.alien, fontWeight: '700' },
 });
 
+export { AlienIcon, FloatingAlien, HelmetIcon } from './AlienIcon';
 export { ScreenShell, LoadingState, SectionLabel, Divider } from './layout';

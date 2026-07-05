@@ -27,7 +27,10 @@ function mergePools<T>(packIds: ContentPackId[], pick: (pack: ContentPack) => T[
   for (const id of packIds) {
     if (seen.has(id)) continue;
     seen.add(id);
-    merged.push(...pick(PACKS[id]!));
+    const pack = PACKS[id];
+    if (!pack) continue; // unknown pack id in saved state — skip rather than crash
+    const pool = pick(pack);
+    if (Array.isArray(pool)) merged.push(...pool);
   }
   return merged;
 }

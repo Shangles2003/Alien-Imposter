@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import {
   Button,
   CrewRow,
   GlowCard,
   LoadingState,
   LobbyCodeDisplay,
-  ScreenHeader,
   ScreenShell,
+  ScreenTopBar,
   SectionLabel,
 } from '@/components/ui';
 import { useAuth } from '@/context/AuthContext';
@@ -17,9 +18,17 @@ import { HostSettingsPanel } from '@/components/settings/HostSettingsPanel';
 import { isDevModeEnabled } from '@/dev/config';
 import { useDevBotLobbyRunner } from '@/dev/useDevBotLobbyRunner';
 import { MIN_PLAYERS } from '@/game/rules';
-import { isDevLobby, leaveLobby, setPlayerReady, startGame, subscribeToLobby, updateLobbyHostSettings } from '@/services/lobby';
+import {
+  isDevLobby,
+  leaveLobby,
+  setPlayerReady,
+  startGame,
+  subscribeToLobby,
+  updateLobbyHostSettings,
+} from '@/services/lobby';
 import { Lobby } from '@/types/game';
-import { colors, spacing, typography } from '@/theme';
+import { errorMessage } from '@/utils/errors';
+import { colors, radius, spacing, typography } from '@/theme';
 
 export default function LobbyScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -47,6 +56,7 @@ export default function LobbyScreen() {
   const me = lobby.players.find((p) => p.uid === user?.id);
   const isHost = lobby.hostId === user?.id;
   const allReady = lobby.players.every((p) => p.isReady);
+  const readyCount = lobby.players.filter((p) => p.isReady).length;
   const canStart = lobby.players.length >= MIN_PLAYERS && allReady;
   const devLobby = isDevLobby(lobby);
 
@@ -62,7 +72,7 @@ export default function LobbyScreen() {
       const gameId = await startGame(lobby.id, user.id);
       router.replace(`/game/${gameId}`);
     } catch (e) {
-      Alert.alert('Launch failed', e instanceof Error ? e.message : 'Unknown error');
+      Alert.alert('Launch failed', errorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -90,25 +100,47 @@ export default function LobbyScreen() {
         hasPremiumAccess
       );
     } catch (e) {
-      Alert.alert('Settings error', e instanceof Error ? e.message : 'Could not save settings');
+      Alert.alert('Settings error', errorMessage(e));
     }
   };
 
   return (
     <ScreenShell scroll>
-      <ScreenHeader title="Mission Lobby" subtitle="Get ready before launch" icon="🛸" />
+      <ScreenTopBar onBack={handleLeave} />
 
-      <LobbyCodeDisplay code={lobby.code} />
+      <Animated.View entering={FadeInDown.duration(400)} style={styles.hero}>
+        <Text style={styles.kicker}>PRE-FLIGHT</Text>
+        <Text style={styles.title}>Mission Lobby</Text>
+        <Text style={styles.subtitle}>Get the crew aboard, then launch</Text>
+      </Animated.View>
 
-      <View style={styles.metaRow}>
-        <Text style={styles.meta}>
-          {lobby.players.length}/{lobby.maxPlayers} crew aboard
-        </Text>
-        <Text style={styles.metaNeed}>Need {MIN_PLAYERS}+ to launch</Text>
+      <Animated.View entering={FadeInUp.delay(80).duration(400)}>
+        <LobbyCodeDisplay code={lobby.code} />
+      </Animated.View>
+
+      <View style={styles.statsRow}>
+        <View style={styles.statBox}>
+          <Text style={styles.statValue}>
+            {lobby.players.length}
+            <Text style={styles.statTotal}>/{lobby.maxPlayers}</Text>
+          </Text>
+          <Text style={styles.statLabel}>ABOARD</Text>
+        </View>
+        <View style={styles.statBox}>
+          <Text style={styles.statValue}>
+            {readyCount}
+            <Text style={styles.statTotal}>/{lobby.players.length}</Text>
+          </Text>
+          <Text style={styles.statLabel}>READY</Text>
+        </View>
+        <View style={styles.statBox}>
+          <Text style={styles.statValue}>{MIN_PLAYERS}+</Text>
+          <Text style={styles.statLabel}>TO LAUNCH</Text>
+        </View>
       </View>
 
       <Text style={styles.rulesBrief}>
-        {missionLabel} · {packLabel} · 4–5 = 1 infiltrator · 6–10 = 2
+        {missionLabel} · {packLabel} · 4–5 crew = 1 infiltrator · 6–10 = 2
       </Text>
 
       {isHost && (
@@ -128,15 +160,16 @@ export default function LobbyScreen() {
       )}
 
       <SectionLabel>Crew Roster</SectionLabel>
-      {lobby.players.map((p) => (
-        <CrewRow
-          key={p.uid}
-          name={p.displayName}
-          color={p.avatarColor}
-          isHost={p.isHost}
-          isReady={p.isReady}
-          isMe={p.uid === user?.id}
-        />
+      {lobby.players.map((p, i) => (
+        <Animated.View key={p.uid} entering={FadeInUp.delay(60 * i).duration(320)}>
+          <CrewRow
+            name={p.displayName}
+            color={p.avatarColor}
+            isHost={p.isHost}
+            isReady={p.isReady}
+            isMe={p.uid === user?.id}
+          />
+        </Animated.View>
       ))}
 
       <View style={styles.actions}>
@@ -148,38 +181,52 @@ export default function LobbyScreen() {
         />
         {isHost && (
           <Button
-            title={canStart ? '🚀 Launch Mission' : `Waiting (${lobby.players.length}/${MIN_PLAYERS} crew)`}
+            title={
+              canStart
+                ? '🚀 Launch Mission'
+                : lobby.players.length < MIN_PLAYERS
+                  ? `Waiting for crew (${lobby.players.length}/${MIN_PLAYERS})`
+                  : `Waiting on ready (${readyCount}/${lobby.players.length})`
+            }
             fullWidth
             loading={loading}
             disabled={!canStart}
             onPress={handleStart}
           />
         )}
-        <Button title="Leave Lobby" variant="ghost" fullWidth onPress={handleLeave} />
       </View>
     </ScreenShell>
   );
 }
 
 const styles = StyleSheet.create({
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.xs,
+  hero: { gap: 2, marginBottom: spacing.xs },
+  kicker: { ...typography.label, color: colors.accentSoft },
+  title: { ...typography.title, color: colors.text },
+  subtitle: { ...typography.caption, color: colors.textMuted },
+  statsRow: { flexDirection: 'row', gap: spacing.sm },
+  statBox: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 2,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  meta: { ...typography.caption, color: colors.textMuted },
-  metaNeed: { ...typography.small, color: colors.accentSoft },
+  statValue: { ...typography.heading, color: colors.text, fontSize: 20 },
+  statTotal: { color: colors.textDim, fontSize: 14 },
+  statLabel: { ...typography.label, color: colors.textDim, fontSize: 9 },
   rulesBrief: {
     ...typography.caption,
     color: colors.textDim,
     textAlign: 'center',
-    marginBottom: spacing.sm,
   },
   devBanner: {
     ...typography.caption,
     color: colors.accentSoft,
     textAlign: 'center',
-    marginBottom: spacing.md,
   },
   actions: { gap: spacing.sm, marginTop: spacing.lg },
 });

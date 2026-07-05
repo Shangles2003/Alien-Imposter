@@ -1,7 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Avatar, Badge, Button, LoadingState, RoleCard, ScreenShell } from '@/components/ui';
+import Animated, { FadeIn, FadeInDown, FadeInUp, ZoomIn } from 'react-native-reanimated';
+import {
+  AlienIcon,
+  Avatar,
+  Badge,
+  Button,
+  HelmetIcon,
+  LoadingState,
+  PressableScale,
+  ScreenShell,
+} from '@/components/ui';
 import { ChamberInput } from '@/components/game/ChamberViews';
 import {
   ChamberBoarding,
@@ -26,7 +36,7 @@ import { useOptimisticGameActions } from '@/hooks/useOptimisticGameActions';
 import { HOME_ROUTE } from '@/navigation/routes';
 import { applyGameAction, subscribeToGame } from '@/services/gameSync';
 import { GamePlayer, GameState } from '@/types/game';
-import { colors, phaseLabels, spacing, typography } from '@/theme';
+import { colors, phaseLabels, radius, shadows, spacing, typography } from '@/theme';
 
 export default function GameScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -199,6 +209,7 @@ export default function GameScreen() {
   );
 }
 
+/** Classified dossier — hidden until tapped so nobody can shoulder-surf your role. */
 function RoleRevealPhase({
   me,
   aliens,
@@ -212,25 +223,66 @@ function RoleRevealPhase({
   onReady: () => void;
   syncPending: boolean;
 }) {
+  const [revealed, setRevealed] = useState(false);
+  const isAlien = me.role === 'alien';
+
   return (
     <View style={styles.fill}>
-      <RoleCard
-        compact
-        gameMode
-        role={me.role}
-        description={
-          me.role === 'alien'
-            ? 'You see different prompts than the crew. Tap Hack anytime — pool is shared with your partner.'
-            : 'Watch the mission log for answers that do not add up.'
-        }
-        allies={me.role === 'alien' ? aliens.map((a) => a.displayName) : undefined}
-      />
+      {revealed ? (
+        <Animated.View entering={ZoomIn.duration(320)} style={styles.roleWrap}>
+          <View
+            style={[
+              styles.roleCard,
+              isAlien ? styles.roleCardAlien : styles.roleCardHuman,
+              isAlien ? shadows.glowRed : shadows.glowCyan,
+            ]}
+          >
+            {isAlien ? <AlienIcon size={72} mood="sus" /> : <HelmetIcon size={72} />}
+            <Badge
+              label={isAlien ? 'INFILTRATOR' : 'CREW'}
+              color={isAlien ? colors.alien : colors.human}
+              variant="solid"
+            />
+            <Text style={styles.roleDesc}>
+              {isAlien
+                ? 'You see different prompts than the crew. Blend in. Tap HACK anytime — the pool is shared with your partner.'
+                : 'Answer honestly and watch the mission log for answers that do not add up.'}
+            </Text>
+            {isAlien && aliens.length > 0 && (
+              <Text style={styles.roleAlly} numberOfLines={1}>
+                Partner: {aliens.map((a) => a.displayName).join(', ')}
+              </Text>
+            )}
+            <Pressable onPress={() => setRevealed(false)} hitSlop={8}>
+              <Text style={styles.hideLink}>Hide identity</Text>
+            </Pressable>
+          </View>
+        </Animated.View>
+      ) : (
+        <PressableScale onPress={() => setRevealed(true)} style={styles.roleWrap} scaleTo={0.97}>
+          <View style={[styles.roleCard, styles.roleCardHidden]}>
+            <Animated.Text entering={FadeIn.duration(600)} style={styles.classifiedIcon}>
+              🔒
+            </Animated.Text>
+            <Text style={styles.classifiedTitle}>CLASSIFIED DOSSIER</Text>
+            <Text style={styles.classifiedName}>{me.displayName}</Text>
+            <Text style={styles.classifiedHint}>
+              Make sure nobody is looking at your screen,{'\n'}then tap to reveal your identity
+            </Text>
+            <View style={styles.tapChip}>
+              <Text style={styles.tapChipText}>TAP TO REVEAL</Text>
+            </View>
+          </View>
+        </PressableScale>
+      )}
       <PhaseSyncGate
         game={game}
         me={me}
-        actionLabel="Ready up"
+        actionLabel={revealed ? 'Ready up' : 'Reveal your role first'}
         loading={syncPending}
-        onReady={onReady}
+        onReady={() => {
+          if (revealed) onReady();
+        }}
       />
     </View>
   );
@@ -306,6 +358,7 @@ function ChamberActivePhase({
   );
 }
 
+/** Mission debrief — verdict plus the full cast reveal. */
 function GameOverPhase({
   game,
   me,
@@ -318,16 +371,57 @@ function GameOverPhase({
   const won =
     (game.winner === 'humans' && me.role === 'human') ||
     (game.winner === 'aliens' && me.role === 'alien');
+  const crewWon = game.winner === 'humans';
 
   return (
-    <View style={styles.fillCenter}>
-      <Text style={styles.overTitle}>{won ? 'MISSION SUCCESS' : 'MISSION FAILED'}</Text>
-      <Badge
-        label={game.winner === 'humans' ? 'CREW WINS' : 'INFILTRATORS WIN'}
-        color={game.winner === 'humans' ? colors.human : colors.alien}
-      />
-      <Text style={styles.muted}>{game.winReason}</Text>
-      <Button title="RETURN" fullWidth onPress={onExit} />
+    <View style={styles.fill}>
+      <ScrollView
+        style={styles.scrollFill}
+        contentContainerStyle={styles.overScroll}
+        showsVerticalScrollIndicator={false}
+      >
+        <Animated.View entering={ZoomIn.duration(450)} style={styles.overHero}>
+          {crewWon ? <HelmetIcon size={72} /> : <AlienIcon size={72} mood={won ? 'happy' : 'sus'} />}
+          <Text style={[styles.overTitle, { color: won ? colors.success : colors.danger }]}>
+            {won ? 'MISSION SUCCESS' : 'MISSION FAILED'}
+          </Text>
+          <Badge
+            label={crewWon ? 'CREW WINS' : 'INFILTRATORS WIN'}
+            color={crewWon ? colors.human : colors.alien}
+            variant="solid"
+          />
+          <Text style={styles.overReason}>{game.winReason}</Text>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(350).duration(400)}>
+          <Text style={styles.castLabel}>IDENTITY REVEAL</Text>
+        </Animated.View>
+        <View style={styles.castList}>
+          {[...game.players]
+            .sort((a, b) => (a.role === 'alien' ? -1 : 1) - (b.role === 'alien' ? -1 : 1))
+            .map((p, i) => {
+              const alien = p.role === 'alien';
+              return (
+                <Animated.View
+                  key={p.uid}
+                  entering={FadeInUp.delay(450 + i * 90).duration(350)}
+                  style={[styles.castRow, alien && styles.castRowAlien]}
+                >
+                  <Avatar name={p.displayName} color={p.avatarColor} size={36} />
+                  <Text style={styles.castName} numberOfLines={1}>
+                    {p.displayName}
+                    {p.uid === me.uid ? '  (You)' : ''}
+                  </Text>
+                  {alien ? <AlienIcon size={24} mood="sus" /> : <HelmetIcon size={24} />}
+                  <Text style={[styles.castRole, { color: alien ? colors.alien : colors.human }]}>
+                    {alien ? 'INFILTRATOR' : 'CREW'}
+                  </Text>
+                </Animated.View>
+              );
+            })}
+        </View>
+      </ScrollView>
+      <Button title="Return to base" fullWidth onPress={onExit} />
     </View>
   );
 }
@@ -336,6 +430,7 @@ const styles = StyleSheet.create({
   shell: { flex: 1 },
   body: { flex: 1, minHeight: 0, position: 'relative' },
   fill: { flex: 1, minHeight: 0, justifyContent: 'space-between' },
+  scrollFill: { flex: 1, minHeight: 0 },
   fillCenter: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
   waitText: {
     ...typography.caption,
@@ -345,6 +440,84 @@ const styles = StyleSheet.create({
   scanGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, justifyContent: 'center' },
   scanTile: { alignItems: 'center', width: 64, gap: 2 },
   scanName: { ...typography.small, color: colors.textDim, fontSize: 9 },
-  overTitle: { ...typography.title, color: colors.text, letterSpacing: 1 },
-  muted: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },
+  // Role reveal
+  roleWrap: { flex: 1, minHeight: 0 },
+  roleCard: {
+    flex: 1,
+    borderRadius: radius.xxl,
+    borderWidth: 1.5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.md,
+    padding: spacing.lg,
+  },
+  roleCardHidden: {
+    backgroundColor: colors.surfaceSolid,
+    borderColor: colors.borderBright,
+    borderStyle: 'dashed',
+  },
+  roleCardAlien: {
+    backgroundColor: '#2a0a14',
+    borderColor: 'rgba(251,113,133,0.55)',
+  },
+  roleCardHuman: {
+    backgroundColor: '#04211a',
+    borderColor: 'rgba(52,211,153,0.5)',
+  },
+  classifiedIcon: { fontSize: 40 },
+  classifiedTitle: { ...typography.label, color: colors.primaryLight, fontSize: 12 },
+  classifiedName: { ...typography.title, color: colors.text },
+  classifiedHint: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  tapChip: {
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.full,
+    backgroundColor: colors.glowPurple,
+    borderWidth: 1,
+    borderColor: colors.borderBright,
+  },
+  tapChipText: { ...typography.label, color: colors.primaryLight },
+  roleDesc: {
+    ...typography.body,
+    color: 'rgba(255,255,255,0.92)',
+    textAlign: 'center',
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  roleAlly: { ...typography.caption, color: colors.alien, fontWeight: '800' },
+  hideLink: { ...typography.small, color: colors.textDim, textDecorationLine: 'underline' },
+  // Game over
+  overScroll: { gap: spacing.md, paddingBottom: spacing.md },
+  overHero: { alignItems: 'center', gap: spacing.sm, paddingVertical: spacing.lg },
+  overTitle: { ...typography.title, letterSpacing: 2, textAlign: 'center' },
+  overReason: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textAlign: 'center',
+    maxWidth: 300,
+  },
+  castLabel: { ...typography.label, color: colors.textDim, textAlign: 'center' },
+  castList: { gap: spacing.sm },
+  castRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: radius.md,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  castRowAlien: {
+    borderColor: 'rgba(251,113,133,0.4)',
+    backgroundColor: 'rgba(251,113,133,0.07)',
+  },
+  castName: { ...typography.caption, color: colors.text, fontWeight: '700', flex: 1 },
+  castRole: { ...typography.small, fontWeight: '800', fontSize: 10, letterSpacing: 1 },
 });

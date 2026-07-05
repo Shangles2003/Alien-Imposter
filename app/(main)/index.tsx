@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Button, GlowCard, Input, ScreenShell } from '@/components/ui';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import {
+  Button,
+  FloatingAlien,
+  GlowCard,
+  Input,
+  PressableScale,
+  ScreenShell,
+} from '@/components/ui';
 import { GearIcon } from '@/components/ui/GearIcon';
 import { useAuth } from '@/context/AuthContext';
 import { isDevModeEnabled } from '@/dev/config';
 import { createDevLobby, createLobby, joinLobbyByCode } from '@/services/lobby';
+import { errorMessage } from '@/utils/errors';
 import { SETTINGS_ROUTE } from '@/navigation/routes';
 import { colors, radius, spacing, typography } from '@/theme';
 
@@ -22,7 +31,7 @@ export default function HomeScreen() {
       const lobby = await createLobby(profile);
       router.push(`/lobby/${lobby.id}`);
     } catch (e) {
-      Alert.alert('Error', e instanceof Error ? e.message : 'Could not create lobby');
+      Alert.alert('Could not create lobby', errorMessage(e));
     } finally {
       setLoading(null);
     }
@@ -38,7 +47,7 @@ export default function HomeScreen() {
       const lobby = await joinLobbyByCode(code, profile);
       router.push(`/lobby/${lobby.id}`);
     } catch (e) {
-      Alert.alert('Join failed', e instanceof Error ? e.message : 'Could not join lobby');
+      Alert.alert('Join failed', errorMessage(e));
     } finally {
       setLoading(null);
     }
@@ -51,7 +60,7 @@ export default function HomeScreen() {
       const lobby = await createDevLobby(profile, totalPlayers);
       router.push(`/lobby/${lobby.id}`);
     } catch (e) {
-      Alert.alert('Dev lobby failed', e instanceof Error ? e.message : 'Unknown error');
+      Alert.alert('Dev lobby failed', errorMessage(e));
     } finally {
       setLoading(null);
     }
@@ -61,23 +70,26 @@ export default function HomeScreen() {
     <ScreenShell contentStyle={styles.shell}>
       <View style={styles.topBar}>
         <View style={styles.topBarSide} />
-        <Pressable
-          style={({ pressed }) => [styles.gearBtn, pressed && styles.gearBtnPressed]}
+        <PressableScale
+          style={styles.gearBtn}
           onPress={() => router.push(SETTINGS_ROUTE)}
           hitSlop={12}
           accessibilityLabel="Settings"
         >
           <GearIcon size={22} color={colors.textMuted} />
-        </Pressable>
+        </PressableScale>
       </View>
 
-      <View style={styles.hero}>
-        <Text style={styles.emoji}>👽</Text>
-        <Text style={styles.title}>Alien Imposter</Text>
-        <Text style={styles.tagline}>Gather friends · share a code · find the infiltrators</Text>
-      </View>
+      <Animated.View entering={FadeInDown.duration(500)} style={styles.hero}>
+        <FloatingAlien size={92} mood="sus" />
+        <Text style={styles.kicker}>SOCIAL DEDUCTION · 4–10 PLAYERS</Text>
+        <Text style={styles.title}>ALIEN IMPOSTER</Text>
+        <Text style={styles.tagline}>
+          Gather friends · share a code · find the infiltrators
+        </Text>
+      </Animated.View>
 
-      <View style={styles.actions}>
+      <Animated.View entering={FadeInUp.delay(150).duration(500)} style={styles.actions}>
         <Button
           title="Host a Party"
           icon="🛸"
@@ -96,6 +108,7 @@ export default function HomeScreen() {
             placeholder="ABC123"
             autoCapitalize="characters"
           />
+          <View style={styles.joinSpacer} />
           <Button
             title="Join Party"
             icon="🚀"
@@ -105,7 +118,7 @@ export default function HomeScreen() {
             onPress={joinParty}
           />
         </GlowCard>
-      </View>
+      </Animated.View>
 
       {isDevModeEnabled() ? (
         <View style={styles.dev}>
@@ -130,7 +143,7 @@ export default function HomeScreen() {
       ) : null}
 
       <Text style={styles.footer}>
-        Playing as {profile?.displayName ?? 'Crew'} · 4–10 players · 5 missions
+        Playing as {profile?.displayName ?? 'Crew'} · 5 missions per game
       </Text>
     </ScreenShell>
   );
@@ -161,13 +174,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  gearBtnPressed: { opacity: 0.75, backgroundColor: colors.surfaceElevated },
   hero: {
     alignItems: 'center',
     gap: spacing.xs,
   },
-  emoji: { fontSize: 48 },
-  title: { ...typography.display, color: colors.text, fontSize: 28 },
+  kicker: {
+    ...typography.label,
+    color: colors.accentSoft,
+    marginTop: spacing.md,
+  },
+  title: {
+    ...typography.display,
+    color: colors.text,
+    fontSize: 30,
+    letterSpacing: 3,
+  },
   tagline: {
     ...typography.caption,
     color: colors.textMuted,
@@ -183,14 +204,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: -spacing.xs,
   },
+  joinSpacer: { height: spacing.sm },
   dev: {
     gap: spacing.xs,
   },
   devLabel: {
-    ...typography.small,
+    ...typography.label,
     color: colors.textDim,
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
     textAlign: 'center',
   },
   devRow: {

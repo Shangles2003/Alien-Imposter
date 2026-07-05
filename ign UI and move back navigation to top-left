@@ -1,0 +1,3084 @@
+warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/(auth)/login.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/(auth)/signup.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/(main)/index.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/game/[id].tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/lobby/[id].tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/lobby/join.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/game/ChamberViews.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/game/CrewExperience.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/game/ExtractionPhase.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/game/MissionHud.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/game/TaskAnswerReveal.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/ui/index.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/ui/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/packs/core.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/content/registry.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/hooks/useOptimisticGameActions.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/theme/index.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 6298231..05d85dc 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,43 +1,43 @@[m
+ # Alien Imposter[m
+ [m
+[31m-A mobile social-deduction game built with **React Native**, **Expo Go**, and **Firebase** (auth + realtime multiplayer). Find the infiltrators before time runs out.[m
+[32m+[m[32mA mobile social-deduction party game built with **React Native**, **Expo Go**, and **Supabase** (auth + realtime multiplayer). Complete five missions, compare answers, and find the infiltrators before the final vote.[m
+ [m
+ Inspired by hidden-role party games — original prompts, chambers, and branding throughout.[m
+ [m
+ ## Features[m
+ [m
+ - Email/password accounts with crew profiles[m
+[31m-- Private lobbies (6-character codes) and public lobbies[m
+[31m-- Quick match queue (auto-forms a lobby at 4+ players)[m
+[32m+[m[32m- Private lobbies with shareable 6-character codes (tap to copy)[m
+ - Full game flow:[m
+[31m-  - Role assignment (crew vs infiltrator)[m
+[31m-  - Rotating captain picks tests each round[m
+[32m+[m[32m  - Tap-to-reveal classified role assignment (crew vs infiltrator)[m
+   - **Opinion Bay** — agree/disagree scale[m
+[31m-  - **Decision Deck** — scenario choices (infiltrators choose blind)[m
+[32m+[m[32m  - **Decision Deck** — scenario choices[m
+   - **Sketch Bay** — draw prompts (infiltrators get different prompts)[m
+[31m-  - **Text Pod** — written answers[m
+[31m-  - **Likely Locker** — who is most likely to… (bonus chamber)[m
+[31m-  - **Bio Scanner** — glyph matching + hidden scan (unlocks round 2+, 5 min cooldown)[m
+[31m-  - **Probe Log** — review past tests + infiltrator hacks[m
+[31m-  - **Emergency Eject** — once per player, unanimous vote required[m
+[31m-- Player scaling (4–10): alien count, hacks, test size, timer match party-game rules[m
+[32m+[m[32m  - **Fill-in-the-Blank Pod** — written answers[m
+[32m+[m[32m  - **Likely Locker** — who is most likely to…[m
+[32m+[m[32m  - **Bio Scanner** — glyph matching + hidden scan[m
+[32m+[m[32m  - **Mission Log** — review every answer from every task[m
+[32m+[m[32m  - **Neural Hacks** — infiltrators flip prompt alignment (shared pool)[m
+[32m+[m[32m  - **Final Extraction** — nominate suspects, unanimous vote to eject[m
+[32m+[m[32m- Player scaling (4–10): infiltrator count and hack pool adjust automatically[m
+[32m+[m[32m- Animated "deep space terminal" UI: nebula glows, parallax starfield, vector alien mascot[m
+ [m
+ ## Quick Start[m
+ [m
+[31m-### 1. Firebase project (free tier works)[m
+[32m+[m[32m### 1. Supabase project (free tier works)[m
+ [m
+[31m-1. Create a project at [Firebase Console](https://console.firebase.google.com)[m
+[31m-2. Enable **Authentication → Email/Password**[m
+[31m-3. Create a **Firestore** database[m
+[31m-4. Paste rules from `firestore.rules` into Firestore Rules[m
+[31m-5. Register a **Web app** and copy config values[m
+[32m+[m[32m1. Create a project at [supabase.com](https://supabase.com)[m
+[32m+[m[32m2. Enable **Authentication → Email** provider[m
+[32m+[m[32m3. Create the `lobbies` and `games` tables (see `supabase/` or `.env.example` notes)[m
+[32m+[m[32m4. Enable Realtime on both tables[m
+[32m+[m[32m5. Copy the project URL and anon key[m
+ [m
+ ### 2. Environment[m
+ [m
+ ```bash[m
+ cd alien-imposter[m
+ cp .env.example .env[m
+[31m-# Fill in your Firebase keys[m
+[32m+[m[32m# Fill in EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY[m
+ ```[m
+ [m
+ ### 3. Run with Expo Go[m
+[36m@@ -52,19 +52,18 @@[m [mScan the QR code with **Expo Go** on your phone (same Wi‑Fi recommended).[m
+ ### 4. Play test[m
+ [m
+ 1. Create 4+ accounts (or use multiple devices/emulators)[m
+[31m-2. **Quick Match** or create a **Private Lobby** and share the code[m
+[32m+[m[32m2. **Host a Party** and share the code, or join with a code[m
+ 3. Everyone taps **Ready Up** → host taps **Launch Mission**[m
+ [m
+ ## Tech Stack[m
+ [m
+ | Layer | Choice |[m
+ |-------|--------|[m
+[31m-| Mobile | Expo SDK 57, Expo Router |[m
+[31m-| Backend | Firebase Auth + Firestore realtime |[m
+[31m-| State | Zustand-ready services, Firestore as source of truth |[m
+[31m-| UI | Custom v0-inspired dark space theme |[m
+[31m-[m
+[31m-Firebase replaces a Supabase-style stack: auth, Postgres-like documents, and live subscriptions without managing servers.[m
+[32m+[m[32m| Mobile | Expo SDK 54, Expo Router |[m
+[32m+[m[32m| Backend | Supabase Auth + Postgres realtime |[m
+[32m+[m[32m| State | Optimistic client actions, Supabase as source of truth |[m
+[32m+[m[32m| Animation | react-native-reanimated 4 |[m
+[32m+[m[32m| UI | Custom dark space design system (`src/theme`) |[m
+ [m
+ ## Project Structure[m
+ [m
+[36m@@ -72,29 +71,26 @@[m [mFirebase replaces a Supabase-style stack: auth, Postgres-like documents, and liv[m
+ app/                 Expo Router screens[m
+ src/game/            Rules, prompts, state engine[m
+ src/services/        Auth, lobby, matchmaking, sync[m
+[31m-src/components/      UI + chamber views[m
+[32m+[m[32msrc/components/      Design system + chamber views[m
+[32m+[m[32msrc/theme/           Colors, typography, spacing tokens[m
+ ```[m
+ [m
+ ## Game Rules Summary[m
+ [m
+[31m-| Players | Infiltrators | Hacks | Max testees | Timer |[m
+[31m-|---------|--------------|-------|-------------|-------|[m
+[31m-| 4 | 1 | 2 | 2 | 12 min |[m
+[31m-| 5–6 | 2 | 4 | 2–3 | 15 min |[m
+[31m-| 7 | 2 | 4 | 3 | 18 min |[m
+[31m-| 8–10 | 3 | 6 | 3–4 | 18–20 min |[m
+[32m+[m[32m| Players | Infiltrators | Hacks | Missions |[m
+[32m+[m[32m|---------|--------------|-------|----------|[m
+[32m+[m[32m| 4–5 | 1 | 2 | 5 |[m
+[32m+[m[32m| 6–10 | 2 | 4 | 5 |[m
+ [m
+ - Infiltrators see each other; crew must deduce from test answers[m
+[31m-- Hacks flip prompt alignment (2 hacks per infiltrator)[m
+[31m-- Wrong ejection → infiltrators win instantly[m
+[31m-- Timer expiry → infiltrators win[m
+[32m+[m[32m- Hacks flip prompt alignment (shared pool, 2 per infiltrator)[m
+[32m+[m[32m- Wrong ejection or a non-unanimous vote → infiltrators win[m
+ - All infiltrators ejected → crew wins[m
+ [m
+ ## Notes[m
+ [m
+[31m-- Game state updates are client-driven; tighten Firestore rules for production[m
+[32m+[m[32m- Game state updates are client-driven; tighten Supabase RLS policies for production[m
+ - Bio Scanner scan results are shown only to the captain[m
+[31m-- Enable Firestore indexes if prompted when querying lobbies by `code`[m
+ [m
+ ## License[m
+ [m
+[1mdiff --git a/app/(auth)/login.tsx b/app/(auth)/login.tsx[m
+[1mindex da7cec5..0b84bbc 100644[m
+[1m--- a/app/(auth)/login.tsx[m
+[1m+++ b/app/(auth)/login.tsx[m
+[36m@@ -1,11 +1,12 @@[m
+ import React, { useState } from 'react';[m
+ import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';[m
+[31m-import { LinearGradient } from 'expo-linear-gradient';[m
+ import { Link, useRouter } from 'expo-router';[m
+[31m-import { Button, GlowCard, Input, ScreenHeader, ScreenShell } from '@/components/ui';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+[32m+[m[32mimport { Button, FloatingAlien, GlowCard, Input, ScreenShell } from '@/components/ui';[m
+ import { signIn } from '@/services/auth';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+ import { HOME_ROUTE } from '@/navigation/routes';[m
+[31m-import { colors, gradients, radius, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { colors, spacing, typography } from '@/theme';[m
+ [m
+ export default function LoginScreen() {[m
+   const router = useRouter();[m
+[36m@@ -19,7 +20,7 @@[m [mexport default function LoginScreen() {[m
+       await signIn(email.trim(), password);[m
+       router.replace(HOME_ROUTE);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Login failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m      Alert.alert('Login failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(false);[m
+     }[m
+[36m@@ -28,32 +29,31 @@[m [mexport default function LoginScreen() {[m
+   return ([m
+     <ScreenShell scroll center={false}>[m
+       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>[m
+[31m-        <View style={styles.top}>[m
+[31m-          <LinearGradient colors={[...gradients.hero]} style={styles.logoWrap}>[m
+[31m-            <Text style={styles.logo}>👽</Text>[m
+[31m-          </LinearGradient>[m
+[31m-          <ScreenHeader[m
+[31m-            title="Alien Imposter"[m
+[31m-            subtitle="Board the ship. Trust no one."[m
+[31m-            align="center"[m
+[31m-          />[m
+[31m-        </View>[m
+[32m+[m[32m        <Animated.View entering={FadeInDown.duration(500)} style={styles.top}>[m
+[32m+[m[32m          <FloatingAlien size={84} />[m
+[32m+[m[32m          <Text style={styles.title}>ALIEN IMPOSTER</Text>[m
+[32m+[m[32m          <Text style={styles.subtitle}>Board the ship. Trust no one.</Text>[m
+[32m+[m[32m        </Animated.View>[m
+ [m
+[31m-        <GlowCard accent="purple">[m
+[31m-          <Input label="Email" value={email} onChangeText={setEmail} placeholder="you@ship.com" />[m
+[31m-          <Input[m
+[31m-            label="Password"[m
+[31m-            value={password}[m
+[31m-            onChangeText={setPassword}[m
+[31m-            placeholder="••••••••"[m
+[31m-            secureTextEntry[m
+[31m-          />[m
+[31m-          <Button title="Launch In" icon="🚀" fullWidth loading={loading} onPress={handleLogin} />[m
+[31m-        </GlowCard>[m
+[32m+[m[32m        <Animated.View entering={FadeInUp.delay(120).duration(500)} style={styles.formWrap}>[m
+[32m+[m[32m          <GlowCard accent="purple">[m
+[32m+[m[32m            <View style={styles.form}>[m
+[32m+[m[32m              <Input label="Email" value={email} onChangeText={setEmail} placeholder="you@ship.com" />[m
+[32m+[m[32m              <Input[m
+[32m+[m[32m                label="Password"[m
+[32m+[m[32m                value={password}[m
+[32m+[m[32m                onChangeText={setPassword}[m
+[32m+[m[32m                placeholder="••••••••"[m
+[32m+[m[32m                secureTextEntry[m
+[32m+[m[32m              />[m
+[32m+[m[32m              <Button title="Launch In" icon="🚀" fullWidth loading={loading} onPress={handleLogin} />[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m          </GlowCard>[m
+ [m
+[31m-        <Link href="/(auth)/signup" asChild>[m
+[31m-          <Button title="New crew member? Create account" variant="ghost" fullWidth />[m
+[31m-        </Link>[m
+[32m+[m[32m          <Link href="/(auth)/signup" asChild>[m
+[32m+[m[32m            <Button title="New crew member? Create account" variant="ghost" fullWidth />[m
+[32m+[m[32m          </Link>[m
+[32m+[m[32m        </Animated.View>[m
+       </KeyboardAvoidingView>[m
+     </ScreenShell>[m
+   );[m
+[36m@@ -61,14 +61,14 @@[m [mexport default function LoginScreen() {[m
+ [m
+ const styles = StyleSheet.create({[m
+   flex: { flex: 1, justifyContent: 'center', gap: spacing.lg, paddingVertical: spacing.xl },[m
+[31m-  top: { alignItems: 'center', marginBottom: spacing.md },[m
+[31m-  logoWrap: {[m
+[31m-    width: 88,[m
+[31m-    height: 88,[m
+[31m-    borderRadius: radius.xxl,[m
+[31m-    alignItems: 'center',[m
+[31m-    justifyContent: 'center',[m
+[31m-    marginBottom: spacing.md,[m
+[32m+[m[32m  top: { alignItems: 'center', marginBottom: spacing.md, gap: spacing.xs },[m
+[32m+[m[32m  title: {[m
+[32m+[m[32m    ...typography.title,[m
+[32m+[m[32m    color: colors.text,[m
+[32m+[m[32m    letterSpacing: 3,[m
+[32m+[m[32m    marginTop: spacing.md,[m
+   },[m
+[31m-  logo: { fontSize: 44 },[m
+[32m+[m[32m  subtitle: { ...typography.caption, color: colors.textMuted },[m
+[32m+[m[32m  formWrap: { gap: spacing.sm },[m
+[32m+[m[32m  form: { gap: spacing.md },[m
+ });[m
+[1mdiff --git a/app/(auth)/signup.tsx b/app/(auth)/signup.tsx[m
+[1mindex ba415ee..ff4fc4e 100644[m
+[1m--- a/app/(auth)/signup.tsx[m
+[1m+++ b/app/(auth)/signup.tsx[m
+[36m@@ -1,10 +1,12 @@[m
+ import React, { useState } from 'react';[m
+[31m-import { Alert, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';[m
+[32m+[m[32mimport { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';[m
+ import { Link, useRouter } from 'expo-router';[m
+[31m-import { Button, GlowCard, Input, ScreenHeader, ScreenShell } from '@/components/ui';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+[32m+[m[32mimport { AlienIcon, Button, GlowCard, Input, ScreenShell } from '@/components/ui';[m
+ import { signUp } from '@/services/auth';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+ import { HOME_ROUTE } from '@/navigation/routes';[m
+[31m-import { spacing } from '@/theme';[m
+[32m+[m[32mimport { colors, spacing, typography } from '@/theme';[m
+ [m
+ export default function SignupScreen() {[m
+   const router = useRouter();[m
+[36m@@ -23,7 +25,7 @@[m [mexport default function SignupScreen() {[m
+       await signUp(email.trim(), password, displayName.trim());[m
+       router.replace(HOME_ROUTE);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Signup failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m      Alert.alert('Signup failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(false);[m
+     }[m
+[36m@@ -32,30 +34,38 @@[m [mexport default function SignupScreen() {[m
+   return ([m
+     <ScreenShell scroll>[m
+       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>[m
+[31m-        <ScreenHeader title="Join the Crew" subtitle="Create your account and enter the ship" icon="🛸" />[m
+[32m+[m[32m        <Animated.View entering={FadeInDown.duration(500)} style={styles.top}>[m
+[32m+[m[32m          <AlienIcon size={64} mood="happy" />[m
+[32m+[m[32m          <Text style={styles.title}>Join the Crew</Text>[m
+[32m+[m[32m          <Text style={styles.subtitle}>Create your account and enter the ship</Text>[m
+[32m+[m[32m        </Animated.View>[m
+ [m
+[31m-        <GlowCard accent="pink">[m
+[31m-          <Input[m
+[31m-            label="Callsign"[m
+[31m-            value={displayName}[m
+[31m-            onChangeText={setDisplayName}[m
+[31m-            placeholder="Commander Nova"[m
+[31m-            autoCapitalize="words"[m
+[31m-          />[m
+[31m-          <Input label="Email" value={email} onChangeText={setEmail} placeholder="you@ship.com" />[m
+[31m-          <Input[m
+[31m-            label="Password"[m
+[31m-            value={password}[m
+[31m-            onChangeText={setPassword}[m
+[31m-            placeholder="Min 6 characters"[m
+[31m-            secureTextEntry[m
+[31m-          />[m
+[31m-          <Button title="Create Account" icon="✨" fullWidth loading={loading} onPress={handleSignup} />[m
+[31m-        </GlowCard>[m
+[32m+[m[32m        <Animated.View entering={FadeInUp.delay(120).duration(500)} style={styles.formWrap}>[m
+[32m+[m[32m          <GlowCard accent="pink">[m
+[32m+[m[32m            <View style={styles.form}>[m
+[32m+[m[32m              <Input[m
+[32m+[m[32m                label="Callsign"[m
+[32m+[m[32m                value={displayName}[m
+[32m+[m[32m                onChangeText={setDisplayName}[m
+[32m+[m[32m                placeholder="Commander Nova"[m
+[32m+[m[32m                autoCapitalize="words"[m
+[32m+[m[32m              />[m
+[32m+[m[32m              <Input label="Email" value={email} onChangeText={setEmail} placeholder="you@ship.com" />[m
+[32m+[m[32m              <Input[m
+[32m+[m[32m                label="Password"[m
+[32m+[m[32m                value={password}[m
+[32m+[m[32m                onChangeText={setPassword}[m
+[32m+[m[32m                placeholder="Min 6 characters"[m
+[32m+[m[32m                secureTextEntry[m
+[32m+[m[32m              />[m
+[32m+[m[32m              <Button title="Create Account" icon="✨" fullWidth loading={loading} onPress={handleSignup} />[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m          </GlowCard>[m
+ [m
+[31m-        <Link href="/(auth)/login" asChild>[m
+[31m-          <Button title="Already aboard? Sign in" variant="ghost" fullWidth />[m
+[31m-        </Link>[m
+[32m+[m[32m          <Link href="/(auth)/login" asChild>[m
+[32m+[m[32m            <Button title="Already aboard? Sign in" variant="ghost" fullWidth />[m
+[32m+[m[32m          </Link>[m
+[32m+[m[32m        </Animated.View>[m
+       </KeyboardAvoidingView>[m
+     </ScreenShell>[m
+   );[m
+[36m@@ -63,4 +73,9 @@[m [mexport default function SignupScreen() {[m
+ [m
+ const styles = StyleSheet.create({[m
+   flex: { gap: spacing.lg, paddingVertical: spacing.lg },[m
+[32m+[m[32m  top: { alignItems: 'center', gap: spacing.xs },[m
+[32m+[m[32m  title: { ...typography.title, color: colors.text, marginTop: spacing.sm },[m
+[32m+[m[32m  subtitle: { ...typography.caption, color: colors.textMuted },[m
+[32m+[m[32m  formWrap: { gap: spacing.sm },[m
+[32m+[m[32m  form: { gap: spacing.md },[m
+ });[m
+[1mdiff --git a/app/(main)/index.tsx b/app/(main)/index.tsx[m
+[1mindex be9a9b4..a347aa8 100644[m
+[1m--- a/app/(main)/index.tsx[m
+[1m+++ b/app/(main)/index.tsx[m
+[36m@@ -1,11 +1,20 @@[m
+ import React, { useState } from 'react';[m
+[31m-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';[m
+[32m+[m[32mimport { Alert, StyleSheet, Text, View } from 'react-native';[m
+ import { useRouter } from 'expo-router';[m
+[31m-import { Button, GlowCard, Input, ScreenShell } from '@/components/ui';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  Button,[m
+[32m+[m[32m  FloatingAlien,[m
+[32m+[m[32m  GlowCard,[m
+[32m+[m[32m  Input,[m
+[32m+[m[32m  PressableScale,[m
+[32m+[m[32m  ScreenShell,[m
+[32m+[m[32m} from '@/components/ui';[m
+ import { GearIcon } from '@/components/ui/GearIcon';[m
+ import { useAuth } from '@/context/AuthContext';[m
+ import { isDevModeEnabled } from '@/dev/config';[m
+ import { createDevLobby, createLobby, joinLobbyByCode } from '@/services/lobby';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+ import { SETTINGS_ROUTE } from '@/navigation/routes';[m
+ import { colors, radius, spacing, typography } from '@/theme';[m
+ [m
+[36m@@ -22,7 +31,7 @@[m [mexport default function HomeScreen() {[m
+       const lobby = await createLobby(profile);[m
+       router.push(`/lobby/${lobby.id}`);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Error', e instanceof Error ? e.message : 'Could not create lobby');[m
+[32m+[m[32m      Alert.alert('Could not create lobby', errorMessage(e));[m
+     } finally {[m
+       setLoading(null);[m
+     }[m
+[36m@@ -38,7 +47,7 @@[m [mexport default function HomeScreen() {[m
+       const lobby = await joinLobbyByCode(code, profile);[m
+       router.push(`/lobby/${lobby.id}`);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Join failed', e instanceof Error ? e.message : 'Could not join lobby');[m
+[32m+[m[32m      Alert.alert('Join failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(null);[m
+     }[m
+[36m@@ -51,7 +60,7 @@[m [mexport default function HomeScreen() {[m
+       const lobby = await createDevLobby(profile, totalPlayers);[m
+       router.push(`/lobby/${lobby.id}`);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Dev lobby failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m      Alert.alert('Dev lobby failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(null);[m
+     }[m
+[36m@@ -61,23 +70,26 @@[m [mexport default function HomeScreen() {[m
+     <ScreenShell contentStyle={styles.shell}>[m
+       <View style={styles.topBar}>[m
+         <View style={styles.topBarSide} />[m
+[31m-        <Pressable[m
+[31m-          style={({ pressed }) => [styles.gearBtn, pressed && styles.gearBtnPressed]}[m
+[32m+[m[32m        <PressableScale[m
+[32m+[m[32m          style={styles.gearBtn}[m
+           onPress={() => router.push(SETTINGS_ROUTE)}[m
+           hitSlop={12}[m
+           accessibilityLabel="Settings"[m
+         >[m
+           <GearIcon size={22} color={colors.textMuted} />[m
+[31m-        </Pressable>[m
+[32m+[m[32m        </PressableScale>[m
+       </View>[m
+ [m
+[31m-      <View style={styles.hero}>[m
+[31m-        <Text style={styles.emoji}>👽</Text>[m
+[31m-        <Text style={styles.title}>Alien Imposter</Text>[m
+[31m-        <Text style={styles.tagline}>Gather friends · share a code · find the infiltrators</Text>[m
+[31m-      </View>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(500)} style={styles.hero}>[m
+[32m+[m[32m        <FloatingAlien size={92} mood="sus" />[m
+[32m+[m[32m        <Text style={styles.kicker}>SOCIAL DEDUCTION · 4–10 PLAYERS</Text>[m
+[32m+[m[32m        <Text style={styles.title}>ALIEN IMPOSTER</Text>[m
+[32m+[m[32m        <Text style={styles.tagline}>[m
+[32m+[m[32m          Gather friends · share a code · find the infiltrators[m
+[32m+[m[32m        </Text>[m
+[32m+[m[32m      </Animated.View>[m
+ [m
+[31m-      <View style={styles.actions}>[m
+[32m+[m[32m      <Animated.View entering={FadeInUp.delay(150).duration(500)} style={styles.actions}>[m
+         <Button[m
+           title="Host a Party"[m
+           icon="🛸"[m
+[36m@@ -96,6 +108,7 @@[m [mexport default function HomeScreen() {[m
+             placeholder="ABC123"[m
+             autoCapitalize="characters"[m
+           />[m
+[32m+[m[32m          <View style={styles.joinSpacer} />[m
+           <Button[m
+             title="Join Party"[m
+             icon="🚀"[m
+[36m@@ -105,7 +118,7 @@[m [mexport default function HomeScreen() {[m
+             onPress={joinParty}[m
+           />[m
+         </GlowCard>[m
+[31m-      </View>[m
+[32m+[m[32m      </Animated.View>[m
+ [m
+       {isDevModeEnabled() ? ([m
+         <View style={styles.dev}>[m
+[36m@@ -130,7 +143,7 @@[m [mexport default function HomeScreen() {[m
+       ) : null}[m
+ [m
+       <Text style={styles.footer}>[m
+[31m-        Playing as {profile?.displayName ?? 'Crew'} · 4–10 players · 5 missions[m
+[32m+[m[32m        Playing as {profile?.displayName ?? 'Crew'} · 5 missions per game[m
+       </Text>[m
+     </ScreenShell>[m
+   );[m
+[36m@@ -161,13 +174,21 @@[m [mconst styles = StyleSheet.create({[m
+     borderWidth: 1,[m
+     borderColor: colors.border,[m
+   },[m
+[31m-  gearBtnPressed: { opacity: 0.75, backgroundColor: colors.surfaceElevated },[m
+   hero: {[m
+     alignItems: 'center',[m
+     gap: spacing.xs,[m
+   },[m
+[31m-  emoji: { fontSize: 48 },[m
+[31m-  title: { ...typography.display, color: colors.text, fontSize: 28 },[m
+[32m+[m[32m  kicker: {[m
+[32m+[m[32m    ...typography.label,[m
+[32m+[m[32m    color: colors.accentSoft,[m
+[32m+[m[32m    marginTop: spacing.md,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  title: {[m
+[32m+[m[32m    ...typography.display,[m
+[32m+[m[32m    color: colors.text,[m
+[32m+[m[32m    fontSize: 30,[m
+[32m+[m[32m    letterSpacing: 3,[m
+[32m+[m[32m  },[m
+   tagline: {[m
+     ...typography.caption,[m
+     color: colors.textMuted,[m
+[36m@@ -183,14 +204,13 @@[m [mconst styles = StyleSheet.create({[m
+     textAlign: 'center',[m
+     marginTop: -spacing.xs,[m
+   },[m
+[32m+[m[32m  joinSpacer: { height: spacing.sm },[m
+   dev: {[m
+     gap: spacing.xs,[m
+   },[m
+   devLabel: {[m
+[31m-    ...typography.small,[m
+[32m+[m[32m    ...typography.label,[m
+     color: colors.textDim,[m
+[31m-    textTransform: 'uppercase',[m
+[31m-    letterSpacing: 1.2,[m
+     textAlign: 'center',[m
+   },[m
+   devRow: {[m
+[1mdiff --git a/app/game/[id].tsx b/app/game/[id].tsx[m
+[1mindex e4471c8..9318c6d 100644[m
+[1m--- a/app/game/[id].tsx[m
+[1m+++ b/app/game/[id].tsx[m
+[36m@@ -1,7 +1,17 @@[m
+ import React, { useEffect, useMemo, useState } from 'react';[m
+[31m-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';[m
+[32m+[m[32mimport { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';[m
+ import { useLocalSearchParams, useRouter } from 'expo-router';[m
+[31m-import { Avatar, Badge, Button, LoadingState, RoleCard, ScreenShell } from '@/components/ui';[m
+[32m+[m[32mimport Animated, { FadeIn, FadeInDown, FadeInUp, ZoomIn } from 'react-native-reanimated';[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  AlienIcon,[m
+[32m+[m[32m  Avatar,[m
+[32m+[m[32m  Badge,[m
+[32m+[m[32m  Button,[m
+[32m+[m[32m  HelmetIcon,[m
+[32m+[m[32m  LoadingState,[m
+[32m+[m[32m  PressableScale,[m
+[32m+[m[32m  ScreenShell,[m
+[32m+[m[32m} from '@/components/ui';[m
+ import { ChamberInput } from '@/components/game/ChamberViews';[m
+ import {[m
+   ChamberBoarding,[m
+[36m@@ -26,7 +36,7 @@[m [mimport { useOptimisticGameActions } from '@/hooks/useOptimisticGameActions';[m
+ import { HOME_ROUTE } from '@/navigation/routes';[m
+ import { applyGameAction, subscribeToGame } from '@/services/gameSync';[m
+ import { GamePlayer, GameState } from '@/types/game';[m
+[31m-import { colors, phaseLabels, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { colors, phaseLabels, radius, shadows, spacing, typography } from '@/theme';[m
+ [m
+ export default function GameScreen() {[m
+   const { id } = useLocalSearchParams<{ id: string }>();[m
+[36m@@ -199,6 +209,7 @@[m [mexport default function GameScreen() {[m
+   );[m
+ }[m
+ [m
+[32m+[m[32m/** Classified dossier — hidden until tapped so nobody can shoulder-surf your role. */[m
+ function RoleRevealPhase({[m
+   me,[m
+   aliens,[m
+[36m@@ -212,25 +223,66 @@[m [mfunction RoleRevealPhase({[m
+   onReady: () => void;[m
+   syncPending: boolean;[m
+ }) {[m
+[32m+[m[32m  const [revealed, setRevealed] = useState(false);[m
+[32m+[m[32m  const isAlien = me.role === 'alien';[m
+[32m+[m
+   return ([m
+     <View style={styles.fill}>[m
+[31m-      <RoleCard[m
+[31m-        compact[m
+[31m-        gameMode[m
+[31m-        role={me.role}[m
+[31m-        description={[m
+[31m-          me.role === 'alien'[m
+[31m-            ? 'You see different prompts than the crew. Tap Hack anytime — pool is shared with your partner.'[m
+[31m-            : 'Watch the mission log for answers that do not add up.'[m
+[31m-        }[m
+[31m-        allies={me.role === 'alien' ? aliens.map((a) => a.displayName) : undefined}[m
+[31m-      />[m
+[32m+[m[32m      {revealed ? ([m
+[32m+[m[32m        <Animated.View entering={ZoomIn.duration(320)} style={styles.roleWrap}>[m
+[32m+[m[32m          <View[m
+[32m+[m[32m            style={[[m
+[32m+[m[32m              styles.roleCard,[m
+[32m+[m[32m              isAlien ? styles.roleCardAlien : styles.roleCardHuman,[m
+[32m+[m[32m              isAlien ? shadows.glowRed : shadows.glowCyan,[m
+[32m+[m[32m            ]}[m
+[32m+[m[32m          >[m
+[32m+[m[32m            {isAlien ? <AlienIcon size={72} mood="sus" /> : <HelmetIcon size={72} />}[m
+[32m+[m[32m            <Badge[m
+[32m+[m[32m              label={isAlien ? 'INFILTRATOR' : 'CREW'}[m
+[32m+[m[32m              color={isAlien ? colors.alien : colors.human}[m
+[32m+[m[32m              variant="solid"[m
+[32m+[m[32m            />[m
+[32m+[m[32m            <Text style={styles.roleDesc}>[m
+[32m+[m[32m              {isAlien[m
+[32m+[m[32m                ? 'You see different prompts than the crew. Blend in. Tap HACK anytime — the pool is shared with your partner.'[m
+[32m+[m[32m                : 'Answer honestly and watch the mission log for answers that do not add up.'}[m
+[32m+[m[32m            </Text>[m
+[32m+[m[32m            {isAlien && aliens.length > 0 && ([m
+[32m+[m[32m              <Text style={styles.roleAlly} numberOfLines={1}>[m
+[32m+[m[32m                Partner: {aliens.map((a) => a.displayName).join(', ')}[m
+[32m+[m[32m              </Text>[m
+[32m+[m[32m            )}[m
+[32m+[m[32m            <Pressable onPress={() => setRevealed(false)} hitSlop={8}>[m
+[32m+[m[32m              <Text style={styles.hideLink}>Hide identity</Text>[m
+[32m+[m[32m            </Pressable>[m
+[32m+[m[32m          </View>[m
+[32m+[m[32m        </Animated.View>[m
+[32m+[m[32m      ) : ([m
+[32m+[m[32m        <PressableScale onPress={() => setRevealed(true)} style={styles.roleWrap} scaleTo={0.97}>[m
+[32m+[m[32m          <View style={[styles.roleCard, styles.roleCardHidden]}>[m
+[32m+[m[32m            <Animated.Text entering={FadeIn.duration(600)} style={styles.classifiedIcon}>[m
+[32m+[m[32m              🔒[m
+[32m+[m[32m            </Animated.Text>[m
+[32m+[m[32m            <Text style={styles.classifiedTitle}>CLASSIFIED DOSSIER</Text>[m
+[32m+[m[32m            <Text style={styles.classifiedName}>{me.displayName}</Text>[m
+[32m+[m[32m            <Text style={styles.classifiedHint}>[m
+[32m+[m[32m              Make sure nobody is looking at your screen,{'\n'}then tap to reveal your identity[m
+[32m+[m[32m            </Text>[m
+[32m+[m[32m            <View style={styles.tapChip}>[m
+[32m+[m[32m              <Text style={styles.tapChipText}>TAP TO REVEAL</Text>[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m          </View>[m
+[32m+[m[32m        </PressableScale>[m
+[32m+[m[32m      )}[m
+       <PhaseSyncGate[m
+         game={game}[m
+         me={me}[m
+[31m-        actionLabel="Ready up"[m
+[32m+[m[32m        actionLabel={revealed ? 'Ready up' : 'Reveal your role first'}[m
+         loading={syncPending}[m
+[31m-        onReady={onReady}[m
+[32m+[m[32m        onReady={() => {[m
+[32m+[m[32m          if (revealed) onReady();[m
+[32m+[m[32m        }}[m
+       />[m
+     </View>[m
+   );[m
+[36m@@ -306,6 +358,7 @@[m [mfunction ChamberActivePhase({[m
+   );[m
+ }[m
+ [m
+[32m+[m[32m/** Mission debrief — verdict plus the full cast reveal. */[m
+ function GameOverPhase({[m
+   game,[m
+   me,[m
+[36m@@ -318,16 +371,57 @@[m [mfunction GameOverPhase({[m
+   const won =[m
+     (game.winner === 'humans' && me.role === 'human') ||[m
+     (game.winner === 'aliens' && me.role === 'alien');[m
+[32m+[m[32m  const crewWon = game.winner === 'humans';[m
+ [m
+   return ([m
+[31m-    <View style={styles.fillCenter}>[m
+[31m-      <Text style={styles.overTitle}>{won ? 'MISSION SUCCESS' : 'MISSION FAILED'}</Text>[m
+[31m-      <Badge[m
+[31m-        label={game.winner === 'humans' ? 'CREW WINS' : 'INFILTRATORS WIN'}[m
+[31m-        color={game.winner === 'humans' ? colors.human : colors.alien}[m
+[31m-      />[m
+[31m-      <Text style={styles.muted}>{game.winReason}</Text>[m
+[31m-      <Button title="RETURN" fullWidth onPress={onExit} />[m
+[32m+[m[32m    <View style={styles.fill}>[m
+[32m+[m[32m      <ScrollView[m
+[32m+[m[32m        style={styles.scrollFill}[m
+[32m+[m[32m        contentContainerStyle={styles.overScroll}[m
+[32m+[m[32m        showsVerticalScrollIndicator={false}[m
+[32m+[m[32m      >[m
+[32m+[m[32m        <Animated.View entering={ZoomIn.duration(450)} style={styles.overHero}>[m
+[32m+[m[32m          {crewWon ? <HelmetIcon size={72} /> : <AlienIcon size={72} mood={won ? 'happy' : 'sus'} />}[m
+[32m+[m[32m          <Text style={[styles.overTitle, { color: won ? colors.success : colors.danger }]}>[m
+[32m+[m[32m            {won ? 'MISSION SUCCESS' : 'MISSION FAILED'}[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m          <Badge[m
+[32m+[m[32m            label={crewWon ? 'CREW WINS' : 'INFILTRATORS WIN'}[m
+[32m+[m[32m            color={crewWon ? colors.human : colors.alien}[m
+[32m+[m[32m            variant="solid"[m
+[32m+[m[32m          />[m
+[32m+[m[32m          <Text style={styles.overReason}>{game.winReason}</Text>[m
+[32m+[m[32m        </Animated.View>[m
+[32m+[m
+[32m+[m[32m        <Animated.View entering={FadeInDown.delay(350).duration(400)}>[m
+[32m+[m[32m          <Text style={styles.castLabel}>IDENTITY REVEAL</Text>[m
+[32m+[m[32m        </Animated.View>[m
+[32m+[m[32m        <View style={styles.castList}>[m
+[32m+[m[32m          {[...game.players][m
+[32m+[m[32m            .sort((a, b) => (a.role === 'alien' ? -1 : 1) - (b.role === 'alien' ? -1 : 1))[m
+[32m+[m[32m            .map((p, i) => {[m
+[32m+[m[32m              const alien = p.role === 'alien';[m
+[32m+[m[32m              return ([m
+[32m+[m[32m                <Animated.View[m
+[32m+[m[32m                  key={p.uid}[m
+[32m+[m[32m                  entering={FadeInUp.delay(450 + i * 90).duration(350)}[m
+[32m+[m[32m                  style={[styles.castRow, alien && styles.castRowAlien]}[m
+[32m+[m[32m                >[m
+[32m+[m[32m                  <Avatar name={p.displayName} color={p.avatarColor} size={36} />[m
+[32m+[m[32m                  <Text style={styles.castName} numberOfLines={1}>[m
+[32m+[m[32m                    {p.displayName}[m
+[32m+[m[32m                    {p.uid === me.uid ? '  (You)' : ''}[m
+[32m+[m[32m                  </Text>[m
+[32m+[m[32m                  {alien ? <AlienIcon size={24} mood="sus" /> : <HelmetIcon size={24} />}[m
+[32m+[m[32m                  <Text style={[styles.castRole, { color: alien ? colors.alien : colors.human }]}>[m
+[32m+[m[32m                    {alien ? 'INFILTRATOR' : 'CREW'}[m
+[32m+[m[32m                  </Text>[m
+[32m+[m[32m                </Animated.View>[m
+[32m+[m[32m              );[m
+[32m+[m[32m            })}[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m      </ScrollView>[m
+[32m+[m[32m      <Button title="Return to base" fullWidth onPress={onExit} />[m
+     </View>[m
+   );[m
+ }[m
+[36m@@ -336,6 +430,7 @@[m [mconst styles = StyleSheet.create({[m
+   shell: { flex: 1 },[m
+   body: { flex: 1, minHeight: 0, position: 'relative' },[m
+   fill: { flex: 1, minHeight: 0, justifyContent: 'space-between' },[m
+[32m+[m[32m  scrollFill: { flex: 1, minHeight: 0 },[m
+   fillCenter: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },[m
+   waitText: {[m
+     ...typography.caption,[m
+[36m@@ -345,6 +440,84 @@[m [mconst styles = StyleSheet.create({[m
+   scanGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, justifyContent: 'center' },[m
+   scanTile: { alignItems: 'center', width: 64, gap: 2 },[m
+   scanName: { ...typography.small, color: colors.textDim, fontSize: 9 },[m
+[31m-  overTitle: { ...typography.title, color: colors.text, letterSpacing: 1 },[m
+[31m-  muted: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },[m
+[32m+[m[32m  // Role reveal[m
+[32m+[m[32m  roleWrap: { flex: 1, minHeight: 0 },[m
+[32m+[m[32m  roleCard: {[m
+[32m+[m[32m    flex: 1,[m
+[32m+[m[32m    borderRadius: radius.xxl,[m
+[32m+[m[32m    borderWidth: 1.5,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m    gap: spacing.md,[m
+[32m+[m[32m    padding: spacing.lg,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  roleCardHidden: {[m
+[32m+[m[32m    backgroundColor: colors.surfaceSolid,[m
+[32m+[m[32m    borderColor: colors.borderBright,[m
+[32m+[m[32m    borderStyle: 'dashed',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  roleCardAlien: {[m
+[32m+[m[32m    backgroundColor: '#2a0a14',[m
+[32m+[m[32m    borderColor: 'rgba(251,113,133,0.55)',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  roleCardHuman: {[m
+[32m+[m[32m    backgroundColor: '#04211a',[m
+[32m+[m[32m    borderColor: 'rgba(52,211,153,0.5)',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  classifiedIcon: { fontSize: 40 },[m
+[32m+[m[32m  classifiedTitle: { ...typography.label, color: colors.primaryLight, fontSize: 12 },[m
+[32m+[m[32m  classifiedName: { ...typography.title, color: colors.text },[m
+[32m+[m[32m  classifiedHint: {[m
+[32m+[m[32m    ...typography.caption,[m
+[32m+[m[32m    color: colors.textMuted,[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m    lineHeight: 20,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  tapChip: {[m
+[32m+[m[32m    marginTop: spacing.sm,[m
+[32m+[m[32m    paddingHorizontal: spacing.md,[m
+[32m+[m[32m    paddingVertical: spacing.sm,[m
+[32m+[m[32m    borderRadius: radius.full,[m
+[32m+[m[32m    backgroundColor: colors.glowPurple,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: colors.borderBright,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  tapChipText: { ...typography.label, color: colors.primaryLight },[m
+[32m+[m[32m  roleDesc: {[m
+[32m+[m[32m    ...typography.body,[m
+[32m+[m[32m    color: 'rgba(255,255,255,0.92)',[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m    fontSize: 15,[m
+[32m+[m[32m    lineHeight: 22,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  roleAlly: { ...typography.caption, color: colors.alien, fontWeight: '800' },[m
+[32m+[m[32m  hideLink: { ...typography.small, color: colors.textDim, textDecorationLine: 'underline' },[m
+[32m+[m[32m  // Game over[m
+[32m+[m[32m  overScroll: { gap: spacing.md, paddingBottom: spacing.md },[m
+[32m+[m[32m  overHero: { alignItems: 'center', gap: spacing.sm, paddingVertical: spacing.lg },[m
+[32m+[m[32m  overTitle: { ...typography.title, letterSpacing: 2, textAlign: 'center' },[m
+[32m+[m[32m  overReason: {[m
+[32m+[m[32m    ...typography.caption,[m
+[32m+[m[32m    color: colors.textMuted,[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m    maxWidth: 300,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  castLabel: { ...typography.label, color: colors.textDim, textAlign: 'center' },[m
+[32m+[m[32m  castList: { gap: spacing.sm },[m
+[32m+[m[32m  castRow: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    gap: spacing.sm,[m
+[32m+[m[32m    padding: spacing.sm,[m
+[32m+[m[32m    borderRadius: radius.md,[m
+[32m+[m[32m    backgroundColor: colors.surface,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: colors.border,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  castRowAlien: {[m
+[32m+[m[32m    borderColor: 'rgba(251,113,133,0.4)',[m
+[32m+[m[32m    backgroundColor: 'rgba(251,113,133,0.07)',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  castName: { ...typography.caption, color: colors.text, fontWeight: '700', flex: 1 },[m
+[32m+[m[32m  castRole: { ...typography.small, fontWeight: '800', fontSize: 10, letterSpacing: 1 },[m
+ });[m
+[1mdiff --git a/app/lobby/[id].tsx b/app/lobby/[id].tsx[m
+[1mindex 9f1fbe2..f9158fe 100644[m
+[1m--- a/app/lobby/[id].tsx[m
+[1m+++ b/app/lobby/[id].tsx[m
+[36m@@ -1,14 +1,15 @@[m
+ import React, { useEffect, useState } from 'react';[m
+ import { Alert, StyleSheet, Text, View } from 'react-native';[m
+ import { useLocalSearchParams, useRouter } from 'expo-router';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+ import {[m
+   Button,[m
+   CrewRow,[m
+   GlowCard,[m
+   LoadingState,[m
+   LobbyCodeDisplay,[m
+[31m-  ScreenHeader,[m
+   ScreenShell,[m
+[32m+[m[32m  ScreenTopBar,[m
+   SectionLabel,[m
+ } from '@/components/ui';[m
+ import { useAuth } from '@/context/AuthContext';[m
+[36m@@ -17,9 +18,17 @@[m [mimport { HostSettingsPanel } from '@/components/settings/HostSettingsPanel';[m
+ import { isDevModeEnabled } from '@/dev/config';[m
+ import { useDevBotLobbyRunner } from '@/dev/useDevBotLobbyRunner';[m
+ import { MIN_PLAYERS } from '@/game/rules';[m
+[31m-import { isDevLobby, leaveLobby, setPlayerReady, startGame, subscribeToLobby, updateLobbyHostSettings } from '@/services/lobby';[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  isDevLobby,[m
+[32m+[m[32m  leaveLobby,[m
+[32m+[m[32m  setPlayerReady,[m
+[32m+[m[32m  startGame,[m
+[32m+[m[32m  subscribeToLobby,[m
+[32m+[m[32m  updateLobbyHostSettings,[m
+[32m+[m[32m} from '@/services/lobby';[m
+ import { Lobby } from '@/types/game';[m
+[31m-import { colors, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+[32m+[m[32mimport { colors, radius, spacing, typography } from '@/theme';[m
+ [m
+ export default function LobbyScreen() {[m
+   const { id } = useLocalSearchParams<{ id?: string }>();[m
+[36m@@ -47,6 +56,7 @@[m [mexport default function LobbyScreen() {[m
+   const me = lobby.players.find((p) => p.uid === user?.id);[m
+   const isHost = lobby.hostId === user?.id;[m
+   const allReady = lobby.players.every((p) => p.isReady);[m
+[32m+[m[32m  const readyCount = lobby.players.filter((p) => p.isReady).length;[m
+   const canStart = lobby.players.length >= MIN_PLAYERS && allReady;[m
+   const devLobby = isDevLobby(lobby);[m
+ [m
+[36m@@ -62,7 +72,7 @@[m [mexport default function LobbyScreen() {[m
+       const gameId = await startGame(lobby.id, user.id);[m
+       router.replace(`/game/${gameId}`);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Launch failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m      Alert.alert('Launch failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(false);[m
+     }[m
+[36m@@ -90,25 +100,47 @@[m [mexport default function LobbyScreen() {[m
+         hasPremiumAccess[m
+       );[m
+     } catch (e) {[m
+[31m-      Alert.alert('Settings error', e instanceof Error ? e.message : 'Could not save settings');[m
+[32m+[m[32m      Alert.alert('Settings error', errorMessage(e));[m
+     }[m
+   };[m
+ [m
+   return ([m
+     <ScreenShell scroll>[m
+[31m-      <ScreenHeader title="Mission Lobby" subtitle="Get ready before launch" icon="🛸" />[m
+[31m-[m
+[31m-      <LobbyCodeDisplay code={lobby.code} />[m
+[31m-[m
+[31m-      <View style={styles.metaRow}>[m
+[31m-        <Text style={styles.meta}>[m
+[31m-          {lobby.players.length}/{lobby.maxPlayers} crew aboard[m
+[31m-        </Text>[m
+[31m-        <Text style={styles.metaNeed}>Need {MIN_PLAYERS}+ to launch</Text>[m
+[32m+[m[32m      <ScreenTopBar onBack={handleLeave} />[m
+[32m+[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(400)} style={styles.hero}>[m
+[32m+[m[32m        <Text style={styles.kicker}>PRE-FLIGHT</Text>[m
+[32m+[m[32m        <Text style={styles.title}>Mission Lobby</Text>[m
+[32m+[m[32m        <Text style={styles.subtitle}>Get the crew aboard, then launch</Text>[m
+[32m+[m[32m      </Animated.View>[m
+[32m+[m
+[32m+[m[32m      <Animated.View entering={FadeInUp.delay(80).duration(400)}>[m
+[32m+[m[32m        <LobbyCodeDisplay code={lobby.code} />[m
+[32m+[m[32m      </Animated.View>[m
+[32m+[m
+[32m+[m[32m      <View style={styles.statsRow}>[m
+[32m+[m[32m        <View style={styles.statBox}>[m
+[32m+[m[32m          <Text style={styles.statValue}>[m
+[32m+[m[32m            {lobby.players.length}[m
+[32m+[m[32m            <Text style={styles.statTotal}>/{lobby.maxPlayers}</Text>[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m          <Text style={styles.statLabel}>ABOARD</Text>[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m        <View style={styles.statBox}>[m
+[32m+[m[32m          <Text style={styles.statValue}>[m
+[32m+[m[32m            {readyCount}[m
+[32m+[m[32m            <Text style={styles.statTotal}>/{lobby.players.length}</Text>[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m          <Text style={styles.statLabel}>READY</Text>[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m        <View style={styles.statBox}>[m
+[32m+[m[32m          <Text style={styles.statValue}>{MIN_PLAYERS}+</Text>[m
+[32m+[m[32m          <Text style={styles.statLabel}>TO LAUNCH</Text>[m
+[32m+[m[32m        </View>[m
+       </View>[m
+ [m
+       <Text style={styles.rulesBrief}>[m
+[31m-        {missionLabel} · {packLabel} · 4–5 = 1 infiltrator · 6–10 = 2[m
+[32m+[m[32m        {missionLabel} · {packLabel} · 4–5 crew = 1 infiltrator · 6–10 = 2[m
+       </Text>[m
+ [m
+       {isHost && ([m
+[36m@@ -128,15 +160,16 @@[m [mexport default function LobbyScreen() {[m
+       )}[m
+ [m
+       <SectionLabel>Crew Roster</SectionLabel>[m
+[31m-      {lobby.players.map((p) => ([m
+[31m-        <CrewRow[m
+[31m-          key={p.uid}[m
+[31m-          name={p.displayName}[m
+[31m-          color={p.avatarColor}[m
+[31m-          isHost={p.isHost}[m
+[31m-          isReady={p.isReady}[m
+[31m-          isMe={p.uid === user?.id}[m
+[31m-        />[m
+[32m+[m[32m      {lobby.players.map((p, i) => ([m
+[32m+[m[32m        <Animated.View key={p.uid} entering={FadeInUp.delay(60 * i).duration(320)}>[m
+[32m+[m[32m          <CrewRow[m
+[32m+[m[32m            name={p.displayName}[m
+[32m+[m[32m            color={p.avatarColor}[m
+[32m+[m[32m            isHost={p.isHost}[m
+[32m+[m[32m            isReady={p.isReady}[m
+[32m+[m[32m            isMe={p.uid === user?.id}[m
+[32m+[m[32m          />[m
+[32m+[m[32m        </Animated.View>[m
+       ))}[m
+ [m
+       <View style={styles.actions}>[m
+[36m@@ -148,38 +181,52 @@[m [mexport default function LobbyScreen() {[m
+         />[m
+         {isHost && ([m
+           <Button[m
+[31m-            title={canStart ? '🚀 Launch Mission' : `Waiting (${lobby.players.length}/${MIN_PLAYERS} crew)`}[m
+[32m+[m[32m            title={[m
+[32m+[m[32m              canStart[m
+[32m+[m[32m                ? '🚀 Launch Mission'[m
+[32m+[m[32m                : lobby.players.length < MIN_PLAYERS[m
+[32m+[m[32m                  ? `Waiting for crew (${lobby.players.length}/${MIN_PLAYERS})`[m
+[32m+[m[32m                  : `Waiting on ready (${readyCount}/${lobby.players.length})`[m
+[32m+[m[32m            }[m
+             fullWidth[m
+             loading={loading}[m
+             disabled={!canStart}[m
+             onPress={handleStart}[m
+           />[m
+         )}[m
+[31m-        <Button title="Leave Lobby" variant="ghost" fullWidth onPress={handleLeave} />[m
+       </View>[m
+     </ScreenShell>[m
+   );[m
+ }[m
+ [m
+ const styles = StyleSheet.create({[m
+[31m-  metaRow: {[m
+[31m-    flexDirection: 'row',[m
+[31m-    justifyContent: 'space-between',[m
+[31m-    paddingHorizontal: spacing.xs,[m
+[32m+[m[32m  hero: { gap: 2, marginBottom: spacing.xs },[m
+[32m+[m[32m  kicker: { ...typography.label, color: colors.accentSoft },[m
+[32m+[m[32m  title: { ...typography.title, color: colors.text },[m
+[32m+[m[32m  subtitle: { ...typography.caption, color: colors.textMuted },[m
+[32m+[m[32m  statsRow: { flexDirection: 'row', gap: spacing.sm },[m
+[32m+[m[32m  statBox: {[m
+[32m+[m[32m    flex: 1,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    gap: 2,[m
+[32m+[m[32m    paddingVertical: spacing.sm,[m
+[32m+[m[32m    borderRadius: radius.md,[m
+[32m+[m[32m    backgroundColor: colors.surface,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: colors.border,[m
+   },[m
+[31m-  meta: { ...typography.caption, color: colors.textMuted },[m
+[31m-  metaNeed: { ...typography.small, color: colors.accentSoft },[m
+[32m+[m[32m  statValue: { ...typography.heading, color: colors.text, fontSize: 20 },[m
+[32m+[m[32m  statTotal: { color: colors.textDim, fontSize: 14 },[m
+[32m+[m[32m  statLabel: { ...typography.label, color: colors.textDim, fontSize: 9 },[m
+   rulesBrief: {[m
+     ...typography.caption,[m
+     color: colors.textDim,[m
+     textAlign: 'center',[m
+[31m-    marginBottom: spacing.sm,[m
+   },[m
+   devBanner: {[m
+     ...typography.caption,[m
+     color: colors.accentSoft,[m
+     textAlign: 'center',[m
+[31m-    marginBottom: spacing.md,[m
+   },[m
+   actions: { gap: spacing.sm, marginTop: spacing.lg },[m
+ });[m
+[1mdiff --git a/app/lobby/join.tsx b/app/lobby/join.tsx[m
+[1mindex 5b2b97b..ee7193a 100644[m
+[1m--- a/app/lobby/join.tsx[m
+[1m+++ b/app/lobby/join.tsx[m
+[36m@@ -1,10 +1,12 @@[m
+ import React, { useState } from 'react';[m
+[31m-import { Alert, StyleSheet } from 'react-native';[m
+[32m+[m[32mimport { Alert, StyleSheet, Text, View } from 'react-native';[m
+ import { useLocalSearchParams, useRouter } from 'expo-router';[m
+[31m-import { Button, GlowCard, Input, ScreenHeader, ScreenShell } from '@/components/ui';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+[32m+[m[32mimport { AlienIcon, Button, GlowCard, Input, ScreenShell, ScreenTopBar } from '@/components/ui';[m
+ import { useAuth } from '@/context/AuthContext';[m
+ import { joinLobbyByCode } from '@/services/lobby';[m
+[31m-import { spacing } from '@/theme';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+[32m+[m[32mimport { colors, spacing, typography } from '@/theme';[m
+ [m
+ export default function JoinLobbyScreen() {[m
+   const { code: initialCode } = useLocalSearchParams<{ code?: string }>();[m
+[36m@@ -20,7 +22,7 @@[m [mexport default function JoinLobbyScreen() {[m
+       const joined = await joinLobbyByCode(joinCode.trim(), profile);[m
+       router.replace(`/lobby/${joined.id}`);[m
+     } catch (e) {[m
+[31m-      Alert.alert('Join failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m      Alert.alert('Join failed', errorMessage(e));[m
+     } finally {[m
+       setLoading(false);[m
+     }[m
+[36m@@ -28,19 +30,34 @@[m [mexport default function JoinLobbyScreen() {[m
+ [m
+   return ([m
+     <ScreenShell scroll>[m
+[31m-      <ScreenHeader title="Join Lobby" subtitle="Enter the 6-character crew code" icon="🔑" />[m
+[31m-      <GlowCard accent="cyan">[m
+[31m-        <Input[m
+[31m-          label="Lobby Code"[m
+[31m-          value={joinCode}[m
+[31m-          onChangeText={(t) => setJoinCode(t.toUpperCase())}[m
+[31m-          placeholder="ABC123"[m
+[31m-          autoCapitalize="characters"[m
+[31m-        />[m
+[31m-        <Button title="Board Ship" icon="🚀" fullWidth loading={loading} onPress={handleJoin} />[m
+[31m-      </GlowCard>[m
+[32m+[m[32m      <ScreenTopBar onBack={() => router.back()} />[m
+[32m+[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(400)} style={styles.top}>[m
+[32m+[m[32m        <AlienIcon size={56} mood="happy" />[m
+[32m+[m[32m        <Text style={styles.title}>Join Lobby</Text>[m
+[32m+[m[32m        <Text style={styles.subtitle}>Enter the 6-character crew code</Text>[m
+[32m+[m[32m      </Animated.View>[m
+[32m+[m[32m      <Animated.View entering={FadeInUp.delay(100).duration(400)}>[m
+[32m+[m[32m        <GlowCard accent="cyan">[m
+[32m+[m[32m          <View style={styles.form}>[m
+[32m+[m[32m            <Input[m
+[32m+[m[32m              label="Lobby Code"[m
+[32m+[m[32m              value={joinCode}[m
+[32m+[m[32m              onChangeText={(t) => setJoinCode(t.toUpperCase())}[m
+[32m+[m[32m              placeholder="ABC123"[m
+[32m+[m[32m              autoCapitalize="characters"[m
+[32m+[m[32m            />[m
+[32m+[m[32m            <Button title="Board Ship" icon="🚀" fullWidth loading={loading} onPress={handleJoin} />[m
+[32m+[m[32m          </View>[m
+[32m+[m[32m        </GlowCard>[m
+[32m+[m[32m      </Animated.View>[m
+     </ScreenShell>[m
+   );[m
+ }[m
+ [m
+[31m-const styles = StyleSheet.create({});[m
+[32m+[m[32mconst styles = StyleSheet.create({[m
+[32m+[m[32m  top: { alignItems: 'center', gap: spacing.xs, marginTop: spacing.lg },[m
+[32m+[m[32m  title: { ...typography.title, color: colors.text, marginTop: spacing.sm },[m
+[32m+[m[32m  subtitle: { ...typography.caption, color: colors.textMuted },[m
+[32m+[m[32m  form: { gap: spacing.md },[m
+[32m+[m[32m});[m
+[1mdiff --git a/src/components/game/ChamberViews.tsx b/src/components/game/ChamberViews.tsx[m
+[1mindex cc75214..3109ef6 100644[m
+[1m--- a/src/components/game/ChamberViews.tsx[m
+[1m+++ b/src/components/game/ChamberViews.tsx[m
+[36m@@ -1,6 +1,7 @@[m
+ import React from 'react';[m
+ import { Pressable, StyleSheet, Text, View } from 'react-native';[m
+ import { LinearGradient } from 'expo-linear-gradient';[m
+[32m+[m[32mimport Animated, { FadeInUp } from 'react-native-reanimated';[m
+ import { Avatar, Button } from '@/components/ui';[m
+ import { formatChamberAnswer } from '@/components/game/chamberFormat';[m
+ import { DrawingPreview } from '@/components/game/DrawingPreview';[m
+[36m@@ -17,9 +18,9 @@[m [mconst AGREEMENT: {[m
+   sub: string;[m
+   color: string;[m
+ }[] = [[m
+[31m-  { value: 'strongly_disagree', label: 'Strong no', sub: 'Disagree', color: '#ef4444' },[m
+[31m-  { value: 'slightly_disagree', label: 'No', sub: 'Lean no', color: '#f97316' },[m
+[31m-  { value: 'slightly_agree', label: 'Yes', sub: 'Lean yes', color: '#22c55e' },[m
+[32m+[m[32m  { value: 'strongly_disagree', label: 'Strong no', sub: 'Disagree', color: '#f43f5e' },[m
+[32m+[m[32m  { value: 'slightly_disagree', label: 'No', sub: 'Lean no', color: '#fb923c' },[m
+[32m+[m[32m  { value: 'slightly_agree', label: 'Yes', sub: 'Lean yes', color: '#4ade80' },[m
+   { value: 'strongly_agree', label: 'Strong yes', sub: 'Agree', color: '#10b981' },[m
+ ];[m
+ [m
+[36m@@ -44,19 +45,24 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+     return ([m
+       <ActiveTaskFrame game={game} prompt={promptText}>[m
+         <View style={styles.opinionRow}>[m
+[31m-          {AGREEMENT.map((opt) => ([m
+[31m-            <Pressable[m
+[32m+[m[32m          {AGREEMENT.map((opt, i) => ([m
+[32m+[m[32m            <Animated.View[m
+               key={opt.value}[m
+[31m-              style={({ pressed }) => [[m
+[31m-                styles.opinionBtn,[m
+[31m-                { borderColor: opt.color },[m
+[31m-                pressed && styles.opinionBtnPressed,[m
+[31m-              ]}[m
+[31m-              onPress={() => onSubmit(opt.value, {})}[m
+[32m+[m[32m              entering={FadeInUp.delay(60 * i).duration(300)}[m
+[32m+[m[32m              style={styles.opinionItem}[m
+             >[m
+[31m-              <Text style={[styles.opinionMain, { color: opt.color }]}>{opt.label}</Text>[m
+[31m-              <Text style={styles.opinionSub}>{opt.sub}</Text>[m
+[31m-            </Pressable>[m
+[32m+[m[32m              <Pressable[m
+[32m+[m[32m                style={({ pressed }) => [[m
+[32m+[m[32m                  styles.opinionBtn,[m
+[32m+[m[32m                  { borderColor: opt.color, backgroundColor: `${opt.color}14` },[m
+[32m+[m[32m                  pressed && { backgroundColor: `${opt.color}30`, transform: [{ scale: 0.96 }] },[m
+[32m+[m[32m                ]}[m
+[32m+[m[32m                onPress={() => onSubmit(opt.value, {})}[m
+[32m+[m[32m              >[m
+[32m+[m[32m                <Text style={[styles.opinionMain, { color: opt.color }]}>{opt.label}</Text>[m
+[32m+[m[32m                <Text style={styles.opinionSub}>{opt.sub}</Text>[m
+[32m+[m[32m              </Pressable>[m
+[32m+[m[32m            </Animated.View>[m
+           ))}[m
+         </View>[m
+       </ActiveTaskFrame>[m
+[36m@@ -70,16 +76,17 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+       <ActiveTaskFrame game={game} prompt={promptText}>[m
+         <View style={styles.choiceCol}>[m
+           {options.map((opt, i) => ([m
+[31m-            <Pressable[m
+[31m-              key={opt}[m
+[31m-              style={({ pressed }) => [styles.choiceBtn, pressed && styles.choiceBtnPressed]}[m
+[31m-              onPress={() => onSubmit(opt, {})}[m
+[31m-            >[m
+[31m-              <View style={styles.choiceNumWrap}>[m
+[31m-                <Text style={styles.choiceNum}>{i + 1}</Text>[m
+[31m-              </View>[m
+[31m-              <Text style={styles.choiceText}>{opt}</Text>[m
+[31m-            </Pressable>[m
+[32m+[m[32m            <Animated.View key={opt} entering={FadeInUp.delay(70 * i).duration(300)}>[m
+[32m+[m[32m              <Pressable[m
+[32m+[m[32m                style={({ pressed }) => [styles.choiceBtn, pressed && styles.choiceBtnPressed]}[m
+[32m+[m[32m                onPress={() => onSubmit(opt, {})}[m
+[32m+[m[32m              >[m
+[32m+[m[32m                <View style={styles.choiceNumWrap}>[m
+[32m+[m[32m                  <Text style={styles.choiceNum}>{String.fromCharCode(65 + i)}</Text>[m
+[32m+[m[32m                </View>[m
+[32m+[m[32m                <Text style={styles.choiceText}>{opt}</Text>[m
+[32m+[m[32m              </Pressable>[m
+[32m+[m[32m            </Animated.View>[m
+           ))}[m
+         </View>[m
+       </ActiveTaskFrame>[m
+[36m@@ -125,7 +132,7 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+         prompt={promptText}[m
+         footer={[m
+           <Button[m
+[31m-            title="Lock in vote"[m
+[32m+[m[32m            title={selectedPlayer ? 'Lock in vote' : 'Pick someone first'}[m
+             fullWidth[m
+             size="md"[m
+             disabled={!selectedPlayer}[m
+[36m@@ -134,19 +141,23 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+         }[m
+       >[m
+         <View style={styles.voteGrid}>[m
+[31m-          {candidates.map((c) => {[m
+[32m+[m[32m          {candidates.map((c, i) => {[m
+             const picked = selectedPlayer === c.uid;[m
+             return ([m
+[31m-              <Pressable[m
+[31m-                key={c.uid}[m
+[31m-                style={[styles.voteCard, picked && styles.voteCardOn]}[m
+[31m-                onPress={() => setSelectedPlayer(c.uid)}[m
+[31m-              >[m
+[31m-                <Avatar name={c.displayName} color={c.avatarColor} size={44} ring={picked} />[m
+[31m-                <Text style={styles.voteName} numberOfLines={1}>[m
+[31m-                  {c.displayName.split(' ').pop()}[m
+[31m-                </Text>[m
+[31m-              </Pressable>[m
+[32m+[m[32m              <Animated.View key={c.uid} entering={FadeInUp.delay(40 * i).duration(280)}>[m
+[32m+[m[32m                <Pressable[m
+[32m+[m[32m                  style={[styles.voteCard, picked && styles.voteCardOn]}[m
+[32m+[m[32m                  onPress={() => setSelectedPlayer(c.uid)}[m
+[32m+[m[32m                >[m
+[32m+[m[32m                  <Avatar name={c.displayName} color={c.avatarColor} size={44} ring={picked} />[m
+[32m+[m[32m                  <Text[m
+[32m+[m[32m                    style={[styles.voteName, picked && styles.voteNameOn]}[m
+[32m+[m[32m                    numberOfLines={1}[m
+[32m+[m[32m                  >[m
+[32m+[m[32m                    {c.displayName.split(' ').pop()}[m
+[32m+[m[32m                  </Text>[m
+[32m+[m[32m                </Pressable>[m
+[32m+[m[32m              </Animated.View>[m
+             );[m
+           })}[m
+         </View>[m
+[36m@@ -180,7 +191,7 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+           prompt="Tap symbols that match the captain"[m
+           footer={[m
+             <Button[m
+[31m-              title="Confirm match"[m
+[32m+[m[32m              title={`Confirm match (${selectedGlyphs.length}/${game.bioscanner.captainGlyphs.length})`}[m
+               fullWidth[m
+               size="md"[m
+               disabled={selectedGlyphs.length !== game.bioscanner.captainGlyphs.length}[m
+[36m@@ -192,7 +203,11 @@[m [mexport function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput[m
+             {game.bioscanner.glyphSet.map((g) => ([m
+               <Pressable[m
+                 key={g}[m
+[31m-                style={[styles.glyphBtn, selectedGlyphs.includes(g) && styles.glyphBtnOn]}[m
+[32m+[m[32m                style={({ pressed }) => [[m
+[32m+[m[32m                  styles.glyphBtn,[m
+[32m+[m[32m                  selectedGlyphs.includes(g) && styles.glyphBtnOn,[m
+[32m+[m[32m                  pressed && { transform: [{ scale: 0.92 }] },[m
+[32m+[m[32m                ]}[m
+                 onPress={() => toggle(g)}[m
+               >[m
+                 <Text style={styles.glyph}>{GLYPH_SYMBOLS[g]}</Text>[m
+[36m@@ -250,19 +265,18 @@[m [mconst styles = StyleSheet.create({[m
+   opinionRow: {[m
+     flexDirection: 'row',[m
+     gap: spacing.xs,[m
+[31m-    height: 72,[m
+[32m+[m[32m    height: 76,[m
+   },[m
+[32m+[m[32m  opinionItem: { flex: 1 },[m
+   opinionBtn: {[m
+     flex: 1,[m
+[31m-    height: 72,[m
+[32m+[m[32m    height: 76,[m
+     borderRadius: radius.md,[m
+[31m-    backgroundColor: colors.surfaceSolid,[m
+     borderWidth: 2,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+     paddingHorizontal: 4,[m
+   },[m
+[31m-  opinionBtnPressed: { backgroundColor: colors.surfaceElevated },[m
+   opinionMain: { ...typography.caption, fontWeight: '800', textAlign: 'center', fontSize: 11 },[m
+   opinionSub: { ...typography.small, color: colors.textDim, fontSize: 9, marginTop: 2, textAlign: 'center' },[m
+   choiceCol: { gap: spacing.sm },[m
+[36m@@ -284,6 +298,8 @@[m [mconst styles = StyleSheet.create({[m
+     height: 28,[m
+     borderRadius: 14,[m
+     backgroundColor: colors.surfaceElevated,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: colors.border,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+   },[m
+[36m@@ -296,8 +312,7 @@[m [mconst styles = StyleSheet.create({[m
+     justifyContent: 'center',[m
+   },[m
+   voteCard: {[m
+[31m-    width: '30%',[m
+[31m-    minWidth: 88,[m
+[32m+[m[32m    width: 100,[m
+     alignItems: 'center',[m
+     gap: spacing.xs,[m
+     paddingVertical: spacing.sm,[m
+[36m@@ -308,7 +323,8 @@[m [mconst styles = StyleSheet.create({[m
+     backgroundColor: colors.surfaceSolid,[m
+   },[m
+   voteCardOn: { borderColor: colors.accent, backgroundColor: colors.glowCyan },[m
+[31m-  voteName: { ...typography.caption, color: colors.text, fontSize: 11, fontWeight: '600' },[m
+[32m+[m[32m  voteName: { ...typography.caption, color: colors.textMuted, fontSize: 11, fontWeight: '600' },[m
+[32m+[m[32m  voteNameOn: { color: colors.text, fontWeight: '800' },[m
+   glyphPanel: {[m
+     height: 88,[m
+     flexDirection: 'row',[m
+[36m@@ -320,8 +336,8 @@[m [mconst styles = StyleSheet.create({[m
+   glyph: { fontSize: 34, color: '#fff' },[m
+   glyphGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm, justifyContent: 'center' },[m
+   glyphBtn: {[m
+[31m-    width: 50,[m
+[31m-    height: 50,[m
+[32m+[m[32m    width: 52,[m
+[32m+[m[32m    height: 52,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+     borderRadius: radius.md,[m
+[1mdiff --git a/src/components/game/CrewExperience.tsx b/src/components/game/CrewExperience.tsx[m
+[1mindex d07a80e..c6f76aa 100644[m
+[1m--- a/src/components/game/CrewExperience.tsx[m
+[1m+++ b/src/components/game/CrewExperience.tsx[m
+[36m@@ -1,5 +1,7 @@[m
+ import React from 'react';[m
+ import { StyleSheet, Text, View } from 'react-native';[m
+[32m+[m[32mimport { LinearGradient } from 'expo-linear-gradient';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+ import { Button } from '@/components/ui';[m
+ import { CrewSyncBar, PhaseSyncGate } from '@/components/game/CrewSyncBar';[m
+ import { getTaskProgress } from '@/game/engine';[m
+[36m@@ -10,7 +12,17 @@[m [mimport {[m
+   GamePlayer,[m
+   GameState,[m
+ } from '@/types/game';[m
+[31m-import { colors, radius, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport {[m
+[32m+[m[32m  chamberAccents,[m
+[32m+[m[32m  chamberCodes,[m
+[32m+[m[32m  chamberGradients,[m
+[32m+[m[32m  chamberIcons,[m
+[32m+[m[32m  colors,[m
+[32m+[m[32m  fonts,[m
+[32m+[m[32m  radius,[m
+[32m+[m[32m  spacing,[m
+[32m+[m[32m  typography,[m
+[32m+[m[32m} from '@/theme';[m
+ [m
+ export { PhaseSyncGate } from '@/components/game/CrewSyncBar';[m
+ [m
+[36m@@ -24,6 +36,7 @@[m [mexport function CrewDots({[m
+   return <CrewSyncBar game={game} mode={mode} />;[m
+ }[m
+ [m
+[32m+[m[32m/** Full-bleed chamber door — gradient hero shown while the crew boards. */[m
+ export function ChamberBoarding({[m
+   game,[m
+   me,[m
+[36m@@ -37,23 +50,38 @@[m [mexport function ChamberBoarding({[m
+ }) {[m
+   const chamber = game.selectedChamber!;[m
+   const boarded = Boolean(game.phaseReady[me.uid]);[m
+[32m+[m[32m  const gradient = chamberGradients[chamber] ?? chamberGradients.opinion_hold!;[m
+[32m+[m[32m  const accent = chamberAccents[chamber] ?? colors.accent;[m
+ [m
+   return ([m
+     <View style={styles.fill}>[m
+[31m-      <View style={styles.boardingHero}>[m
+[31m-        <Text style={styles.chamberName}>{CHAMBER_LABELS[chamber]}</Text>[m
+[31m-        <Text style={styles.chamberAction}>{CHAMBER_TAGLINES[chamber]}</Text>[m
+[31m-        <Text style={styles.chamberDesc}>{CHAMBER_DESCRIPTIONS[chamber]}</Text>[m
+[31m-        <Text style={styles.boardingNote}>Whole crew enters together</Text>[m
+[31m-      </View>[m
+[31m-      <View style={styles.footer}>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(400)} style={styles.heroWrap}>[m
+[32m+[m[32m        <LinearGradient[m
+[32m+[m[32m          colors={[...gradient]}[m
+[32m+[m[32m          start={{ x: 0, y: 0 }}[m
+[32m+[m[32m          end={{ x: 1, y: 1 }}[m
+[32m+[m[32m          style={styles.boardingHero}[m
+[32m+[m[32m        >[m
+[32m+[m[32m          <View style={styles.chamberCodeChip}>[m
+[32m+[m[32m            <Text style={styles.chamberCode}>[m
+[32m+[m[32m              {chamberCodes[chamber] ?? 'TASK'} · M{String(game.round).padStart(2, '0')}[m
+[32m+[m[32m            </Text>[m
+[32m+[m[32m          </View>[m
+[32m+[m[32m          <Text style={styles.chamberIcon}>{chamberIcons[chamber]}</Text>[m
+[32m+[m[32m          <Text style={styles.chamberName}>{CHAMBER_LABELS[chamber]}</Text>[m
+[32m+[m[32m          <Text style={styles.chamberAction}>{CHAMBER_TAGLINES[chamber]}</Text>[m
+[32m+[m[32m          <Text style={styles.chamberDesc}>{CHAMBER_DESCRIPTIONS[chamber]}</Text>[m
+[32m+[m[32m          <Text style={styles.boardingNote}>WHOLE CREW ENTERS TOGETHER</Text>[m
+[32m+[m[32m        </LinearGradient>[m
+[32m+[m[32m      </Animated.View>[m
+[32m+[m[32m      <Animated.View entering={FadeInUp.delay(120).duration(400)} style={styles.footer}>[m
+         <CrewSyncBar game={game} mode="sync" />[m
+         {boarded ? ([m
+           <Text style={styles.waitingCopy}>Waiting for crew...</Text>[m
+         ) : ([m
+           <Button title="Enter chamber" fullWidth loading={boardingPending} onPress={onBoard} />[m
+         )}[m
+[31m-      </View>[m
+[32m+[m[32m      </Animated.View>[m
+     </View>[m
+   );[m
+ }[m
+[36m@@ -73,12 +101,23 @@[m [mexport function ActiveTaskFrame({[m
+ }) {[m
+   const chamber = game.selectedChamber!;[m
+   const isCanvas = layout === 'canvas';[m
+[32m+[m[32m  const accent = chamberAccents[chamber] ?? colors.accent;[m
+ [m
+   return ([m
+     <View style={styles.fill}>[m
+[31m-      <View style={[styles.promptHero, isCanvas && styles.promptHeroCompact]}>[m
+[31m-        <Text style={styles.chamberName}>{CHAMBER_LABELS[chamber]}</Text>[m
+[31m-        <Text style={styles.chamberAction}>{CHAMBER_TAGLINES[chamber]}</Text>[m
+[32m+[m[32m      <View[m
+[32m+[m[32m        style={[[m
+[32m+[m[32m          styles.promptHero,[m
+[32m+[m[32m          { borderTopColor: accent },[m
+[32m+[m[32m          isCanvas && styles.promptHeroCompact,[m
+[32m+[m[32m        ]}[m
+[32m+[m[32m      >[m
+[32m+[m[32m        <View style={styles.promptHeader}>[m
+[32m+[m[32m          <Text style={[styles.chamberNameSmall, { color: accent }]}>[m
+[32m+[m[32m            {CHAMBER_LABELS[chamber]}[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m          <Text style={styles.chamberTagline}>{CHAMBER_TAGLINES[chamber]}</Text>[m
+[32m+[m[32m        </View>[m
+         <Text style={[styles.promptText, isCanvas && styles.promptTextCompact]}>{prompt}</Text>[m
+       </View>[m
+ [m
+[36m@@ -93,11 +132,15 @@[m [mexport function ActiveTaskFrame({[m
+ [m
+ export function WaitingForCrew({ game }: { game: GameState }) {[m
+   const progress = getTaskProgress(game);[m
+[32m+[m[32m  const remaining = progress.total - progress.done;[m
+   return ([m
+     <View style={styles.fillCenter}>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(300)} style={styles.lockedBadge}>[m
+[32m+[m[32m        <Text style={styles.lockedCheck}>✓</Text>[m
+[32m+[m[32m      </Animated.View>[m
+       <Text style={styles.waitingTitle}>Answer locked</Text>[m
+       <Text style={styles.waitingCopy}>[m
+[31m-        {progress.total - progress.done} crew still responding[m
+[32m+[m[32m        {remaining === 0 ? 'Everyone is in' : `${remaining} crew still responding`}[m
+       </Text>[m
+       <CrewDots game={game} mode="task" />[m
+     </View>[m
+[36m@@ -107,34 +150,76 @@[m [mexport function WaitingForCrew({ game }: { game: GameState }) {[m
+ const styles = StyleSheet.create({[m
+   fill: { flex: 1, minHeight: 0 },[m
+   fillCenter: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },[m
+[32m+[m[32m  heroWrap: { flex: 1, minHeight: 0 },[m
+   footer: { gap: spacing.sm, paddingTop: spacing.sm },[m
+   waitingCopy: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },[m
+   boardingHero: {[m
+     flex: 1,[m
+[31m-    borderRadius: radius.lg,[m
+[32m+[m[32m    borderRadius: radius.xl,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+     gap: spacing.sm,[m
+     padding: spacing.lg,[m
+[31m-    backgroundColor: colors.surfaceSolid,[m
+[31m-    borderWidth: 1,[m
+[31m-    borderColor: colors.border,[m
+[32m+[m[32m    overflow: 'hidden',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberCodeChip: {[m
+[32m+[m[32m    position: 'absolute',[m
+[32m+[m[32m    top: spacing.md,[m
+[32m+[m[32m    right: spacing.md,[m
+[32m+[m[32m    backgroundColor: 'rgba(0,0,0,0.35)',[m
+[32m+[m[32m    paddingHorizontal: spacing.sm,[m
+[32m+[m[32m    paddingVertical: 4,[m
+[32m+[m[32m    borderRadius: radius.full,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberCode: {[m
+[32m+[m[32m    fontFamily: fonts.mono,[m
+[32m+[m[32m    fontSize: 11,[m
+[32m+[m[32m    color: 'rgba(255,255,255,0.85)',[m
+[32m+[m[32m    letterSpacing: 2,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberIcon: { fontSize: 52 },[m
+[32m+[m[32m  chamberName: {[m
+[32m+[m[32m    ...typography.hero,[m
+[32m+[m[32m    fontSize: 26,[m
+[32m+[m[32m    color: '#fff',[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberAction: {[m
+[32m+[m[32m    ...typography.caption,[m
+[32m+[m[32m    color: 'rgba(255,255,255,0.95)',[m
+[32m+[m[32m    fontWeight: '800',[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberDesc: {[m
+[32m+[m[32m    ...typography.caption,[m
+[32m+[m[32m    color: 'rgba(255,255,255,0.8)',[m
+[32m+[m[32m    textAlign: 'center',[m
+[32m+[m[32m    lineHeight: 20,[m
+[32m+[m[32m    maxWidth: 280,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  boardingNote: {[m
+[32m+[m[32m    ...typography.label,[m
+[32m+[m[32m    color: 'rgba(255,255,255,0.7)',[m
+[32m+[m[32m    marginTop: spacing.sm,[m
+   },[m
+[31m-  chamberName: { ...typography.heading, color: colors.accentSoft, textAlign: 'center' },[m
+[31m-  chamberAction: { ...typography.caption, color: colors.text, fontWeight: '700', textAlign: 'center' },[m
+[31m-  chamberDesc: { ...typography.caption, color: colors.textMuted, textAlign: 'center', lineHeight: 20 },[m
+[31m-  boardingNote: { ...typography.small, color: colors.accent, marginTop: spacing.sm },[m
+   promptHero: {[m
+     backgroundColor: colors.surfaceSolid,[m
+     borderRadius: radius.lg,[m
+     borderWidth: 1,[m
+     borderColor: colors.border,[m
+     borderTopWidth: 3,[m
+[31m-    borderTopColor: colors.accent,[m
+     padding: spacing.md,[m
+[31m-    gap: 4,[m
+[32m+[m[32m    gap: 6,[m
+   },[m
+   promptHeroCompact: { padding: spacing.sm, gap: 2 },[m
+[32m+[m[32m  promptHeader: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    alignItems: 'baseline',[m
+[32m+[m[32m    justifyContent: 'space-between',[m
+[32m+[m[32m    gap: spacing.sm,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  chamberNameSmall: { ...typography.label, fontSize: 11 },[m
+[32m+[m[32m  chamberTagline: { ...typography.small, color: colors.textDim, fontSize: 10 },[m
+   promptText: {[m
+     ...typography.body,[m
+     color: colors.text,[m
+[36m@@ -153,5 +238,16 @@[m [mconst styles = StyleSheet.create({[m
+   },[m
+   actionZoneCanvas: { justifyContent: 'flex-start' },[m
+   taskFooter: { paddingTop: spacing.xs },[m
+[32m+[m[32m  lockedBadge: {[m
+[32m+[m[32m    width: 56,[m
+[32m+[m[32m    height: 56,[m
+[32m+[m[32m    borderRadius: 28,[m
+[32m+[m[32m    backgroundColor: 'rgba(163,230,53,0.14)',[m
+[32m+[m[32m    borderWidth: 1.5,[m
+[32m+[m[32m    borderColor: colors.lime,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  lockedCheck: { fontSize: 26, color: colors.lime, fontWeight: '800' },[m
+   waitingTitle: { ...typography.heading, color: colors.lime },[m
+ });[m
+[1mdiff --git a/src/components/game/ExtractionPhase.tsx b/src/components/game/ExtractionPhase.tsx[m
+[1mindex 9b2684e..89c5b9c 100644[m
+[1m--- a/src/components/game/ExtractionPhase.tsx[m
+[1m+++ b/src/components/game/ExtractionPhase.tsx[m
+[36m@@ -1,8 +1,40 @@[m
+[31m-import React, { useState } from 'react';[m
+[32m+[m[32mimport React, { useEffect, useState } from 'react';[m
+ import { Pressable, StyleSheet, Text, View } from 'react-native';[m
+[32m+[m[32mimport Animated, {[m
+[32m+[m[32m  Easing,[m
+[32m+[m[32m  FadeInDown,[m
+[32m+[m[32m  FadeInUp,[m
+[32m+[m[32m  useAnimatedStyle,[m
+[32m+[m[32m  useSharedValue,[m
+[32m+[m[32m  withRepeat,[m
+[32m+[m[32m  withTiming,[m
+[32m+[m[32m} from 'react-native-reanimated';[m
+ import { Avatar, Button } from '@/components/ui';[m
+ import { GamePlayer, GameState } from '@/types/game';[m
+[31m-import { colors, radius, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { colors, radius, shadows, spacing, typography } from '@/theme';[m
+[32m+[m
+[32m+[m[32m/** Pulsing red alert strip — sets the mood for the final vote. */[m
+[32m+[m[32mfunction AlertStrip({ label }: { label: string }) {[m
+[32m+[m[32m  const pulse = useSharedValue(0);[m
+[32m+[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    pulse.value = withRepeat([m
+[32m+[m[32m      withTiming(1, { duration: 900, easing: Easing.inOut(Easing.sin) }),[m
+[32m+[m[32m      -1,[m
+[32m+[m[32m      true[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }, [pulse]);[m
+[32m+[m
+[32m+[m[32m  const style = useAnimatedStyle(() => ({[m
+[32m+[m[32m    opacity: 0.55 + pulse.value * 0.45,[m
+[32m+[m[32m  }));[m
+[32m+[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <Animated.View style={[styles.alertStrip, style]}>[m
+[32m+[m[32m      <Text style={styles.alertText}>⚠ {label} ⚠</Text>[m
+[32m+[m[32m    </Animated.View>[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+ [m
+ export function ExtractionNominatePhase({[m
+   game,[m
+[36m@@ -25,39 +57,54 @@[m [mexport function ExtractionNominatePhase({[m
+ [m
+   return ([m
+     <View style={styles.fill}>[m
+[31m-      <View style={styles.hero}>[m
+[31m-        <Text style={styles.heroTitle}>Final extraction</Text>[m
+[31m-        <Text style={styles.heroDesc}>[m
+[31m-          Tap {needed === 1 ? 'the crew member' : `${needed} crew members`} you believe{' '}[m
+[31m-          {needed === 1 ? 'is an' : 'are'} infiltrator{needed > 1 ? 's' : ''}. Everyone must[m
+[31m-          unanimously agree to eject them.[m
+[31m-        </Text>[m
+[31m-        <Text style={styles.heroHint}>[m
+[31m-          Selected {selected.length} of {needed}[m
+[31m-        </Text>[m
+[31m-      </View>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(400)}>[m
+[32m+[m[32m        <AlertStrip label="FINAL EXTRACTION" />[m
+[32m+[m[32m        <View style={styles.hero}>[m
+[32m+[m[32m          <Text style={styles.heroTitle}>Who are the infiltrators?</Text>[m
+[32m+[m[32m          <Text style={styles.heroDesc}>[m
+[32m+[m[32m            Tap {needed === 1 ? 'the crew member' : `${needed} crew members`} you believe{' '}[m
+[32m+[m[32m            {needed === 1 ? 'is an' : 'are'} infiltrator{needed > 1 ? 's' : ''}. Everyone must[m
+[32m+[m[32m            unanimously agree to eject them.[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m          <Text style={styles.heroHint}>[m
+[32m+[m[32m            SELECTED {selected.length} OF {needed}[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m      </Animated.View>[m
+ [m
+       <View style={styles.targetGrid}>[m
+[31m-        {alive.map((p) => {[m
+[32m+[m[32m        {alive.map((p, i) => {[m
+           const picked = selected.includes(p.uid);[m
+           return ([m
+[31m-            <Pressable[m
+[32m+[m[32m            <Animated.View[m
+               key={p.uid}[m
+[31m-              style={[styles.targetBtn, picked && styles.targetBtnOn]}[m
+[31m-              onPress={() => toggle(p.uid)}[m
+[32m+[m[32m              entering={FadeInUp.delay(50 * i).duration(300)}[m
+[32m+[m[32m              style={styles.targetItem}[m
+             >[m
+[31m-              <Avatar name={p.displayName} color={p.avatarColor} size={52} ring={picked} />[m
+[31m-              <Text style={styles.targetName} numberOfLines={2}>[m
+[31m-                {p.displayName}[m
+[31m-              </Text>[m
+[31m-              <Text style={styles.targetMeta}>{picked ? 'Nominated' : 'Tap to nominate'}</Text>[m
+[31m-            </Pressable>[m
+[32m+[m[32m              <Pressable[m
+[32m+[m[32m                style={[styles.targetBtn, picked && styles.targetBtnOn]}[m
+[32m+[m[32m                onPress={() => toggle(p.uid)}[m
+[32m+[m[32m              >[m
+[32m+[m[32m                <Avatar name={p.displayName} color={p.avatarColor} size={52} ring={picked} />[m
+[32m+[m[32m                <Text style={styles.targetName} numberOfLines={2}>[m
+[32m+[m[32m                  {p.displayName}[m
+[32m+[m[32m                </Text>[m
+[32m+[m[32m                <Text style={[styles.targetMeta, picked && styles.targetMetaOn]}>[m
+[32m+[m[32m                  {picked ? 'NOMINATED' : 'Tap to nominate'}[m
+[32m+[m[32m                </Text>[m
+[32m+[m[32m              </Pressable>[m
+[32m+[m[32m            </Animated.View>[m
+           );[m
+         })}[m
+       </View>[m
+ [m
+       <Button[m
+[31m-        title={`Lock in nomination (${selected.length}/${needed})`}[m
+[32m+[m[32m        title={[m
+[32m+[m[32m          selected.length === needed[m
+[32m+[m[32m            ? 'Lock in nomination'[m
+[32m+[m[32m            : `Select ${needed - selected.length} more`[m
+[32m+[m[32m        }[m
+[32m+[m[32m        variant="danger"[m
+         fullWidth[m
+         size="md"[m
+         disabled={selected.length !== needed}[m
+[36m@@ -82,45 +129,63 @@[m [mexport function ExtractionVotePhase({[m
+     .map((id) => game.players.find((p) => p.uid === id))[m
+     .filter(Boolean) as GamePlayer[];[m
+ [m
+[32m+[m[32m  const alive = game.players.filter((p) => p.isAlive);[m
+[32m+[m[32m  const votesIn = Object.keys(game.extraction?.votes ?? {}).length;[m
+[32m+[m
+   return ([m
+     <View style={styles.fill}>[m
+[31m-      <View style={styles.hero}>[m
+[31m-        <Text style={styles.heroTitle}>Unanimous vote</Text>[m
+[31m-        <Text style={styles.heroDesc}>[m
+[31m-          The crew nominated {nominees.length === 1 ? 'one suspect' : `${nominees.length} suspects`}.[m
+[31m-          Every living crew member must vote to eject — one keep vote spares them all.[m
+[31m-        </Text>[m
+[31m-      </View>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(400)}>[m
+[32m+[m[32m        <AlertStrip label="UNANIMOUS VOTE REQUIRED" />[m
+[32m+[m[32m        <View style={styles.hero}>[m
+[32m+[m[32m          <Text style={styles.heroTitle}>Eject the suspects?</Text>[m
+[32m+[m[32m          <Text style={styles.heroDesc}>[m
+[32m+[m[32m            The crew nominated {nominees.length === 1 ? 'one suspect' : `${nominees.length} suspects`}.[m
+[32m+[m[32m            Every living crew member must vote to eject — one keep vote spares them all.[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m      </Animated.View>[m
+ [m
+       <View style={styles.nomineeList}>[m
+[31m-        {nominees.map((p) => ([m
+[31m-          <View key={p.uid} style={styles.nomineeCard}>[m
+[32m+[m[32m        {nominees.map((p, i) => ([m
+[32m+[m[32m          <Animated.View[m
+[32m+[m[32m            key={p.uid}[m
+[32m+[m[32m            entering={FadeInUp.delay(120 * i).duration(350)}[m
+[32m+[m[32m            style={styles.nomineeCard}[m
+[32m+[m[32m          >[m
+             <Avatar name={p.displayName} color={p.avatarColor} size={48} />[m
+[31m-            <Text style={styles.nomineeName}>{p.displayName}</Text>[m
+[31m-          </View>[m
+[32m+[m[32m            <View style={styles.nomineeCopy}>[m
+[32m+[m[32m              <Text style={styles.nomineeName}>{p.displayName}</Text>[m
+[32m+[m[32m              <Text style={styles.nomineeMeta}>ACCUSED OF INFILTRATION</Text>[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m          </Animated.View>[m
+         ))}[m
+[32m+[m[32m        <Text style={styles.voteCount}>[m
+[32m+[m[32m          {votesIn}/{alive.length} votes in[m
+[32m+[m[32m        </Text>[m
+       </View>[m
+ [m
+       {myVote ? ([m
+         <View style={styles.votedBox}>[m
+           <Text style={styles.votedLabel}>Your vote is locked</Text>[m
+[31m-          <Text style={styles.votedValue}>{myVote === 'eject' ? 'Eject' : 'Keep aboard'}</Text>[m
+[32m+[m[32m          <Text style={[styles.votedValue, myVote === 'keep' && styles.votedKeep]}>[m
+[32m+[m[32m            {myVote === 'eject' ? 'EJECT' : 'KEEP ABOARD'}[m
+[32m+[m[32m          </Text>[m
+           <Text style={styles.votedWait}>Waiting for the rest of the crew...</Text>[m
+         </View>[m
+       ) : ([m
+         <View style={styles.voteActions}>[m
+           <Pressable[m
+[31m-            style={({ pressed }) => [styles.ejectBtn, pressed && styles.btnPressed]}[m
+[32m+[m[32m            style={({ pressed }) => [styles.ejectBtn, shadows.glowRed, pressed && styles.btnPressed]}[m
+             onPress={() => onVote('eject')}[m
+           >[m
+[31m-            <Text style={styles.ejectBtnText}>Eject</Text>[m
+[32m+[m[32m            <Text style={styles.ejectBtnText}>EJECT</Text>[m
+             <Text style={styles.ejectBtnSub}>They leave the ship</Text>[m
+           </Pressable>[m
+           <Pressable[m
+             style={({ pressed }) => [styles.keepBtn, pressed && styles.btnPressed]}[m
+             onPress={() => onVote('keep')}[m
+           >[m
+[31m-            <Text style={styles.keepBtnText}>Keep</Text>[m
+[32m+[m[32m            <Text style={styles.keepBtnText}>KEEP</Text>[m
+             <Text style={styles.keepBtnSub}>They stay aboard</Text>[m
+           </Pressable>[m
+         </View>[m
+[36m@@ -131,6 +196,16 @@[m [mexport function ExtractionVotePhase({[m
+ [m
+ const styles = StyleSheet.create({[m
+   fill: { flex: 1, minHeight: 0, justifyContent: 'space-between', gap: spacing.sm },[m
+[32m+[m[32m  alertStrip: {[m
+[32m+[m[32m    backgroundColor: 'rgba(251,77,109,0.14)',[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: 'rgba(251,77,109,0.4)',[m
+[32m+[m[32m    borderRadius: radius.sm,[m
+[32m+[m[32m    paddingVertical: 6,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    marginBottom: spacing.sm,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  alertText: { ...typography.label, color: colors.danger, fontSize: 11 },[m
+   hero: {[m
+     backgroundColor: colors.surfaceSolid,[m
+     borderRadius: radius.lg,[m
+[36m@@ -143,7 +218,7 @@[m [mconst styles = StyleSheet.create({[m
+   },[m
+   heroTitle: { ...typography.heading, color: colors.text },[m
+   heroDesc: { ...typography.caption, color: colors.textMuted, lineHeight: 20 },[m
+[31m-  heroHint: { ...typography.small, color: colors.accentSoft, fontWeight: '800', marginTop: spacing.xs },[m
+[32m+[m[32m  heroHint: { ...typography.label, color: colors.accentSoft, marginTop: spacing.xs },[m
+   targetGrid: {[m
+     flex: 1,[m
+     flexDirection: 'row',[m
+[36m@@ -153,8 +228,8 @@[m [mconst styles = StyleSheet.create({[m
+     justifyContent: 'center',[m
+     minHeight: 0,[m
+   },[m
+[32m+[m[32m  targetItem: { width: '47%' },[m
+   targetBtn: {[m
+[31m-    width: '47%',[m
+     minHeight: 120,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+[36m@@ -167,7 +242,7 @@[m [mconst styles = StyleSheet.create({[m
+   },[m
+   targetBtnOn: {[m
+     borderColor: colors.danger,[m
+[31m-    backgroundColor: 'rgba(244,63,94,0.12)',[m
+[32m+[m[32m    backgroundColor: 'rgba(251,77,109,0.12)',[m
+   },[m
+   targetName: {[m
+     ...typography.caption,[m
+[36m@@ -177,6 +252,7 @@[m [mconst styles = StyleSheet.create({[m
+     fontSize: 14,[m
+   },[m
+   targetMeta: { ...typography.small, color: colors.textDim, fontSize: 10 },[m
+[32m+[m[32m  targetMetaOn: { color: colors.danger, fontWeight: '800' },[m
+   nomineeList: { flex: 1, justifyContent: 'center', gap: spacing.sm },[m
+   nomineeCard: {[m
+     flexDirection: 'row',[m
+[36m@@ -186,15 +262,18 @@[m [mconst styles = StyleSheet.create({[m
+     borderRadius: radius.md,[m
+     backgroundColor: colors.surfaceSolid,[m
+     borderWidth: 1,[m
+[31m-    borderColor: colors.border,[m
+[32m+[m[32m    borderColor: 'rgba(251,77,109,0.35)',[m
+   },[m
+[32m+[m[32m  nomineeCopy: { flex: 1, minWidth: 0 },[m
+   nomineeName: { ...typography.body, color: colors.text, fontWeight: '700' },[m
+[32m+[m[32m  nomineeMeta: { ...typography.label, color: colors.danger, fontSize: 8, marginTop: 2 },[m
+[32m+[m[32m  voteCount: { ...typography.small, color: colors.textDim, textAlign: 'center' },[m
+   voteActions: { flexDirection: 'row', gap: spacing.sm },[m
+   ejectBtn: {[m
+     flex: 1,[m
+     minHeight: 88,[m
+     borderRadius: radius.lg,[m
+[31m-    backgroundColor: colors.danger,[m
+[32m+[m[32m    backgroundColor: colors.dangerDark,[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+     gap: 4,[m
+[36m@@ -210,13 +289,14 @@[m [mconst styles = StyleSheet.create({[m
+     justifyContent: 'center',[m
+     gap: 4,[m
+   },[m
+[31m-  btnPressed: { opacity: 0.88 },[m
+[31m-  ejectBtnText: { ...typography.heading, color: '#fff' },[m
+[32m+[m[32m  btnPressed: { opacity: 0.85, transform: [{ scale: 0.97 }] },[m
+[32m+[m[32m  ejectBtnText: { ...typography.heading, color: '#fff', letterSpacing: 1 },[m
+   ejectBtnSub: { ...typography.small, color: 'rgba(255,255,255,0.85)', fontSize: 11 },[m
+[31m-  keepBtnText: { ...typography.heading, color: colors.text },[m
+[32m+[m[32m  keepBtnText: { ...typography.heading, color: colors.text, letterSpacing: 1 },[m
+   keepBtnSub: { ...typography.small, color: colors.textMuted, fontSize: 11 },[m
+[31m-  votedBox: { gap: spacing.sm },[m
+[32m+[m[32m  votedBox: { gap: spacing.sm, paddingVertical: spacing.sm },[m
+   votedLabel: { ...typography.caption, color: colors.textDim, textAlign: 'center' },[m
+[31m-  votedValue: { ...typography.heading, color: colors.lime, textAlign: 'center' },[m
+[32m+[m[32m  votedValue: { ...typography.heading, color: colors.danger, textAlign: 'center', letterSpacing: 2 },[m
+[32m+[m[32m  votedKeep: { color: colors.success },[m
+   votedWait: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },[m
+ });[m
+[1mdiff --git a/src/components/game/MissionHud.tsx b/src/components/game/MissionHud.tsx[m
+[1mindex 185b947..2cdbd7e 100644[m
+[1m--- a/src/components/game/MissionHud.tsx[m
+[1m+++ b/src/components/game/MissionHud.tsx[m
+[36m@@ -1,7 +1,28 @@[m
+ import React, { useEffect } from 'react';[m
+ import { Pressable, StyleSheet, Text, View } from 'react-native';[m
+ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';[m
+[31m-import { colors, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { colors, fonts, spacing, typography } from '@/theme';[m
+[32m+[m
+[32m+[m[32m/** Segmented mission progress — one pip per task. */[m
+[32m+[m[32mfunction MissionPips({ round, total }: { round: number; total: number }) {[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <View style={styles.pipRow}>[m
+[32m+[m[32m      {Array.from({ length: total }, (_, i) => {[m
+[32m+[m[32m        const state = i + 1 < round ? 'done' : i + 1 === round ? 'live' : 'todo';[m
+[32m+[m[32m        return ([m
+[32m+[m[32m          <View[m
+[32m+[m[32m            key={i}[m
+[32m+[m[32m            style={[[m
+[32m+[m[32m              styles.pip,[m
+[32m+[m[32m              state === 'done' && styles.pipDone,[m
+[32m+[m[32m              state === 'live' && styles.pipLive,[m
+[32m+[m[32m            ]}[m
+[32m+[m[32m          />[m
+[32m+[m[32m        );[m
+[32m+[m[32m      })}[m
+[32m+[m[32m    </View>[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+ [m
+ export function MissionHud({[m
+   round,[m
+[36m@@ -36,8 +57,10 @@[m [mexport function MissionHud({[m
+       <View style={styles.left}>[m
+         <Text style={styles.missionLabel}>MISSION</Text>[m
+         <Text style={styles.missionCount}>[m
+[31m-          {String(round).padStart(2, '0')}/{String(totalTasks).padStart(2, '0')}[m
+[32m+[m[32m          {String(Math.min(round, totalTasks)).padStart(2, '0')}[m
+[32m+[m[32m          <Text style={styles.missionTotal}>/{String(totalTasks).padStart(2, '0')}</Text>[m
+         </Text>[m
+[32m+[m[32m        <MissionPips round={round} total={totalTasks} />[m
+       </View>[m
+       <View style={styles.divider} />[m
+       <Animated.View style={[styles.right, titleStyle]}>[m
+[36m@@ -49,16 +72,20 @@[m [mexport function MissionHud({[m
+         ) : null}[m
+       </Animated.View>[m
+       {onOpenHack ? ([m
+[31m-        <Pressable onPress={onOpenHack} style={styles.hackBtnWrap}>[m
+[31m-          <Text style={styles.hackBtn}>Hack</Text>[m
+[32m+[m[32m        <Pressable[m
+[32m+[m[32m          onPress={onOpenHack}[m
+[32m+[m[32m          style={({ pressed }) => [styles.hackBtnWrap, pressed && styles.btnPressed]}[m
+[32m+[m[32m        >[m
+[32m+[m[32m          <Text style={styles.hackBtn}>HACK</Text>[m
+           <Text style={styles.hackCount}>{hacksRemaining ?? 0}</Text>[m
+         </Pressable>[m
+       ) : null}[m
+       {onOpenLog ? ([m
+[31m-        <Pressable onPress={onOpenLog} style={styles.logBtnWrap}>[m
+[31m-          <Text style={styles.logBtn}>[m
+[31m-            Log{logCount > 0 ? ` · ${logCount}` : ''}[m
+[31m-          </Text>[m
+[32m+[m[32m        <Pressable[m
+[32m+[m[32m          onPress={onOpenLog}[m
+[32m+[m[32m          style={({ pressed }) => [styles.logBtnWrap, pressed && styles.btnPressed]}[m
+[32m+[m[32m        >[m
+[32m+[m[32m          <Text style={styles.logBtn}>LOG{logCount > 0 ? ` ${logCount}` : ''}</Text>[m
+         </Pressable>[m
+       ) : null}[m
+     </View>[m
+[36m@@ -69,23 +96,40 @@[m [mconst styles = StyleSheet.create({[m
+   wrap: {[m
+     flexDirection: 'row',[m
+     alignItems: 'center',[m
+[31m-    backgroundColor: colors.surfaceSolid,[m
+[32m+[m[32m    backgroundColor: 'rgba(18,16,31,0.92)',[m
+     borderWidth: 1,[m
+     borderColor: colors.border,[m
+     borderLeftWidth: 3,[m
+     borderLeftColor: colors.accent,[m
+[32m+[m[32m    borderRadius: 12,[m
+     paddingVertical: spacing.sm,[m
+     paddingHorizontal: spacing.md,[m
+     marginBottom: spacing.sm,[m
+     gap: spacing.sm,[m
+   },[m
+[31m-  left: { alignItems: 'center', minWidth: 56 },[m
+[31m-  missionLabel: { ...typography.small, color: colors.textDim, fontSize: 9, letterSpacing: 2 },[m
+[31m-  missionCount: { ...typography.mono, fontSize: 18, color: colors.accentSoft, letterSpacing: 2 },[m
+[31m-  divider: { width: 1, height: 32, backgroundColor: colors.border },[m
+[32m+[m[32m  left: { alignItems: 'center', minWidth: 60, gap: 2 },[m
+[32m+[m[32m  missionLabel: { ...typography.label, color: colors.textDim, fontSize: 8 },[m
+[32m+[m[32m  missionCount: {[m
+[32m+[m[32m    fontFamily: fonts.mono,[m
+[32m+[m[32m    fontSize: 17,[m
+[32m+[m[32m    color: colors.accentSoft,[m
+[32m+[m[32m    letterSpacing: 1,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  missionTotal: { color: colors.textDim, fontSize: 12 },[m
+[32m+[m[32m  pipRow: { flexDirection: 'row', gap: 3 },[m
+[32m+[m[32m  pip: {[m
+[32m+[m[32m    width: 8,[m
+[32m+[m[32m    height: 3,[m
+[32m+[m[32m    borderRadius: 2,[m
+[32m+[m[32m    backgroundColor: colors.surfaceElevated,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  pipDone: { backgroundColor: colors.primary },[m
+[32m+[m[32m  pipLive: { backgroundColor: colors.accent },[m
+[32m+[m[32m  divider: { width: 1, height: 36, backgroundColor: colors.border },[m
+   right: { flex: 1, minWidth: 0 },[m
+   phase: { ...typography.caption, color: colors.text, fontWeight: '800', letterSpacing: 1.2 },[m
+   subtitle: { ...typography.small, color: colors.textDim, marginTop: 2, fontSize: 10 },[m
+[32m+[m[32m  btnPressed: { opacity: 0.7 },[m
+   logBtnWrap: {[m
+     paddingVertical: spacing.xs,[m
+     paddingHorizontal: spacing.sm,[m
+[36m@@ -98,7 +142,8 @@[m [mconst styles = StyleSheet.create({[m
+     ...typography.small,[m
+     color: colors.accentSoft,[m
+     fontWeight: '800',[m
+[31m-    fontSize: 11,[m
+[32m+[m[32m    fontSize: 10,[m
+[32m+[m[32m    letterSpacing: 1,[m
+   },[m
+   hackBtnWrap: {[m
+     flexDirection: 'row',[m
+[36m@@ -115,7 +160,8 @@[m [mconst styles = StyleSheet.create({[m
+     ...typography.small,[m
+     color: colors.alien,[m
+     fontWeight: '800',[m
+[31m-    fontSize: 11,[m
+[32m+[m[32m    fontSize: 10,[m
+[32m+[m[32m    letterSpacing: 1,[m
+   },[m
+   hackCount: {[m
+     ...typography.small,[m
+[1mdiff --git a/src/components/game/TaskAnswerReveal.tsx b/src/components/game/TaskAnswerReveal.tsx[m
+[1mindex 6f220d0..e893b2f 100644[m
+[1m--- a/src/components/game/TaskAnswerReveal.tsx[m
+[1m+++ b/src/components/game/TaskAnswerReveal.tsx[m
+[36m@@ -1,30 +1,38 @@[m
+ import React from 'react';[m
+ import { StyleSheet, Text, View } from 'react-native';[m
+[32m+[m[32mimport Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';[m
+ import { MissionLogEntry } from '@/components/game/MissionLogEntry';[m
+ import { CHAMBER_LABELS, GameState } from '@/types/game';[m
+[31m-import { colors, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { chamberAccents, colors, spacing, typography } from '@/theme';[m
+ [m
+ /** Main-screen reveal right after a task — shows only the latest round. */[m
+ export function TaskAnswerReveal({ game }: { game: GameState }) {[m
+   const entry = game.history[game.history.length - 1];[m
+   if (!entry) return null;[m
+ [m
+[32m+[m[32m  const accent = chamberAccents[entry.chamber] ?? colors.accentSoft;[m
+[32m+[m
+   return ([m
+     <View style={styles.wrap}>[m
+[31m-      <View style={styles.hero}>[m
+[31m-        <Text style={styles.heroTitle}>Everyone answered</Text>[m
+[31m-        <Text style={styles.heroSub}>[m
+[32m+[m[32m      <Animated.View entering={FadeInDown.duration(350)} style={styles.hero}>[m
+[32m+[m[32m        <Text style={styles.heroKicker}>ANSWERS IN</Text>[m
+[32m+[m[32m        <Text style={styles.heroTitle}>Compare the crew</Text>[m
+[32m+[m[32m        <Text style={[styles.heroSub, { color: accent }]}>[m
+           Mission {entry.round} · {CHAMBER_LABELS[entry.chamber]}[m
+         </Text>[m
+[31m-      </View>[m
+[31m-      <MissionLogEntry entry={entry} game={game} />[m
+[32m+[m[32m      </Animated.View>[m
+[32m+[m[32m      <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.entryWrap}>[m
+[32m+[m[32m        <MissionLogEntry entry={entry} game={game} />[m
+[32m+[m[32m      </Animated.View>[m
+     </View>[m
+   );[m
+ }[m
+ [m
+ const styles = StyleSheet.create({[m
+   wrap: { flex: 1, minHeight: 0, gap: spacing.sm },[m
+[31m-  hero: { gap: 4 },[m
+[32m+[m[32m  hero: { gap: 2 },[m
+[32m+[m[32m  heroKicker: { ...typography.label, color: colors.textDim },[m
+   heroTitle: { ...typography.heading, color: colors.text, fontSize: 20 },[m
+[31m-  heroSub: { ...typography.caption, color: colors.accentSoft, fontWeight: '600' },[m
+[32m+[m[32m  heroSub: { ...typography.caption, fontWeight: '700' },[m
+[32m+[m[32m  entryWrap: { flex: 1, minHeight: 0 },[m
+ });[m
+[1mdiff --git a/src/components/ui/index.tsx b/src/components/ui/index.tsx[m
+[1mindex 00d114e..1eef5fb 100644[m
+[1m--- a/src/components/ui/index.tsx[m
+[1m+++ b/src/components/ui/index.tsx[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-import React from 'react';[m
+[32m+[m[32mimport React, { useState } from 'react';[m
+ import {[m
+   ActivityIndicator,[m
+   Pressable,[m
+[36m@@ -8,8 +8,49 @@[m [mimport {[m
+   TextInput,[m
+   View,[m
+ } from 'react-native';[m
+[32m+[m[32mimport Animated, {[m
+[32m+[m[32m  useAnimatedStyle,[m
+[32m+[m[32m  useSharedValue,[m
+[32m+[m[32m  withSpring,[m
+[32m+[m[32m  withTiming,[m
+[32m+[m[32m} from 'react-native-reanimated';[m
+ import { LinearGradient } from 'expo-linear-gradient';[m
+[31m-import { colors, gradients, radius, shadows, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport * as Clipboard from 'expo-clipboard';[m
+[32m+[m[32mimport { colors, fonts, gradients, radius, shadows, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { AlienIcon, HelmetIcon } from './AlienIcon';[m
+[32m+[m
+[32m+[m[32mconst AnimatedPressable = Animated.createAnimatedComponent(Pressable);[m
+[32m+[m
+[32m+[m[32m/** Pressable with a satisfying spring scale — base for every tappable element. */[m
+[32m+[m[32mexport function PressableScale({[m
+[32m+[m[32m  children,[m
+[32m+[m[32m  style,[m
+[32m+[m[32m  scaleTo = 0.96,[m
+[32m+[m[32m  disabled,[m
+[32m+[m[32m  ...props[m
+[32m+[m[32m}: PressableProps & { children: React.ReactNode; scaleTo?: number; style?: object }) {[m
+[32m+[m[32m  const scale = useSharedValue(1);[m
+[32m+[m
+[32m+[m[32m  const animStyle = useAnimatedStyle(() => ({[m
+[32m+[m[32m    transform: [{ scale: scale.value }],[m
+[32m+[m[32m  }));[m
+[32m+[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <AnimatedPressable[m
+[32m+[m[32m      onPressIn={() => {[m
+[32m+[m[32m        scale.value = withSpring(scaleTo, { damping: 18, stiffness: 400 });[m
+[32m+[m[32m      }}[m
+[32m+[m[32m      onPressOut={() => {[m
+[32m+[m[32m        scale.value = withSpring(1, { damping: 14, stiffness: 300 });[m
+[32m+[m[32m      }}[m
+[32m+[m[32m      disabled={disabled}[m
+[32m+[m[32m      style={[animStyle, style]}[m
+[32m+[m[32m      {...props}[m
+[32m+[m[32m    >[m
+[32m+[m[32m      {children}[m
+[32m+[m[32m    </AnimatedPressable>[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+ [m
+ interface ButtonProps extends PressableProps {[m
+   title: string;[m
+[36m@@ -50,18 +91,13 @@[m [mexport function Button({[m
+         : variant === 'success'[m
+           ? gradients.success[m
+           : gradients.primary;[m
+[32m+[m[32m    const glow =[m
+[32m+[m[32m      variant === 'danger' ? shadows.glowRed : variant === 'success' ? shadows.glowCyan : shadows.glow;[m
+ [m
+     return ([m
+[31m-      <Pressable[m
+[31m-        style={({ pressed }) => [[m
+[31m-          styles.base,[m
+[31m-          styles[`size_${size}`],[m
+[31m-          fullWidth && styles.fullWidth,[m
+[31m-          shadows.glow,[m
+[31m-          pressed && styles.pressed,[m
+[31m-          isDisabled && styles.disabled,[m
+[31m-          style as object,[m
+[31m-        ]}[m
+[32m+[m[32m      <PressableScale[m
+[32m+[m[32m        scaleTo={0.97}[m
+[32m+[m[32m        style={[styles.base, fullWidth && styles.fullWidth, glow, style as object]}[m
+         disabled={isDisabled}[m
+         {...props}[m
+       >[m
+[36m@@ -73,18 +109,18 @@[m [mexport function Button({[m
+         >[m
+           {content}[m
+         </LinearGradient>[m
+[31m-      </Pressable>[m
+[32m+[m[32m      </PressableScale>[m
+     );[m
+   }[m
+ [m
+   return ([m
+[31m-    <Pressable[m
+[31m-      style={({ pressed }) => [[m
+[32m+[m[32m    <PressableScale[m
+[32m+[m[32m      scaleTo={0.97}[m
+[32m+[m[32m      style={[[m
+         styles.base,[m
+         styles[variant],[m
+         styles[`size_${size}`],[m
+         fullWidth && styles.fullWidth,[m
+[31m-        pressed && !isDisabled && styles.pressed,[m
+         isDisabled && styles.disabled,[m
+         style as object,[m
+       ]}[m
+[36m@@ -92,26 +128,28 @@[m [mexport function Button({[m
+       {...props}[m
+     >[m
+       {content}[m
+[31m-    </Pressable>[m
+[32m+[m[32m    </PressableScale>[m
+   );[m
+ }[m
+ [m
+ interface GlowCardProps {[m
+   children: React.ReactNode;[m
+   style?: object;[m
+[31m-  accent?: 'purple' | 'cyan' | 'pink' | 'none';[m
+[32m+[m[32m  accent?: 'purple' | 'cyan' | 'pink' | 'red' | 'none';[m
+   padded?: boolean;[m
+ }[m
+ [m
+ export function GlowCard({ children, style, accent = 'purple', padded = true }: GlowCardProps) {[m
+   const borderColor =[m
+     accent === 'cyan'[m
+[31m-      ? colors.borderBright[m
+[32m+[m[32m      ? 'rgba(34,211,238,0.35)'[m
+       : accent === 'pink'[m
+         ? 'rgba(236,72,153,0.35)'[m
+[31m-        : accent === 'none'[m
+[31m-          ? colors.border[m
+[31m-          : colors.borderBright;[m
+[32m+[m[32m        : accent === 'red'[m
+[32m+[m[32m          ? 'rgba(251,113,133,0.4)'[m
+[32m+[m[32m          : accent === 'none'[m
+[32m+[m[32m            ? colors.border[m
+[32m+[m[32m            : colors.borderBright;[m
+ [m
+   return ([m
+     <View style={[cardStyles.outer, { borderColor }, style]}>[m
+[36m@@ -145,9 +183,13 @@[m [mexport function Input({[m
+   autoCapitalize = 'none',[m
+   error,[m
+ }: InputProps) {[m
+[32m+[m[32m  const [focused, setFocused] = useState(false);[m
+[32m+[m
+   return ([m
+     <View style={inputStyles.wrap}>[m
+[31m-      {label ? <Text style={inputStyles.label}>{label}</Text> : null}[m
+[32m+[m[32m      {label ? ([m
+[32m+[m[32m        <Text style={[inputStyles.label, focused && inputStyles.labelFocused]}>{label}</Text>[m
+[32m+[m[32m      ) : null}[m
+       <TextInput[m
+         value={value}[m
+         onChangeText={onChangeText}[m
+[36m@@ -155,7 +197,13 @@[m [mexport function Input({[m
+         placeholderTextColor={colors.textDim}[m
+         secureTextEntry={secureTextEntry}[m
+         autoCapitalize={autoCapitalize}[m
+[31m-        style={[inputStyles.field, error && inputStyles.fieldError]}[m
+[32m+[m[32m        onFocus={() => setFocused(true)}[m
+[32m+[m[32m        onBlur={() => setFocused(false)}[m
+[32m+[m[32m        style={[[m
+[32m+[m[32m          inputStyles.field,[m
+[32m+[m[32m          focused && inputStyles.fieldFocused,[m
+[32m+[m[32m          error && inputStyles.fieldError,[m
+[32m+[m[32m        ]}[m
+       />[m
+       {error ? <Text style={inputStyles.error}>{error}</Text> : null}[m
+     </View>[m
+[36m@@ -180,7 +228,9 @@[m [mexport function Badge({[m
+           : { backgroundColor: `${color}22`, borderColor: `${color}55` },[m
+       ]}[m
+     >[m
+[31m-      <Text style={[badgeStyles.text, { color: variant === 'solid' ? '#fff' : color }]}>{label}</Text>[m
+[32m+[m[32m      <Text style={[badgeStyles.text, { color: variant === 'solid' ? '#04050d' : color }]}>[m
+[32m+[m[32m        {label}[m
+[32m+[m[32m      </Text>[m
+     </View>[m
+   );[m
+ }[m
+[36m@@ -204,9 +254,11 @@[m [mexport function Avatar({[m
+         { width: size + (ring ? 6 : 0), height: size + (ring ? 6 : 0), borderRadius: (size + 6) / 2 },[m
+       ]}[m
+     >[m
+[31m-      <View[m
+[32m+[m[32m      <LinearGradient[m
+[32m+[m[32m        colors={[color, shadeColor(color, -34)]}[m
+[32m+[m[32m        start={{ x: 0.2, y: 0 }}[m
+[32m+[m[32m        end={{ x: 0.8, y: 1 }}[m
+         style={{[m
+[31m-          backgroundColor: color,[m
+           width: size,[m
+           height: size,[m
+           borderRadius: size / 2,[m
+[36m@@ -217,7 +269,55 @@[m [mexport function Avatar({[m
+         <Text style={{ color: '#fff', fontWeight: '800', fontSize: size * 0.38 }}>[m
+           {name.charAt(0).toUpperCase()}[m
+         </Text>[m
+[31m-      </View>[m
+[32m+[m[32m      </LinearGradient>[m
+[32m+[m[32m    </View>[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/** Darken/lighten a hex color by pct (-100..100). */[m
+[32m+[m[32mfunction shadeColor(hex: string, pct: number): string {[m
+[32m+[m[32m  const clean = hex.replace('#', '');[m
+[32m+[m[32m  if (clean.length !== 6) return hex;[m
+[32m+[m[32m  const num = parseInt(clean, 16);[m
+[32m+[m[32m  const amt = Math.round(2.55 * pct);[m
+[32m+[m[32m  const r = Math.min(255, Math.max(0, (num >> 16) + amt));[m
+[32m+[m[32m  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amt));[m
+[32m+[m[32m  const b = Math.min(255, Math.max(0, (num & 0xff) + amt));[m
+[32m+[m[32m  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport function BackButton({[m
+[32m+[m[32m  onPress,[m
+[32m+[m[32m  accessibilityLabel = 'Go back',[m
+[32m+[m[32m}: {[m
+[32m+[m[32m  onPress: () => void;[m
+[32m+[m[32m  accessibilityLabel?: string;[m
+[32m+[m[32m}) {[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <PressableScale[m
+[32m+[m[32m      style={backBtnStyles.wrap}[m
+[32m+[m[32m      onPress={onPress}[m
+[32m+[m[32m      hitSlop={12}[m
+[32m+[m[32m      accessibilityLabel={accessibilityLabel}[m
+[32m+[m[32m    >[m
+[32m+[m[32m      <Text style={backBtnStyles.icon}>←</Text>[m
+[32m+[m[32m    </PressableScale>[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/** Top row with optional back (left) and trailing action (right). */[m
+[32m+[m[32mexport function ScreenTopBar({[m
+[32m+[m[32m  onBack,[m
+[32m+[m[32m  right,[m
+[32m+[m[32m}: {[m
+[32m+[m[32m  onBack?: () => void;[m
+[32m+[m[32m  right?: React.ReactNode;[m
+[32m+[m[32m}) {[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <View style={topBarStyles.bar}>[m
+[32m+[m[32m      {onBack ? <BackButton onPress={onBack} /> : <View style={topBarStyles.side} />}[m
+[32m+[m[32m      <View style={topBarStyles.flex} />[m
+[32m+[m[32m      {right ?? <View style={topBarStyles.side} />}[m
+     </View>[m
+   );[m
+ }[m
+[36m@@ -263,15 +363,11 @@[m [mexport function ActionTile({[m
+     variant === 'featured' ? colors.primary : variant === 'danger' ? colors.danger : colors.accent;[m
+ [m
+   return ([m
+[31m-    <Pressable[m
+[31m-      onPress={onPress}[m
+[31m-      disabled={loading}[m
+[31m-      style={({ pressed }) => [tileStyles.wrap, pressed && tileStyles.pressed, loading && tileStyles.disabled]}[m
+[31m-    >[m
+[32m+[m[32m    <PressableScale onPress={onPress} disabled={loading} style={[tileStyles.wrap, loading && tileStyles.disabled]}>[m
+       <LinearGradient[m
+         colors={[m
+           variant === 'featured'[m
+[31m-            ? ['rgba(124,58,237,0.35)', 'rgba(168,85,247,0.12)'][m
+[32m+[m[32m            ? ['rgba(109,40,217,0.35)', 'rgba(139,92,246,0.1)'][m
+             : ['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.02)'][m
+         }[m
+         style={tileStyles.gradient}[m
+[36m@@ -289,16 +385,39 @@[m [mexport function ActionTile({[m
+         </View>[m
+         <Text style={tileStyles.chevron}>›</Text>[m
+       </LinearGradient>[m
+[31m-    </Pressable>[m
+[32m+[m[32m    </PressableScale>[m
+   );[m
+ }[m
+ [m
+[32m+[m[32m/** Party code — terminal-style character cells, tap to copy. */[m
+ export function LobbyCodeDisplay({ code }: { code: string }) {[m
+[32m+[m[32m  const [copied, setCopied] = useState(false);[m
+[32m+[m
+[32m+[m[32m  const copy = async () => {[m
+[32m+[m[32m    try {[m
+[32m+[m[32m      await Clipboard.setStringAsync(code);[m
+[32m+[m[32m      setCopied(true);[m
+[32m+[m[32m      setTimeout(() => setCopied(false), 1800);[m
+[32m+[m[32m    } catch {[m
+[32m+[m[32m      // clipboard unavailable — ignore[m
+[32m+[m[32m    }[m
+[32m+[m[32m  };[m
+[32m+[m
+   return ([m
+     <GlowCard accent="cyan">[m
+       <Text style={codeStyles.label}>PARTY CODE</Text>[m
+[31m-      <Text style={codeStyles.code}>{code}</Text>[m
+[31m-      <Text style={codeStyles.hint}>Share this code — friends join from the main menu</Text>[m
+[32m+[m[32m      <PressableScale onPress={copy} scaleTo={0.97}>[m
+[32m+[m[32m        <View style={codeStyles.cellRow}>[m
+[32m+[m[32m          {code.split('').map((ch, i) => ([m
+[32m+[m[32m            <View key={`${ch}-${i}`} style={codeStyles.cell}>[m
+[32m+[m[32m              <Text style={codeStyles.cellChar}>{ch}</Text>[m
+[32m+[m[32m            </View>[m
+[32m+[m[32m          ))}[m
+[32m+[m[32m        </View>[m
+[32m+[m[32m      </PressableScale>[m
+[32m+[m[32m      <Text style={[codeStyles.hint, copied && codeStyles.hintCopied]}>[m
+[32m+[m[32m        {copied ? '✓ Copied — paste it to your crew' : 'Tap the code to copy · friends join from the main menu'}[m
+[32m+[m[32m      </Text>[m
+     </GlowCard>[m
+   );[m
+ }[m
+[36m@@ -316,11 +435,21 @@[m [mexport function CrewRow({[m
+   isReady?: boolean;[m
+   isMe?: boolean;[m
+ }) {[m
+[32m+[m[32m  const glow = useSharedValue(isReady ? 1 : 0);[m
+[32m+[m
+[32m+[m[32m  React.useEffect(() => {[m
+[32m+[m[32m    glow.value = withTiming(isReady ? 1 : 0, { duration: 260 });[m
+[32m+[m[32m  }, [isReady, glow]);[m
+[32m+[m
+[32m+[m[32m  const readyStyle = useAnimatedStyle(() => ({[m
+[32m+[m[32m    borderColor: `rgba(52,211,153,${0.12 + glow.value * 0.45})`,[m
+[32m+[m[32m  }));[m
+[32m+[m
+   return ([m
+[31m-    <View style={[crewStyles.row, isMe && crewStyles.me]}>[m
+[32m+[m[32m    <Animated.View style={[crewStyles.row, isMe && crewStyles.me, isReady && readyStyle]}>[m
+       <Avatar name={name} color={color} size={40} ring={isMe} />[m
+       <View style={crewStyles.info}>[m
+[31m-        <Text style={crewStyles.name}>[m
+[32m+[m[32m        <Text style={crewStyles.name} numberOfLines={1}>[m
+           {name}[m
+           {isHost ? '  ★' : ''}[m
+           {isMe ? '  (You)' : ''}[m
+[36m@@ -330,9 +459,8 @@[m [mexport function CrewRow({[m
+       <Badge[m
+         label={isReady ? 'READY' : 'HOLD'}[m
+         color={isReady ? colors.success : colors.textDim}[m
+[31m-        variant={isReady ? 'soft' : 'soft'}[m
+       />[m
+[31m-    </View>[m
+[32m+[m[32m    </Animated.View>[m
+   );[m
+ }[m
+ [m
+[36m@@ -435,7 +563,7 @@[m [mexport function EmergencyButton({ onPress, used }: { onPress: () => void; used?:[m
+   }[m
+ [m
+   return ([m
+[31m-    <Pressable onPress={onPress} style={({ pressed }) => [pressed && { opacity: 0.9 }]}>[m
+[32m+[m[32m    <PressableScale onPress={onPress}>[m
+       <LinearGradient colors={[...gradients.danger]} style={emergencyStyles.btn}>[m
+         <Text style={emergencyStyles.icon}>🚨</Text>[m
+         <View>[m
+[36m@@ -443,7 +571,7 @@[m [mexport function EmergencyButton({ onPress, used }: { onPress: () => void; used?:[m
+           <Text style={emergencyStyles.sub}>Once per mission • Stops the clock</Text>[m
+         </View>[m
+       </LinearGradient>[m
+[31m-    </Pressable>[m
+[32m+[m[32m    </PressableScale>[m
+   );[m
+ }[m
+ [m
+[36m@@ -463,32 +591,39 @@[m [mexport function RoleCard({[m
+   const isAlien = role === 'alien';[m
+ [m
+   return ([m
+[31m-    <LinearGradient[m
+[31m-      colors={isAlien ? [...gradients.alien] : [...gradients.human]}[m
+[31m-      style={[roleStyles.card, compact && roleStyles.cardCompact]}[m
+[32m+[m[32m    <View[m
+[32m+[m[32m      style={[[m
+[32m+[m[32m        roleStyles.outer,[m
+[32m+[m[32m        { borderColor: isAlien ? 'rgba(251,113,133,0.5)' : 'rgba(52,211,153,0.45)' },[m
+[32m+[m[32m        isAlien ? shadows.glowRed : shadows.glowCyan,[m
+[32m+[m[32m      ]}[m
+     >[m
+[31m-      {!gameMode && ([m
+[31m-        <Text style={[roleStyles.emoji, compact && roleStyles.emojiCompact]}>[m
+[31m-          {isAlien ? '👽' : '🧑‍🚀'}[m
+[31m-        </Text>[m
+[31m-      )}[m
+[31m-      <Badge[m
+[31m-        label={isAlien ? 'INFILTRATOR' : 'CREW'}[m
+[31m-        color={isAlien ? colors.alien : colors.human}[m
+[31m-        variant="solid"[m
+[31m-      />[m
+[31m-      {gameMode && ([m
+[31m-        <Text style={roleStyles.classified}>CLASSIFIED DOSSIER</Text>[m
+[31m-      )}[m
+[31m-      <Text style={roleStyles.desc} numberOfLines={compact ? 2 : undefined}>[m
+[31m-        {description}[m
+[31m-      </Text>[m
+[31m-      {allies && allies.length > 0 && ([m
+[31m-        <Text style={roleStyles.ally} numberOfLines={1}>[m
+[31m-          Partner: {allies.join(', ')}[m
+[32m+[m[32m      <LinearGradient[m
+[32m+[m[32m        colors={isAlien ? [...gradients.alien] : [...gradients.human]}[m
+[32m+[m[32m        style={[roleStyles.card, compact && roleStyles.cardCompact]}[m
+[32m+[m[32m      >[m
+[32m+[m[32m        {!gameMode &&[m
+[32m+[m[32m          (isAlien ? ([m
+[32m+[m[32m            <AlienIcon size={compact ? 44 : 60} mood="sus" />[m
+[32m+[m[32m          ) : ([m
+[32m+[m[32m            <HelmetIcon size={compact ? 44 : 60} />[m
+[32m+[m[32m          ))}[m
+[32m+[m[32m        <Badge[m
+[32m+[m[32m          label={isAlien ? 'INFILTRATOR' : 'CREW'}[m
+[32m+[m[32m          color={isAlien ? colors.alien : colors.human}[m
+[32m+[m[32m          variant="solid"[m
+[32m+[m[32m        />[m
+[32m+[m[32m        {gameMode && <Text style={roleStyles.classified}>CLASSIFIED DOSSIER</Text>}[m
+[32m+[m[32m        <Text style={roleStyles.desc} numberOfLines={compact ? 2 : undefined}>[m
+[32m+[m[32m          {description}[m
+         </Text>[m
+[31m-      )}[m
+[31m-    </LinearGradient>[m
+[32m+[m[32m        {allies && allies.length > 0 && ([m
+[32m+[m[32m          <Text style={roleStyles.ally} numberOfLines={1}>[m
+[32m+[m[32m            Partner: {allies.join(', ')}[m
+[32m+[m[32m          </Text>[m
+[32m+[m[32m        )}[m
+[32m+[m[32m      </LinearGradient>[m
+[32m+[m[32m    </View>[m
+   );[m
+ }[m
+ [m
+[36m@@ -499,6 +634,36 @@[m [mfunction formatTime(ms: number): string {[m
+   return `${m}:${s.toString().padStart(2, '0')}`;[m
+ }[m
+ [m
+[32m+[m[32mconst backBtnStyles = StyleSheet.create({[m
+[32m+[m[32m  wrap: {[m
+[32m+[m[32m    width: 44,[m
+[32m+[m[32m    height: 44,[m
+[32m+[m[32m    borderRadius: radius.lg,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m    backgroundColor: colors.surfaceSolid,[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: colors.border,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  icon: {[m
+[32m+[m[32m    fontSize: 24,[m
+[32m+[m[32m    color: colors.text,[m
+[32m+[m[32m    fontWeight: '300',[m
+[32m+[m[32m    marginTop: -2,[m
+[32m+[m[32m  },[m
+[32m+[m[32m});[m
+[32m+[m
+[32m+[m[32mconst topBarStyles = StyleSheet.create({[m
+[32m+[m[32m  bar: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    minHeight: 44,[m
+[32m+[m[32m    marginBottom: spacing.sm,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  side: { width: 44 },[m
+[32m+[m[32m  flex: { flex: 1 },[m
+[32m+[m[32m});[m
+[32m+[m
+ const styles = StyleSheet.create({[m
+   base: { borderRadius: radius.lg, overflow: 'hidden' },[m
+   gradientFill: {[m
+[36m@@ -522,18 +687,25 @@[m [mconst styles = StyleSheet.create({[m
+     alignItems: 'center',[m
+     justifyContent: 'center',[m
+   },[m
+[31m-  danger: {},[m
+[31m-  success: {},[m
+[32m+[m[32m  danger: {[m
+[32m+[m[32m    backgroundColor: colors.dangerDark,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  success: {[m
+[32m+[m[32m    backgroundColor: colors.humanDeep,[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m  },[m
+   ghost: { backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center' },[m
+   size_sm: { paddingVertical: spacing.sm, paddingHorizontal: spacing.md, minHeight: 40 },[m
+   size_md: { paddingVertical: 14, paddingHorizontal: spacing.lg, minHeight: 52 },[m
+   size_lg: { paddingVertical: spacing.md, paddingHorizontal: spacing.xl, minHeight: 58 },[m
+   fullWidth: { width: '100%' },[m
+[31m-  pressed: { transform: [{ scale: 0.98 }], opacity: 0.92 },[m
+   disabled: { opacity: 0.45 },[m
+   btnInner: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },[m
+   btnIcon: { fontSize: 18 },[m
+[31m-  btnText: { color: '#fff', fontWeight: '800', letterSpacing: 0.3 },[m
+[32m+[m[32m  btnText: { color: '#fff', fontWeight: '800', letterSpacing: 0.4 },[m
+   textSize_sm: { fontSize: 14 },[m
+   textSize_md: { fontSize: 16 },[m
+   textSize_lg: { fontSize: 18 },[m
+[36m@@ -552,7 +724,8 @@[m [mconst cardStyles = StyleSheet.create({[m
+ [m
+ const inputStyles = StyleSheet.create({[m
+   wrap: { gap: spacing.sm },[m
+[31m-  label: { ...typography.small, color: colors.textMuted, textTransform: 'uppercase' },[m
+[32m+[m[32m  label: { ...typography.label, color: colors.textMuted },[m
+[32m+[m[32m  labelFocused: { color: colors.accentSoft },[m
+   field: {[m
+     backgroundColor: colors.surfaceSolid,[m
+     borderWidth: 1.5,[m
+[36m@@ -565,6 +738,7 @@[m [mconst inputStyles = StyleSheet.create({[m
+     fontWeight: '500',[m
+     minHeight: 52,[m
+   },[m
+[32m+[m[32m  fieldFocused: { borderColor: colors.borderFocus },[m
+   fieldError: { borderColor: colors.danger },[m
+   error: { ...typography.small, color: colors.danger },[m
+ });[m
+[36m@@ -595,7 +769,6 @@[m [mconst headerStyles = StyleSheet.create({[m
+ [m
+ const tileStyles = StyleSheet.create({[m
+   wrap: { borderRadius: radius.xl, overflow: 'hidden', borderWidth: 1, borderColor: colors.border },[m
+[31m-  pressed: { opacity: 0.88, transform: [{ scale: 0.99 }] },[m
+   disabled: { opacity: 0.6 },[m
+   gradient: {[m
+     flexDirection: 'row',[m
+[36m@@ -620,10 +793,30 @@[m [mconst tileStyles = StyleSheet.create({[m
+ });[m
+ [m
+ const codeStyles = StyleSheet.create({[m
+[31m-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },[m
+[31m-  label: { ...typography.small, color: colors.accentSoft },[m
+[31m-  code: { ...typography.mono, color: colors.text, marginVertical: spacing.md, textAlign: 'center' },[m
+[32m+[m[32m  label: { ...typography.label, color: colors.accentSoft, textAlign: 'center' },[m
+[32m+[m[32m  cellRow: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m    gap: spacing.sm,[m
+[32m+[m[32m    marginVertical: spacing.md,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  cell: {[m
+[32m+[m[32m    width: 42,[m
+[32m+[m[32m    height: 52,[m
+[32m+[m[32m    borderRadius: radius.sm,[m
+[32m+[m[32m    backgroundColor: 'rgba(0,0,0,0.35)',[m
+[32m+[m[32m    borderWidth: 1,[m
+[32m+[m[32m    borderColor: 'rgba(34,211,238,0.35)',[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    justifyContent: 'center',[m
+[32m+[m[32m  },[m
+[32m+[m[32m  cellChar: {[m
+[32m+[m[32m    fontFamily: fonts.mono,[m
+[32m+[m[32m    fontSize: 24,[m
+[32m+[m[32m    color: colors.text,[m
+[32m+[m[32m  },[m
+   hint: { ...typography.caption, color: colors.textDim, textAlign: 'center' },[m
+[32m+[m[32m  hintCopied: { color: colors.success },[m
+ });[m
+ [m
+ const crewStyles = StyleSheet.create({[m
+[36m@@ -639,7 +832,7 @@[m [mconst crewStyles = StyleSheet.create({[m
+     marginBottom: spacing.sm,[m
+   },[m
+   me: { borderColor: colors.borderBright, backgroundColor: colors.glowPurple },[m
+[31m-  info: { flex: 1 },[m
+[32m+[m[32m  info: { flex: 1, minWidth: 0 },[m
+   name: { ...typography.heading, color: colors.text },[m
+   status: { ...typography.small, color: colors.textMuted, marginTop: 2, textTransform: 'uppercase' },[m
+ });[m
+[36m@@ -653,7 +846,7 @@[m [mconst timerStyles = StyleSheet.create({[m
+     minWidth: 110,[m
+   },[m
+   label: { ...typography.small, color: 'rgba(255,255,255,0.85)' },[m
+[31m-  time: { fontSize: 26, fontWeight: '900', color: '#fff', letterSpacing: 1 },[m
+[32m+[m[32m  time: { fontSize: 26, fontWeight: '900', color: '#fff', letterSpacing: 1, fontFamily: fonts.mono },[m
+ });[m
+ [m
+ const phaseStyles = StyleSheet.create({[m
+[36m@@ -720,24 +913,26 @@[m [mconst emergencyStyles = StyleSheet.create({[m
+ });[m
+ [m
+ const roleStyles = StyleSheet.create({[m
+[32m+[m[32m  outer: {[m
+[32m+[m[32m    borderRadius: radius.xxl,[m
+[32m+[m[32m    borderWidth: 1.5,[m
+[32m+[m[32m    overflow: 'hidden',[m
+[32m+[m[32m  },[m
+   card: {[m
+     padding: spacing.xl,[m
+[31m-    borderRadius: radius.xxl,[m
+     alignItems: 'center',[m
+     gap: spacing.md,[m
+   },[m
+   cardCompact: {[m
+     padding: spacing.md,[m
+[31m-    borderRadius: radius.xl,[m
+     gap: spacing.sm,[m
+     flex: 1,[m
+     justifyContent: 'center',[m
+   },[m
+[31m-  emoji: { fontSize: 56 },[m
+[31m-  emojiCompact: { fontSize: 40 },[m
+   classified: { ...typography.small, color: 'rgba(255,255,255,0.5)', letterSpacing: 2 },[m
+[31m-  desc: { ...typography.body, color: 'rgba(255,255,255,0.9)', textAlign: 'center' },[m
+[32m+[m[32m  desc: { ...typography.body, color: 'rgba(255,255,255,0.92)', textAlign: 'center' },[m
+   ally: { ...typography.caption, color: colors.alien, fontWeight: '700' },[m
+ });[m
+ [m
+[32m+[m[32mexport { AlienIcon, FloatingAlien, HelmetIcon } from './AlienIcon';[m
+ export { ScreenShell, LoadingState, SectionLabel, Divider } from './layout';[m
+[1mdiff --git a/src/components/ui/layout.tsx b/src/components/ui/layout.tsx[m
+[1mindex 9d105d1..3586d2a 100644[m
+[1m--- a/src/components/ui/layout.tsx[m
+[1m+++ b/src/components/ui/layout.tsx[m
+[36m@@ -1,6 +1,5 @@[m
+[31m-import React from 'react';[m
+[32m+[m[32mimport React, { useEffect } from 'react';[m
+ import {[m
+[31m-  ActivityIndicator,[m
+   ScrollView,[m
+   ScrollViewProps,[m
+   StyleSheet,[m
+[36m@@ -8,11 +7,67 @@[m [mimport {[m
+   View,[m
+   ViewStyle,[m
+ } from 'react-native';[m
+[32m+[m[32mimport Animated, {[m
+[32m+[m[32m  Easing,[m
+[32m+[m[32m  useAnimatedStyle,[m
+[32m+[m[32m  useSharedValue,[m
+[32m+[m[32m  withRepeat,[m
+[32m+[m[32m  withTiming,[m
+[32m+[m[32m} from 'react-native-reanimated';[m
+ import { LinearGradient } from 'expo-linear-gradient';[m
+ import { SafeAreaView, Edge } from 'react-native-safe-area-context';[m
+ import { colors, gradients, spacing, typography } from '@/theme';[m
+[32m+[m[32mimport { AlienIcon } from './AlienIcon';[m
+ import { Starfield } from './Starfield';[m
+ [m
+[32m+[m[32m/** Slow-breathing nebula blob — pure ambience behind every screen. */[m
+[32m+[m[32mfunction NebulaGlow({[m
+[32m+[m[32m  color,[m
+[32m+[m[32m  size,[m
+[32m+[m[32m  top,[m
+[32m+[m[32m  left,[m
+[32m+[m[32m  duration = 9000,[m
+[32m+[m[32m}: {[m
+[32m+[m[32m  color: string;[m
+[32m+[m[32m  size: number;[m
+[32m+[m[32m  top: number;[m
+[32m+[m[32m  left: number;[m
+[32m+[m[32m  duration?: number;[m
+[32m+[m[32m}) {[m
+[32m+[m[32m  const pulse = useSharedValue(0);[m
+[32m+[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    pulse.value = withRepeat([m
+[32m+[m[32m      withTiming(1, { duration, easing: Easing.inOut(Easing.sin) }),[m
+[32m+[m[32m      -1,[m
+[32m+[m[32m      true[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }, [pulse, duration]);[m
+[32m+[m
+[32m+[m[32m  const style = useAnimatedStyle(() => ({[m
+[32m+[m[32m    opacity: 0.5 + pulse.value * 0.5,[m
+[32m+[m[32m    transform: [{ scale: 0.92 + pulse.value * 0.16 }],[m
+[32m+[m[32m  }));[m
+[32m+[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <Animated.View[m
+[32m+[m[32m      pointerEvents="none"[m
+[32m+[m[32m      style={[[m
+[32m+[m[32m        {[m
+[32m+[m[32m          position: 'absolute',[m
+[32m+[m[32m          top,[m
+[32m+[m[32m          left,[m
+[32m+[m[32m          width: size,[m
+[32m+[m[32m          height: size,[m
+[32m+[m[32m          borderRadius: size / 2,[m
+[32m+[m[32m          backgroundColor: color,[m
+[32m+[m[32m        },[m
+[32m+[m[32m        style,[m
+[32m+[m[32m      ]}[m
+[32m+[m[32m    />[m
+[32m+[m[32m  );[m
+[32m+[m[32m}[m
+[32m+[m
+ interface ScreenShellProps {[m
+   children: React.ReactNode;[m
+   scroll?: boolean;[m
+[36m@@ -54,6 +109,9 @@[m [mexport function ScreenShell({[m
+   return ([m
+     <View style={[styles.root, style]}>[m
+       <LinearGradient colors={[...gradients.screen]} style={StyleSheet.absoluteFill} />[m
+[32m+[m[32m      <NebulaGlow color={colors.glowPurple} size={340} top={-120} left={-100} duration={11000} />[m
+[32m+[m[32m      <NebulaGlow color={colors.glowCyan} size={280} top={220} left={220} duration={9000} />[m
+[32m+[m[32m      <NebulaGlow color={colors.glowPink} size={240} top={560} left={-90} duration={13000} />[m
+       <Starfield />[m
+       <SafeAreaView style={styles.fill} edges={edges}>[m
+         {content}[m
+[36m@@ -62,17 +120,39 @@[m [mexport function ScreenShell({[m
+   );[m
+ }[m
+ [m
+[32m+[m[32m/** Loading screen — hovering alien beats a plain spinner. */[m
+ export function LoadingState({ message = 'Loading...' }: { message?: string }) {[m
+[32m+[m[32m  const bob = useSharedValue(0);[m
+[32m+[m
+[32m+[m[32m  useEffect(() => {[m
+[32m+[m[32m    bob.value = withRepeat([m
+[32m+[m[32m      withTiming(1, { duration: 1400, easing: Easing.inOut(Easing.sin) }),[m
+[32m+[m[32m      -1,[m
+[32m+[m[32m      true[m
+[32m+[m[32m    );[m
+[32m+[m[32m  }, [bob]);[m
+[32m+[m
+[32m+[m[32m  const bobStyle = useAnimatedStyle(() => ({[m
+[32m+[m[32m    transform: [{ translateY: (bob.value - 0.5) * 14 }],[m
+[32m+[m[32m  }));[m
+[32m+[m
+   return ([m
+     <ScreenShell center>[m
+[31m-      <ActivityIndicator size="large" color={colors.primaryLight} />[m
+[32m+[m[32m      <Animated.View style={bobStyle}>[m
+[32m+[m[32m        <AlienIcon size={56} />[m
+[32m+[m[32m      </Animated.View>[m
+       <Text style={styles.loadingText}>{message}</Text>[m
+     </ScreenShell>[m
+   );[m
+ }[m
+ [m
+ export function SectionLabel({ children }: { children: string }) {[m
+[31m-  return <Text style={styles.sectionLabel}>{children}</Text>;[m
+[32m+[m[32m  return ([m
+[32m+[m[32m    <View style={styles.sectionRow}>[m
+[32m+[m[32m      <Text style={styles.sectionLabel}>{children}</Text>[m
+[32m+[m[32m      <View style={styles.sectionLine} />[m
+[32m+[m[32m    </View>[m
+[32m+[m[32m  );[m
+ }[m
+ [m
+ export function Divider() {[m
+[36m@@ -95,18 +175,23 @@[m [mconst styles = StyleSheet.create({[m
+     gap: spacing.md,[m
+   },[m
+   loadingText: {[m
+[31m-    ...typography.body,[m
+[32m+[m[32m    ...typography.caption,[m
+     color: colors.textMuted,[m
+     marginTop: spacing.sm,[m
+[32m+[m[32m    letterSpacing: 1,[m
+   },[m
+[31m-  sectionLabel: {[m
+[31m-    ...typography.small,[m
+[31m-    color: colors.textDim,[m
+[31m-    textTransform: 'uppercase',[m
+[31m-    letterSpacing: 1.5,[m
+[32m+[m[32m  sectionRow: {[m
+[32m+[m[32m    flexDirection: 'row',[m
+[32m+[m[32m    alignItems: 'center',[m
+[32m+[m[32m    gap: spacing.sm,[m
+     marginTop: spacing.sm,[m
+     marginBottom: spacing.xs,[m
+   },[m
+[32m+[m[32m  sectionLabel: {[m
+[32m+[m[32m    ...typography.label,[m
+[32m+[m[32m    color: colors.textDim,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  sectionLine: { flex: 1, height: 1, backgroundColor: colors.border },[m
+   divider: {[m
+     height: 1,[m
+     backgroundColor: colors.border,[m
+[1mdiff --git a/src/content/packs/core.ts b/src/content/packs/core.ts[m
+[1mindex c960493..7cc1c6e 100644[m
+[1m--- a/src/content/packs/core.ts[m
+[1m+++ b/src/content/packs/core.ts[m
+[36m@@ -7,15 +7,33 @@[m [mimport {[m
+ } from '@/game/prompts';[m
+ import { ContentPack } from '@/content/types';[m
+ [m
+[31m-/** Free tier — the base game shipped with the app. */[m
+[32m+[m[32m/**[m
+[32m+[m[32m * Free tier — the base game shipped with the app.[m
+[32m+[m[32m *[m
+[32m+[m[32m * IMPORTANT: the pools use getters instead of direct references because of a[m
+[32m+[m[32m * module cycle (prompts.ts → registry.ts → core.ts → prompts.ts). If this file[m
+[32m+[m[32m * is evaluated while prompts.ts is still initializing, direct references would[m
+[32m+[m[32m * capture `undefined` and every mission launch would crash. Getters defer the[m
+[32m+[m[32m * lookup to call time, after all modules have finished loading.[m
+[32m+[m[32m */[m
+ export const CORE_PACK: ContentPack = {[m
+   id: 'core',[m
+   name: 'Core Crew',[m
+   tagline: 'The full free base game.',[m
+   purchasable: false,[m
+[31m-  opinion: OPINION_PROMPTS,[m
+[31m-  deliberation: DELIBERATION_SCENARIOS,[m
+[31m-  drawing: DRAWING_PROMPTS,[m
+[31m-  writing: WRITING_PROMPTS,[m
+[31m-  mostLikely: MOST_LIKELY_TEMPLATES,[m
+[32m+[m[32m  get opinion() {[m
+[32m+[m[32m    return OPINION_PROMPTS;[m
+[32m+[m[32m  },[m
+[32m+[m[32m  get deliberation() {[m
+[32m+[m[32m    return DELIBERATION_SCENARIOS;[m
+[32m+[m[32m  },[m
+[32m+[m[32m  get drawing() {[m
+[32m+[m[32m    return DRAWING_PROMPTS;[m
+[32m+[m[32m  },[m
+[32m+[m[32m  get writing() {[m
+[32m+[m[32m    return WRITING_PROMPTS;[m
+[32m+[m[32m  },[m
+[32m+[m[32m  get mostLikely() {[m
+[32m+[m[32m    return MOST_LIKELY_TEMPLATES;[m
+[32m+[m[32m  },[m
+ };[m
+[1mdiff --git a/src/content/registry.ts b/src/content/registry.ts[m
+[1mindex f213a6f..7769b96 100644[m
+[1m--- a/src/content/registry.ts[m
+[1m+++ b/src/content/registry.ts[m
+[36m@@ -27,7 +27,10 @@[m [mfunction mergePools<T>(packIds: ContentPackId[], pick: (pack: ContentPack) => T[[m
+   for (const id of packIds) {[m
+     if (seen.has(id)) continue;[m
+     seen.add(id);[m
+[31m-    merged.push(...pick(PACKS[id]!));[m
+[32m+[m[32m    const pack = PACKS[id];[m
+[32m+[m[32m    if (!pack) continue; // unknown pack id in saved state — skip rather than crash[m
+[32m+[m[32m    const pool = pick(pack);[m
+[32m+[m[32m    if (Array.isArray(pool)) merged.push(...pool);[m
+   }[m
+   return merged;[m
+ }[m
+[1mdiff --git a/src/hooks/useOptimisticGameActions.ts b/src/hooks/useOptimisticGameActions.ts[m
+[1mindex b5b8c36..32bc1eb 100644[m
+[1m--- a/src/hooks/useOptimisticGameActions.ts[m
+[1m+++ b/src/hooks/useOptimisticGameActions.ts[m
+[36m@@ -2,6 +2,7 @@[m [mimport { useCallback, useRef, useState } from 'react';[m
+ import { Alert } from 'react-native';[m
+ import { applyGameAction, fetchGameState, submitPlayerAction } from '@/services/gameSync';[m
+ import { GameState } from '@/types/game';[m
+[32m+[m[32mimport { errorMessage } from '@/utils/errors';[m
+ [m
+ export function useOptimisticGameActions([m
+   gameId: string | undefined,[m
+[36m@@ -26,7 +27,7 @@[m [mexport function useOptimisticGameActions([m
+       try {[m
+         optimistic = action(current);[m
+       } catch (e) {[m
+[31m-        Alert.alert('Action failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m        Alert.alert('Action failed', errorMessage(e));[m
+         return;[m
+       }[m
+       setGame(optimistic);[m
+[36m@@ -34,7 +35,7 @@[m [mexport function useOptimisticGameActions([m
+         await applyGameAction(gameId, current, action);[m
+       } catch (e) {[m
+         await rollback();[m
+[31m-        Alert.alert('Action failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m        Alert.alert('Action failed', errorMessage(e));[m
+       }[m
+     },[m
+     [gameId, setGame, rollback][m
+[36m@@ -48,7 +49,7 @@[m [mexport function useOptimisticGameActions([m
+       try {[m
+         optimistic = updater(current);[m
+       } catch (e) {[m
+[31m-        Alert.alert('Submit failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m        Alert.alert('Submit failed', errorMessage(e));[m
+         return;[m
+       }[m
+       setGame(optimistic);[m
+[36m@@ -56,7 +57,7 @@[m [mexport function useOptimisticGameActions([m
+         await submitPlayerAction(gameId, current, updater);[m
+       } catch (e) {[m
+         await rollback();[m
+[31m-        Alert.alert('Submit failed', e instanceof Error ? e.message : 'Unknown error');[m
+[32m+[m[32m        Alert.alert('Submit failed', errorMessage(e));[m
+       }[m
+     },[m
+     [gameId, setGame, rollback][m
+[1mdiff --git a/src/theme/index.ts b/src/theme/index.ts[m
+[1mindex 654db62..bd0c345 100644[m
+[1m--- a/src/theme/index.ts[m
+[1m+++ b/src/theme/index.ts[m
+[36m@@ -1,46 +1,68 @@[m
+[32m+[m[32m/**[m
+[32m+[m[32m * Alien Imposter design system — "deep space terminal".[m
+[32m+[m[32m * Near-black indigo space, electric violet + cyan signal colors,[m
+[32m+[m[32m * SpaceMono for numeric/code readouts.[m
+[32m+[m[32m */[m
+[32m+[m
+[32m+[m[32mexport const fonts = {[m
+[32m+[m[32m  mono: 'SpaceMono',[m
+[32m+[m[32m};[m
+[32m+[m
+ export const colors = {[m
+[31m-  background: '#030712',[m
+[31m-  backgroundMid: '#0c0a1a',[m
+[31m-  backgroundGlow: '#1e1035',[m
+[31m-  surface: 'rgba(255,255,255,0.05)',[m
+[32m+[m[32m  // Space[m
+[32m+[m[32m  background: '#04050d',[m
+[32m+[m[32m  backgroundMid: '#0a0918',[m
+[32m+[m[32m  backgroundGlow: '#1b1038',[m
+[32m+[m[32m  // Surfaces[m
+[32m+[m[32m  surface: 'rgba(255,255,255,0.045)',[m
+   surfaceHover: 'rgba(255,255,255,0.08)',[m
+[31m-  surfaceSolid: '#141022',[m
+[31m-  surfaceElevated: '#1a1630',[m
+[31m-  border: 'rgba(255,255,255,0.1)',[m
+[31m-  borderBright: 'rgba(167,139,250,0.35)',[m
+[32m+[m[32m  surfaceSolid: '#12101f',[m
+[32m+[m[32m  surfaceElevated: '#1a172e',[m
+[32m+[m[32m  // Lines[m
+[32m+[m[32m  border: 'rgba(148,163,255,0.14)',[m
+[32m+[m[32m  borderBright: 'rgba(167,139,250,0.45)',[m
+   borderFocus: '#a78bfa',[m
+[31m-  primary: '#a855f7',[m
+[31m-  primaryDark: '#7c3aed',[m
+[31m-  primaryLight: '#c084fc',[m
+[32m+[m[32m  // Signals[m
+[32m+[m[32m  primary: '#8b5cf6',[m
+[32m+[m[32m  primaryDark: '#6d28d9',[m
+[32m+[m[32m  primaryLight: '#c4b5fd',[m
+   secondary: '#ec4899',[m
+   accent: '#22d3ee',[m
+[31m-  accentSoft: '#67e8f9',[m
+[32m+[m[32m  accentSoft: '#7dd3fc',[m
+   lime: '#a3e635',[m
+[31m-  danger: '#f43f5e',[m
+[32m+[m[32m  danger: '#fb4d6d',[m
+   dangerDark: '#e11d48',[m
+[31m-  success: '#4ade80',[m
+[32m+[m[32m  success: '#34d399',[m
+   warning: '#fbbf24',[m
+[31m-  text: '#fafafa',[m
+[31m-  textMuted: '#a1a1aa',[m
+[31m-  textDim: '#71717a',[m
+[32m+[m[32m  // Text[m
+[32m+[m[32m  text: '#f4f4f8',[m
+[32m+[m[32m  textMuted: '#9d9cb3',[m
+[32m+[m[32m  textDim: '#63627a',[m
+[32m+[m[32m  // Roles[m
+   alien: '#fb7185',[m
+[31m-  human: '#4ade80',[m
+[31m-  overlay: 'rgba(3,7,18,0.85)',[m
+[31m-  glowPurple: 'rgba(168,85,247,0.25)',[m
+[31m-  glowCyan: 'rgba(34,211,238,0.2)',[m
+[31m-  glowPink: 'rgba(236,72,153,0.2)',[m
+[32m+[m[32m  alienDeep: '#881337',[m
+[32m+[m[32m  human: '#34d399',[m
+[32m+[m[32m  humanDeep: '#065f46',[m
+[32m+[m[32m  // FX[m
+[32m+[m[32m  overlay: 'rgba(4,5,13,0.88)',[m
+[32m+[m[32m  glowPurple: 'rgba(139,92,246,0.22)',[m
+[32m+[m[32m  glowCyan: 'rgba(34,211,238,0.16)',[m
+[32m+[m[32m  glowPink: 'rgba(236,72,153,0.18)',[m
+[32m+[m[32m  glowRed: 'rgba(251,113,133,0.16)',[m
+[32m+[m[32m  glowGreen: 'rgba(52,211,153,0.16)',[m
+ };[m
+ [m
+ export const gradients = {[m
+[31m-  screen: ['#030712', '#0f0720', '#030712'] as const,[m
+[31m-  hero: ['#581c87', '#a855f7', '#ec4899'] as const,[m
+[31m-  primary: ['#7c3aed', '#a855f7'] as const,[m
+[31m-  danger: ['#be123c', '#f43f5e'] as const,[m
+[31m-  success: ['#15803d', '#4ade80'] as const,[m
+[31m-  card: ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.03)'] as const,[m
+[31m-  alien: ['#450a0a', '#881337'] as const,[m
+[31m-  human: ['#052e16', '#14532d'] as const,[m
+[31m-  timer: ['#164e63', '#0891b2'] as const,[m
+[32m+[m[32m  screen: ['#04050d', '#0d0722', '#04050d'] as const,[m
+[32m+[m[32m  hero: ['#4c1d95', '#8b5cf6', '#d946ef'] as const,[m
+[32m+[m[32m  primary: ['#6d28d9', '#8b5cf6'] as const,[m
+[32m+[m[32m  danger: ['#9f1239', '#fb4d6d'] as const,[m
+[32m+[m[32m  success: ['#065f46', '#34d399'] as const,[m
+[32m+[m[32m  card: ['rgba(255,255,255,0.075)', 'rgba(255,255,255,0.02)'] as const,[m
+[32m+[m[32m  alien: ['#3f0d1d', '#881337'] as const,[m
+[32m+[m[32m  human: ['#042f22', '#065f46'] as const,[m
+[32m+[m[32m  timer: ['#155e75', '#0891b2'] as const,[m
+[32m+[m[32m  cyan: ['#0e7490', '#22d3ee'] as const,[m
+ };[m
+ [m
+ export const spacing = {[m
+[36m@@ -64,27 +86,49 @@[m [mexport const radius = {[m
+ export const typography = {[m
+   display: { fontSize: 40, fontWeight: '900' as const, letterSpacing: -1.2 },[m
+   hero: { fontSize: 32, fontWeight: '800' as const, letterSpacing: -0.8 },[m
+[31m-  title: { fontSize: 24, fontWeight: '700' as const, letterSpacing: -0.4 },[m
+[32m+[m[32m  title: { fontSize: 24, fontWeight: '800' as const, letterSpacing: -0.4 },[m
+   heading: { fontSize: 18, fontWeight: '700' as const },[m
+   body: { fontSize: 16, fontWeight: '500' as const, lineHeight: 24 },[m
+   caption: { fontSize: 14, fontWeight: '500' as const, lineHeight: 20 },[m
+   small: { fontSize: 12, fontWeight: '600' as const, letterSpacing: 0.6 },[m
+[31m-  mono: { fontSize: 28, fontWeight: '800' as const, letterSpacing: 6 },[m
+[32m+[m[32m  /** Terminal-style numeric readout. */[m
+[32m+[m[32m  mono: { fontSize: 28, fontWeight: '800' as const, letterSpacing: 6, fontFamily: fonts.mono },[m
+[32m+[m[32m  /** Tiny uppercase label — section headers, HUD chrome. */[m
+[32m+[m[32m  label: {[m
+[32m+[m[32m    fontSize: 10,[m
+[32m+[m[32m    fontWeight: '800' as const,[m
+[32m+[m[32m    letterSpacing: 2.4,[m
+[32m+[m[32m    textTransform: 'uppercase' as const,[m
+[32m+[m[32m  },[m
+ };[m
+ [m
+ export const shadows = {[m
+   glow: {[m
+     shadowColor: colors.primary,[m
+     shadowOffset: { width: 0, height: 0 },[m
+[32m+[m[32m    shadowOpacity: 0.5,[m
+[32m+[m[32m    shadowRadius: 18,[m
+[32m+[m[32m    elevation: 8,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  glowCyan: {[m
+[32m+[m[32m    shadowColor: colors.accent,[m
+[32m+[m[32m    shadowOffset: { width: 0, height: 0 },[m
+[32m+[m[32m    shadowOpacity: 0.4,[m
+[32m+[m[32m    shadowRadius: 14,[m
+[32m+[m[32m    elevation: 6,[m
+[32m+[m[32m  },[m
+[32m+[m[32m  glowRed: {[m
+[32m+[m[32m    shadowColor: colors.alien,[m
+[32m+[m[32m    shadowOffset: { width: 0, height: 0 },[m
+     shadowOpacity: 0.45,[m
+     shadowRadius: 16,[m
+     elevation: 8,[m
+   },[m
+   card: {[m
+     shadowColor: '#000',[m
+[31m-    shadowOffset: { width: 0, height: 8 },[m
+[31m-    shadowOpacity: 0.35,[m
+[31m-    shadowRadius: 24,[m
+[32m+[m[32m    shadowOffset: { width: 0, height: 10 },[m
+[32m+[m[32m    shadowOpacity: 0.4,[m
+[32m+[m[32m    shadowRadius: 26,[m
+     elevation: 6,[m
+   },[m
+ };[m
+[36m@@ -107,6 +151,16 @@[m [mexport const chamberGradients: Record<string, readonly [string, string, string]>[m
+   most_likely_to: ['#500724', '#9d174d', '#f472b6'],[m
+ };[m
+ [m
+[32m+[m[32m/** Flat accent color per chamber — used for borders / labels. */[m
+[32m+[m[32mexport const chamberAccents: Record<string, string> = {[m
+[32m+[m[32m  opinion_hold: '#c084fc',[m
+[32m+[m[32m  deliberation_deck: '#fb923c',[m
+[32m+[m[32m  bioscanner: '#2dd4bf',[m
+[32m+[m[32m  drawing_quarters: '#5eead4',[m
+[32m+[m[32m  writing_pod: '#60a5fa',[m
+[32m+[m[32m  most_likely_to: '#f472b6',[m
+[32m+[m[32m};[m
+[32m+[m
+ export const chamberCodes: Record<string, string> = {[m
+   opinion_hold: 'OPIN',[m
+   deliberation_deck: 'DCSN',[m

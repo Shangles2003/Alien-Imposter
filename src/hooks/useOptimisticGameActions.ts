@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { Alert } from 'react-native';
 import { applyGameAction, fetchGameState, submitPlayerAction } from '@/services/gameSync';
 import { GameState } from '@/types/game';
+import { errorMessage } from '@/utils/errors';
 
 export function useOptimisticGameActions(
   gameId: string | undefined,
@@ -26,7 +27,7 @@ export function useOptimisticGameActions(
       try {
         optimistic = action(current);
       } catch (e) {
-        Alert.alert('Action failed', e instanceof Error ? e.message : 'Unknown error');
+        Alert.alert('Action failed', errorMessage(e));
         return;
       }
       setGame(optimistic);
@@ -34,7 +35,7 @@ export function useOptimisticGameActions(
         await applyGameAction(gameId, current, action);
       } catch (e) {
         await rollback();
-        Alert.alert('Action failed', e instanceof Error ? e.message : 'Unknown error');
+        Alert.alert('Action failed', errorMessage(e));
       }
     },
     [gameId, setGame, rollback]
@@ -48,7 +49,7 @@ export function useOptimisticGameActions(
       try {
         optimistic = updater(current);
       } catch (e) {
-        Alert.alert('Submit failed', e instanceof Error ? e.message : 'Unknown error');
+        Alert.alert('Submit failed', errorMessage(e));
         return;
       }
       setGame(optimistic);
@@ -56,7 +57,7 @@ export function useOptimisticGameActions(
         await submitPlayerAction(gameId, current, updater);
       } catch (e) {
         await rollback();
-        Alert.alert('Submit failed', e instanceof Error ? e.message : 'Unknown error');
+        Alert.alert('Submit failed', errorMessage(e));
       }
     },
     [gameId, setGame, rollback]
