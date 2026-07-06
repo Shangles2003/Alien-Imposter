@@ -19,14 +19,8 @@ export const PACK_LISTINGS: PackListing[] = [
     free: true,
     purchasable: false,
   },
-  {
-    id: 'spicy',
-    name: 'Spicy Pack',
-    tagline: 'Juicy relationship prompts & absurd drawing missions.',
-    emoji: '🌶️',
-    free: false,
-    purchasable: true,
-  },
+  // The spicy pack was retired — its best prompts were reworked and folded
+  // into the free core pool. A separate "After Dark" pack may return later.
 ];
 
 export function getPackListing(id: ContentPackId): PackListing {

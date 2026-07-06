@@ -176,7 +176,7 @@ export const phaseLabels: Record<string, { title: string; subtitle: string }> = 
   chamber_boarding: { title: 'Boarding', subtitle: 'Crew entering chamber' },
   chamber_active: { title: 'Live Task', subtitle: 'All crew responding' },
   chamber_results: { title: 'Answers', subtitle: 'What everyone said' },
-  extraction_nominate: { title: 'Extraction', subtitle: 'Nominate suspects' },
-  extraction_vote: { title: 'Final Vote', subtitle: 'Unanimous required' },
+  extraction_nominate: { title: 'Accusation', subtitle: 'Secret ballots' },
+  extraction_vote: { title: 'The Trial', subtitle: 'Majority decides' },
   game_over: { title: 'Complete', subtitle: 'Mission ended' },
 };

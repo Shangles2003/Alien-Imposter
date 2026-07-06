@@ -14,6 +14,7 @@ import { GearIcon } from '@/components/ui/GearIcon';
 import { useAuth } from '@/context/AuthContext';
 import { isDevModeEnabled } from '@/dev/config';
 import { createDevLobby, createLobby, joinLobbyByCode } from '@/services/lobby';
+import { mapJoinLobbyError } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
 import { SETTINGS_ROUTE } from '@/navigation/routes';
 import { colors, radius, spacing, typography } from '@/theme';
@@ -47,7 +48,7 @@ export default function HomeScreen() {
       const lobby = await joinLobbyByCode(code, profile);
       router.push(`/lobby/${lobby.id}`);
     } catch (e) {
-      Alert.alert('Join failed', errorMessage(e));
+      Alert.alert('Join failed', mapJoinLobbyError(errorMessage(e)));
     } finally {
       setLoading(null);
     }

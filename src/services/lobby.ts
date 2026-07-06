@@ -123,40 +123,34 @@ export async function joinLobbyByCode(
   code: string,
   profile: PlayerProfile
 ): Promise<Lobby> {
-  const { data: rows, error } = await supabase
-    .from('lobbies')
-    .select('*')
-    .eq('code', code.toUpperCase())
-    .limit(1);
+  const { data, error } = await supabase.rpc('join_lobby_by_code', {
+    p_code: code.toUpperCase(),
+    p_display_name: profile.displayName,
+    p_avatar_color: profile.avatarColor,
+  });
 
-  if (error) throw error;
-  if (!rows?.length) throw new Error('Lobby not found. Check the code and try again.');
+  if (error) {
+    const msg = error.message ?? 'Could not join lobby.';
+    throw new Error(msg);
+  }
 
-  const row = rows[0]!;
-  const lobby = rowToLobby({ ...row, players: row.players as LobbyPlayer[] });
+  if (!data) throw new Error('Lobby not found. Check the code and try again.');
 
-  if (lobby.status !== 'waiting') throw new Error('This lobby is no longer accepting players.');
-  if (lobby.players.length >= lobby.maxPlayers) throw new Error('Lobby is full.');
-  if (lobby.players.some((p) => p.uid === profile.uid)) return lobby;
-
-  const newPlayer: LobbyPlayer = {
-    uid: profile.uid,
-    displayName: profile.displayName,
-    avatarColor: profile.avatarColor,
-    isHost: false,
-    isReady: false,
-    joinedAt: Date.now(),
+  const row = data as {
+    id: string;
+    code: string;
+    host_id: string;
+    is_public: boolean;
+    status: string;
+    max_players: number;
+    min_players: number;
+    players: LobbyPlayer[];
+    game_id: string | null;
+    host_settings?: HostSettings | null;
+    created_at: string;
   };
 
-  const updatedPlayers = [...lobby.players, newPlayer];
-
-  const { error: updateError } = await supabase
-    .from('lobbies')
-    .update({ players: updatedPlayers })
-    .eq('id', lobby.id);
-
-  if (updateError) throw updateError;
-  return { ...lobby, players: updatedPlayers };
+  return rowToLobby({ ...row, players: row.players ?? [] });
 }
 
 export async function leaveLobby(lobbyId: string, uid: string): Promise<void> {

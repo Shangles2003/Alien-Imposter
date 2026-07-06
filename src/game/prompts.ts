@@ -12,242 +12,636 @@ export interface PromptContext {
 }
 
 /**
- * Paired opinion statements — related takes, not mirror opposites.
- * Infiltrators can sometimes agree the same way and blend in.
+ * PROMPT PAIR DESIGN RULES
+ *
+ * Every pair must pass two tests:
+ *  1. DEFENDABLE — an honest answer to the infiltrator prompt must also read
+ *     as a plausible answer to the crew prompt. Never pure opposites.
+ *  2. DIVERGENT — the natural answer distributions should differ enough that
+ *     over a few rounds the infiltrator's answers start to feel "off".
+ *
+ * Per chamber:
+ *  - Opinion Bay: same topic zone, different claim. Any agree-level is
+ *    defensible; the tell is in how they justify it out loud.
+ *  - Decision Deck: crew sees a vivid scenario with one key detail; the
+ *    infiltrator sees the same situation with the detail stripped. Options
+ *    are shared and all generally plausible.
+ *  - Sketch Bay: both sides draw CONCRETE objects that are silhouette twins.
+ *    Never bare shapes ("draw a triangle") — the drawing must be defendable
+ *    as the crew subject at a squint.
+ *  - Writing Pod: identical sentence frame, swapped context. Same answer
+ *    shape (a food, a phrase, a place), different world.
+ *  - Likely Locker: overlapping trait cluster, different criterion — the
+ *    infiltrator's vote lands near the crew's but not reliably on it.
  */
+
+/** Opinion Bay — agree/disagree pairs. */
 export const OPINION_PROMPTS: Omit<ChamberPrompt, 'id' | 'chamber'>[] = [
   {
-    humanPrompt: 'Cold pizza for breakfast is elite.',
-    alienPrompt: 'Leftover pizza hits different the next morning.',
+    humanPrompt: 'Pineapple belongs on pizza.',
+    alienPrompt: 'Sweet and salty is the best flavor combo.',
+  },
+  {
+    humanPrompt: 'A hot dog is a sandwich.',
+    alienPrompt: 'Food categories are made up and do not really matter.',
+  },
+  {
+    humanPrompt: 'Reclining your seat on a plane is perfectly fine.',
+    alienPrompt: 'If you paid for it, use every feature it has.',
+  },
+  {
+    humanPrompt: 'Texting back instantly makes you look desperate.',
+    alienPrompt: 'Playing it cool early in a relationship is smart.',
+  },
+  {
+    humanPrompt: 'Both middle-seat armrests belong to the middle passenger.',
+    alienPrompt: 'Flying brings out the worst in everyone.',
+  },
+  {
+    humanPrompt: 'Cats are better roommates than dogs.',
+    alienPrompt: 'Low-maintenance pets are the best pets.',
+  },
+  {
+    humanPrompt: 'Breakfast food is acceptable at any hour of the day.',
+    alienPrompt: 'Rules about meal times are pointless.',
+  },
+  {
+    humanPrompt: 'You should always tell a stranger when they have food in their teeth.',
+    alienPrompt: 'A little awkwardness is a fair price for honesty.',
+  },
+  {
+    humanPrompt: 'Movie theaters are overpriced and overrated.',
+    alienPrompt: 'A night in beats a night out.',
+  },
+  {
+    humanPrompt: 'Every group project has exactly one person doing all the work.',
+    alienPrompt: 'Most people slack off the second nobody is watching.',
+  },
+  {
+    humanPrompt: 'Wearing the same outfit two days in a row is fine.',
+    alienPrompt: 'People notice way less about you than you think.',
+  },
+  {
+    humanPrompt: 'Toilet paper must hang over the top, not under.',
+    alienPrompt: 'There is a correct way to do almost every household task.',
+  },
+  {
+    humanPrompt: 'Winter is the best season.',
+    alienPrompt: 'Staying in is better than going out.',
+  },
+  {
+    humanPrompt: 'Ghosting someone is sometimes the kindest option.',
+    alienPrompt: 'Avoiding a hard conversation usually works out fine.',
+  },
+  {
+    humanPrompt: 'A five-star review should be rare and earned.',
+    alienPrompt: 'People hand out praise way too easily these days.',
+  },
+  {
+    humanPrompt: 'Cereal is technically a soup.',
+    alienPrompt: 'Technically-correct arguments are the best arguments.',
+  },
+  {
+    humanPrompt: 'You can judge an entire restaurant by its fries.',
+    alienPrompt: 'Small details reveal overall quality.',
+  },
+  {
+    humanPrompt: 'Talking on speakerphone in public should be a crime.',
+    alienPrompt: 'Basic etiquette in public is disappearing.',
+  },
+  {
+    humanPrompt: 'The book is always better than the movie.',
+    alienPrompt: 'The original version beats the remake every time.',
+  },
+  {
+    humanPrompt: 'Mint chocolate tastes like toothpaste.',
+    alienPrompt: 'Some wildly popular flavors are secretly terrible.',
+  },
+  {
+    humanPrompt: 'Everyone should work a customer service job at least once.',
+    alienPrompt: 'Hard experiences build character.',
+  },
+  {
+    humanPrompt: 'Leaving a party without saying goodbye is a skill, not a crime.',
+    alienPrompt: 'Long goodbyes are worse than no goodbye.',
   },
   {
     humanPrompt: 'Socks with sandals is a valid look.',
-    alienPrompt: 'Comfort beats looking fancy.',
+    alienPrompt: 'Comfort beats fashion every single time.',
   },
   {
-    humanPrompt: 'The messy part of a burrito is the best part.',
-    alienPrompt: 'A great burrito should be a little messy.',
+    humanPrompt: 'Your zodiac sign says absolutely nothing about you.',
+    alienPrompt: 'People believe too many fun little myths.',
   },
   {
-    humanPrompt: 'Re-gifting a present is totally fine.',
-    alienPrompt: 'If someone will actually use it, the gift still counts.',
+    humanPrompt: 'Camping is just choosing to be homeless for the weekend.',
+    alienPrompt: 'Nature is best enjoyed from indoors.',
   },
   {
-    humanPrompt: 'Ketchup on eggs is underrated.',
-    alienPrompt: 'Breakfast needs something saucy on the side.',
+    humanPrompt: 'Kids menus secretly have the best food at most restaurants.',
+    alienPrompt: 'Simple food beats fancy food.',
   },
   {
-    humanPrompt: 'You should tip on takeout.',
-    alienPrompt: 'Always tip when someone brings food to you.',
+    humanPrompt: 'Double-dipping is fine among close friends.',
+    alienPrompt: 'Germs from people you love do not count.',
   },
   {
-    humanPrompt: 'Clapping when the plane lands is wholesome.',
-    alienPrompt: 'A little cheer after a flight is fine.',
+    humanPrompt: 'Cold pizza for breakfast is elite.',
+    alienPrompt: 'Leftovers taste better than the original meal.',
   },
   {
-    humanPrompt: 'The book is usually better than the movie.',
-    alienPrompt: 'I like experiencing a story before the adaptation.',
+    humanPrompt: 'You can tell everything about someone by how they treat waitstaff.',
+    alienPrompt: 'First impressions are usually right.',
   },
   {
-    humanPrompt: 'Replying "K" to a text is rude.',
-    alienPrompt: 'One-letter replies feel cold.',
+    humanPrompt: 'Public displays of affection are cringe.',
+    alienPrompt: 'Some things are better kept private.',
   },
   {
-    humanPrompt: 'Dipping fries in a milkshake slaps.',
-    alienPrompt: 'Sweet and salty combos are underrated.',
+    humanPrompt: 'Love at first sight is real.',
+    alienPrompt: 'Gut feelings are usually right.',
   },
   {
-    humanPrompt: 'Hot dogs count as sandwiches.',
-    alienPrompt: 'If it is bread with stuff inside, it counts.',
+    humanPrompt: 'A group chat with more than ten people is a punishment.',
+    alienPrompt: 'Notifications are the enemy of happiness.',
   },
   {
-    humanPrompt: 'Pajamas on a video call is fine.',
-    alienPrompt: 'Remote meetings do not need a full outfit.',
+    humanPrompt: 'Sending voice memos instead of texting is lazy.',
+    alienPrompt: 'Talking is easier than typing.',
   },
   {
-    humanPrompt: 'Cereal is a perfectly fine dinner.',
-    alienPrompt: 'Breakfast food at night hits different.',
-  },
-  {
-    humanPrompt: 'Group chats need a mute button for sanity.',
-    alienPrompt: 'Sometimes you just need to silence notifications.',
+    humanPrompt: 'Gas station snacks hit harder than fancy desserts.',
+    alienPrompt: 'Cheap treats beat expensive ones.',
   },
 ];
 
-/** Parallel scenarios — same options, wording close enough to answer similarly. */
+/** Decision Deck — crew gets the vivid detail, infiltrator gets it stripped. Options are shared. */
 export const DELIBERATION_SCENARIOS: Omit<ChamberPrompt, 'id' | 'chamber'>[] = [
   {
-    humanPrompt: 'You double-texted someone and they left you on read for three days.',
-    alienPrompt: 'You sent a couple follow-ups and still have not heard back.',
-    scenario: 'You double-texted someone and they left you on read for three days.',
-    options: ['Send a casual "you good?"', 'One more message, then stop', 'Move on — they got it'],
+    humanPrompt: "Your best friend's wedding lands on the same day as a concert you have front-row tickets for.",
+    alienPrompt: 'Two events you care about land on the same day.',
+    scenario: "Your best friend's wedding lands on the same day as a concert you have front-row tickets for.",
+    options: ['Skip the concert, no question', 'Sell the tickets and never mention it', 'Ceremony first, sprint to the show after'],
   },
   {
-    humanPrompt: 'A friend asks you to split a $40 birthday gift for someone you barely know.',
-    alienPrompt: 'Someone wants you to chip in on a group gift for an acquaintance.',
-    scenario: 'A friend asks you to split a $40 birthday gift for someone you barely know.',
-    options: ['Split it — be nice', 'Offer a smaller amount', 'Decline politely'],
+    humanPrompt: 'You find $200 cash in the pocket of a jacket you just bought at a thrift store.',
+    alienPrompt: 'You unexpectedly come into a little money.',
+    scenario: 'You find $200 cash in the pocket of a jacket you just bought at a thrift store.',
+    options: ['Keep it — fate has spoken', 'Turn it in to the store', 'Keep half, donate half'],
   },
   {
-    humanPrompt: 'You wake up to 47 unread messages in the group chat.',
-    alienPrompt: 'You open your phone to a wall of missed messages.',
-    scenario: 'You wake up to 47 unread messages in the group chat.',
-    options: ['Read everything and catch up', 'Ask "what did I miss?"', 'Mute and check later'],
+    humanPrompt: "Your roommate's alarm has been blaring for 45 minutes and they are not home.",
+    alienPrompt: 'Something in your home is slowly driving you insane.',
+    scenario: "Your roommate's alarm has been blaring for 45 minutes and they are not home.",
+    options: ['Go in and shut it off', 'Text them a complaint', 'Suffer with headphones on principle'],
   },
   {
-    humanPrompt: 'Someone cuts in front of you in line at the coffee shop.',
-    alienPrompt: 'Someone skips ahead of you while you are waiting to order.',
-    scenario: 'Someone cuts in front of you in line at the coffee shop.',
-    options: ['Say something', 'Let it go', 'Make a passive-aggressive comment'],
+    humanPrompt: 'The waiter brings you the wrong dish — but it looks better than what you ordered.',
+    alienPrompt: 'You end up with something you did not ask for.',
+    scenario: 'The waiter brings you the wrong dish — but it looks better than what you ordered.',
+    options: ['Say nothing and eat it', 'Flag it and ask for your order', 'Ask sweetly if you can keep both'],
   },
   {
-    humanPrompt: 'Your roommate ate your labeled leftovers from the fridge.',
-    alienPrompt: 'Food you saved with your name on it is gone.',
-    scenario: 'Your roommate ate your labeled leftovers from the fridge.',
-    options: ['Confront them', 'Leave a note on the fridge', 'Hide your food from now on'],
+    humanPrompt: 'Your boss has called you the wrong name for three months straight.',
+    alienPrompt: 'Someone keeps making the same small mistake with you.',
+    scenario: 'Your boss has called you the wrong name for three months straight.',
+    options: ['Correct them today', 'Let it ride forever', 'Start answering only to the wrong name'],
   },
   {
-    humanPrompt: 'You find out a party happened and you were not invited.',
-    alienPrompt: 'Friends hung out and you only saw it on social media.',
-    scenario: 'You find out a party happened and you were not invited.',
-    options: ['Ask a friend what happened', 'Show up to the next one uninvited', 'Act like you did not care'],
+    humanPrompt: 'You are on a first date and spot your ex two tables away.',
+    alienPrompt: 'Someone from your past shows up at a bad moment.',
+    scenario: 'You are on a first date and spot your ex two tables away.',
+    options: ['Pretend you saw nothing', 'Wave like an adult and move on', 'Suggest moving somewhere else'],
   },
   {
-    humanPrompt: 'You can get $500 today or $50,000 in ten years — guaranteed.',
-    alienPrompt: 'A little money now or a lot more later — both guaranteed.',
-    scenario: 'You can get $500 today or $50,000 in ten years — guaranteed.',
-    options: ['Take the $500 now', 'Wait ten years', 'Try to negotiate $5,000 today'],
+    humanPrompt: 'A coworker microwaves fish in the office kitchen every single day.',
+    alienPrompt: 'Someone near you has an annoying daily habit.',
+    scenario: 'A coworker microwaves fish in the office kitchen every single day.',
+    options: ['Talk to them directly', 'Leave an anonymous note', 'Escalate — microwave something worse'],
   },
   {
-    humanPrompt: 'A stranger asks to borrow your phone to make an emergency call.',
-    alienPrompt: 'Someone you do not know needs to use your phone urgently.',
-    scenario: 'A stranger asks to borrow your phone to make an emergency call.',
-    options: ['Hand them your phone', 'Offer to dial for them', 'Politely decline'],
+    humanPrompt: 'You get to the airport and realize your flight is actually tomorrow.',
+    alienPrompt: 'Your plans fall apart at the last minute.',
+    scenario: 'You get to the airport and realize your flight is actually tomorrow.',
+    options: ['Beg for a standby seat today', 'Go home and pretend it never happened', 'Airport hotel — make it a mini vacation'],
   },
   {
-    humanPrompt: 'Your friend is twenty minutes late to meet you.',
-    alienPrompt: 'You have been waiting and they still are not here.',
-    scenario: 'Your friend is twenty minutes late to meet you.',
-    options: ['Text "you close?"', 'Give them ten more minutes', 'Leave and go home'],
+    humanPrompt: 'The group chat is planning a trip you absolutely cannot afford.',
+    alienPrompt: 'Friends are planning something that does not work for you.',
+    scenario: 'The group chat is planning a trip you absolutely cannot afford.',
+    options: ['Be honest about the budget', 'Pitch a cheaper version', 'Go anyway and eat instant noodles for months'],
   },
   {
-    humanPrompt: 'You accidentally liked a photo from three years ago while stalking.',
-    alienPrompt: 'You tapped like on an old post you were scrolling through.',
-    scenario: 'You accidentally liked a photo from three years ago while stalking.',
-    options: ['Unlike and hope they did not see', 'Leave it — own it', 'Message a joke about it'],
+    humanPrompt: 'You hate the haircut. The barber is standing there, smiling, waiting.',
+    alienPrompt: 'You are not thrilled with something you just paid for.',
+    scenario: 'You hate the haircut. The barber is standing there, smiling, waiting.',
+    options: ['Say you love it and tip anyway', 'Gently ask for a fix', 'Be honest — it is your head'],
+  },
+  {
+    humanPrompt: "Your neighbor's package lands at your door. It is very clearly a massive TV.",
+    alienPrompt: 'Something that is not yours ends up in your hands.',
+    scenario: "Your neighbor's package lands at your door. It is very clearly a massive TV.",
+    options: ['Walk it over right away', 'Text them to come get it', 'Hold it hostage until they return your stuff'],
+  },
+  {
+    humanPrompt: 'Your parents are coming over in two hours and the place is a disaster.',
+    alienPrompt: 'Guests are arriving sooner than you would like.',
+    scenario: 'Your parents are coming over in two hours and the place is a disaster.',
+    options: ['Speed-clean like an athlete', 'Shove everything into one room and shut the door', 'Own the mess — this is real life'],
+  },
+  {
+    humanPrompt: 'Mid-presentation, your laptop dies in front of the entire room.',
+    alienPrompt: 'Technology fails you at an important moment.',
+    scenario: 'Mid-presentation, your laptop dies in front of the entire room.',
+    options: ['Wing it from memory', 'Call a five-minute break', 'Pivot to asking the room questions'],
+  },
+  {
+    humanPrompt: "Someone's phone rings at full volume in the movie theater — and they let it ring.",
+    alienPrompt: 'A stranger is being disruptive nearby.',
+    scenario: "Someone's phone rings at full volume in the movie theater — and they let it ring.",
+    options: ['Loud, pointed shush', 'Say something directly', 'Silently plot their downfall'],
+  },
+  {
+    humanPrompt: 'Your friend asks you to help them move. For the fourth time in two years.',
+    alienPrompt: 'A friend asks for a favor you have done many times.',
+    scenario: 'Your friend asks you to help them move. For the fourth time in two years.',
+    options: ['Show up — that is friendship', 'Help, but declare it the final time', 'Develop sudden mysterious plans'],
+  },
+  {
+    humanPrompt: 'You bite into a sandwich your friend made. It is terrible. They are watching your face.',
+    alienPrompt: 'You have to react to something you do not love.',
+    scenario: 'You bite into a sandwich your friend made. It is terrible. They are watching your face.',
+    options: ['Give the performance of a lifetime', 'A diplomatic "it is interesting!"', 'Gently tell the truth'],
+  },
+  {
+    humanPrompt: 'The person ahead of you has 40 items in the 10-items-or-less lane.',
+    alienPrompt: 'Someone bends a small public rule right in front of you.',
+    scenario: 'The person ahead of you has 40 items in the 10-items-or-less lane.',
+    options: ['Point at the sign', 'Deploy the death stare', 'Let it go — life is long'],
+  },
+  {
+    humanPrompt: "Your delivery arrives and it is someone else's order — but honestly, a better one.",
+    alienPrompt: 'A mix-up lands slightly in your favor.',
+    scenario: "Your delivery arrives and it is someone else's order — but honestly, a better one.",
+    options: ['Report it and hand it back', 'Keep it — destiny', 'Keep it AND request a refund'],
+  },
+  {
+    humanPrompt: 'You wave back at someone who was definitely waving at the person behind you.',
+    alienPrompt: 'You embarrass yourself a little in public.',
+    scenario: 'You wave back at someone who was definitely waving at the person behind you.',
+    options: ['Commit — turn it into a stretch', 'Laugh at yourself out loud', 'Leave the country immediately'],
+  },
+  {
+    humanPrompt: 'Your friend keeps dropping spoilers for a show you are two seasons behind on.',
+    alienPrompt: 'A friend keeps ruining something small for you.',
+    scenario: 'Your friend keeps dropping spoilers for a show you are two seasons behind on.',
+    options: ['Beg for a spoiler embargo', 'Mute them until you catch up', 'Cancel your weekend and binge it all'],
+  },
+  {
+    humanPrompt: 'It is your birthday dinner and the table is deciding how to split a very uneven bill.',
+    alienPrompt: 'A group needs to sort out money fairly.',
+    scenario: 'It is your birthday dinner and the table is deciding how to split a very uneven bill.',
+    options: ['Even split, keep the peace', 'Everyone pays for exactly what they had', 'The birthday person pays nothing, obviously'],
+  },
+  {
+    humanPrompt: 'You spot the typo one second after texting your crush.',
+    alienPrompt: 'You notice a tiny mistake right after making it.',
+    scenario: 'You spot the typo one second after texting your crush.',
+    options: ['Send the asterisk correction instantly', 'Double down like it was intentional', 'Never speak of it again'],
+  },
+  {
+    humanPrompt: 'You find your middle school diary and it is devastatingly embarrassing.',
+    alienPrompt: 'You stumble on something embarrassing from your past.',
+    scenario: 'You find your middle school diary and it is devastatingly embarrassing.',
+    options: ['Read the best parts to friends', 'Lock it away forever', 'Ceremonial bonfire'],
+  },
+  {
+    humanPrompt: 'Your karaoke song starts and you suddenly forget every single word.',
+    alienPrompt: 'You are put on the spot and your mind goes completely blank.',
+    scenario: 'Your karaoke song starts and you suddenly forget every single word.',
+    options: ['Commit and mumble through it', 'Turn it into a crowd singalong', 'Dramatic mic drop and walk off'],
+  },
+  {
+    humanPrompt: 'A wasp gets into the car while you are driving on the highway.',
+    alienPrompt: 'A small crisis breaks out at the worst possible time.',
+    scenario: 'A wasp gets into the car while you are driving on the highway.',
+    options: ['Pull over immediately', 'Stay calm and crack a window', 'Accept that the car belongs to the wasp now'],
   },
 ];
 
-/** Parallel draw prompts — answers can overlap (triangle ≈ shark fin). */
+/** Sketch Bay — silhouette twins. Both sides always draw a real, concrete thing. */
 export const DRAWING_PROMPTS: Omit<ChamberPrompt, 'id' | 'chamber'>[] = [
-  { humanPrompt: 'Draw a shark fin.', alienPrompt: 'Draw a triangle.' },
-  { humanPrompt: 'Draw your favorite junk food.', alienPrompt: 'Draw something you would snack on.' },
-  { humanPrompt: 'Draw a cat wearing sunglasses.', alienPrompt: 'Draw a cool-looking animal.' },
-  { humanPrompt: 'Draw your dream car.', alienPrompt: 'Draw a vehicle you would love to drive.' },
-  { humanPrompt: 'Draw a snowman.', alienPrompt: 'Draw three circles stacked on each other.' },
-  { humanPrompt: 'Draw what happiness looks like to you.', alienPrompt: 'Draw something that makes you smile.' },
-  { humanPrompt: 'Draw a treehouse.', alienPrompt: 'Draw a small house up high.' },
-  { humanPrompt: 'Draw the last thing you ate.', alienPrompt: 'Draw your most recent meal.' },
-  { humanPrompt: 'Draw a monster under your bed.', alienPrompt: 'Draw something a little scary.' },
-  { humanPrompt: 'Draw your pet — or your dream pet.', alienPrompt: 'Draw an animal you like.' },
-  { humanPrompt: 'Draw a self-portrait as a stick figure.', alienPrompt: 'Draw yourself as a stick figure.' },
-  { humanPrompt: 'Draw a pizza slice.', alienPrompt: 'Draw a triangle with stuff on it.' },
-  { humanPrompt: 'Draw a rocket ship.', alienPrompt: 'Draw a pointy shape with flames.' },
-  { humanPrompt: 'Draw a birthday cake.', alienPrompt: 'Draw a rectangle with candles.' },
-  { humanPrompt: 'Draw a mountain landscape.', alienPrompt: 'Draw a zigzag line above a line.' },
+  { humanPrompt: 'Draw a campfire.', alienPrompt: 'Draw a lit torch.' },
+  { humanPrompt: 'Draw a snowman.', alienPrompt: 'Draw three scoops of ice cream stacked in a cone.' },
+  { humanPrompt: 'Draw a slice of pizza.', alienPrompt: 'Draw a slice of watermelon.' },
+  { humanPrompt: 'Draw a rocket ship.', alienPrompt: 'Draw a lighthouse.' },
+  { humanPrompt: 'Draw a birthday cake.', alienPrompt: 'Draw a stack of pancakes with a topping.' },
+  { humanPrompt: 'Draw a shark.', alienPrompt: 'Draw a dolphin.' },
+  { humanPrompt: 'Draw a cactus in the desert.', alienPrompt: 'Draw a hand waving hello.' },
+  { humanPrompt: 'Draw an octopus.', alienPrompt: 'Draw a spider.' },
+  { humanPrompt: 'Draw a UFO.', alienPrompt: 'Draw a sombrero.' },
+  { humanPrompt: 'Draw the sun.', alienPrompt: 'Draw a sunflower.' },
+  { humanPrompt: 'Draw a Christmas tree.', alienPrompt: 'Draw a party hat.' },
+  { humanPrompt: 'Draw a snake.', alienPrompt: 'Draw a winding river.' },
+  { humanPrompt: 'Draw a donut.', alienPrompt: 'Draw a pool floatie ring.' },
+  { humanPrompt: 'Draw a fancy mustache.', alienPrompt: 'Draw a bird flying far away.' },
+  { humanPrompt: 'Draw a taco.', alienPrompt: 'Draw a fortune cookie.' },
+  { humanPrompt: 'Draw a ghost.', alienPrompt: 'Draw a squid.' },
+  { humanPrompt: 'Draw a royal crown.', alienPrompt: 'Draw a mountain range.' },
+  { humanPrompt: 'Draw a pair of glasses.', alienPrompt: 'Draw a bicycle.' },
+  { humanPrompt: 'Draw a hot air balloon.', alienPrompt: 'Draw a light bulb.' },
+  { humanPrompt: 'Draw a ladybug.', alienPrompt: 'Draw a chocolate chip cookie.' },
+  { humanPrompt: 'Draw a soccer ball.', alienPrompt: 'Draw a disco ball.' },
+  { humanPrompt: 'Draw a palm tree.', alienPrompt: 'Draw fireworks exploding.' },
+  { humanPrompt: 'Draw a hedgehog.', alienPrompt: 'Draw a pinecone.' },
+  { humanPrompt: 'Draw a sailboat.', alienPrompt: 'Draw a shark fin above the water.' },
+  { humanPrompt: 'Draw a caterpillar.', alienPrompt: 'Draw a train with cars.' },
+  { humanPrompt: 'Draw a jellyfish.', alienPrompt: 'Draw a fancy chandelier.' },
+  { humanPrompt: 'Draw a beehive.', alienPrompt: 'Draw a soft-serve ice cream.' },
+  { humanPrompt: 'Draw a banana.', alienPrompt: 'Draw a crescent moon.' },
+  { humanPrompt: 'Draw a wall clock.', alienPrompt: 'Draw a whole pizza cut into slices.' },
+  { humanPrompt: 'Draw an umbrella.', alienPrompt: 'Draw a mushroom.' },
+  { humanPrompt: 'Draw a heart.', alienPrompt: 'Draw a strawberry.' },
+  { humanPrompt: 'Draw a rose.', alienPrompt: 'Draw a lollipop.' },
+  { humanPrompt: 'Draw a penguin.', alienPrompt: 'Draw a bowling pin.' },
 ];
 
-/** Parallel fill-in-the-blank — same kind of answer, different wording. */
+/** Writing Pod — same sentence frame, swapped context. */
 export const WRITING_PROMPTS: Omit<ChamberPrompt, 'id' | 'chamber'>[] = [
-  { humanPrompt: 'Your death row meal would be ___.', alienPrompt: 'Your go-to cheat meal is ___.' },
-  { humanPrompt: 'The one food I could eat every day is ___.', alienPrompt: 'My comfort food order is ___.' },
-  { humanPrompt: 'My toxic trait is that I always ___.', alienPrompt: 'My worst habit is ___.' },
-  { humanPrompt: 'If I had one superpower it would be ___.', alienPrompt: 'The one ability I wish I had is ___.' },
-  { humanPrompt: 'The worst gift I ever received was ___.', alienPrompt: 'A gift I definitely re-gifted was ___.' },
   {
-    humanPrompt: "I know it's weird, but I love the smell of ___.",
-    alienPrompt: 'A smell that instantly makes me happy is ___.',
-  },
-  { humanPrompt: 'My go-to karaoke song is ___.', alienPrompt: 'A song I would belt in the car is ___.' },
-  { humanPrompt: 'I would trade my morning coffee for ___.', alienPrompt: 'The first thing I need every morning is ___.' },
-  {
-    humanPrompt: 'The hill I will die on is that ___ is overrated.',
-    alienPrompt: 'Everyone loves ___ but I do not get the hype.',
-  },
-  { humanPrompt: 'If my life had a theme song, it would be ___.', alienPrompt: 'The song that fits my vibe is ___.' },
-  {
-    humanPrompt: 'On a deserted island I would miss ___ the most.',
-    alienPrompt: 'The thing I could not live without is ___.',
+    humanPrompt: 'The worst thing to hear from your dentist is ___.',
+    alienPrompt: 'The worst thing to hear from your mechanic is ___.',
   },
   {
-    humanPrompt: 'The perfect weekend starts with ___ and ends with ___.',
-    alienPrompt: 'My ideal Saturday is ___ and then ___.',
+    humanPrompt: '___ is an instant deal-breaker on a first date.',
+    alienPrompt: '___ is an instant red flag in a new coworker.',
   },
-  { humanPrompt: 'I knew I was an adult when I started ___.', alienPrompt: 'I felt grown up the day I began ___.' },
-  { humanPrompt: 'My celebrity crush is ___.', alienPrompt: 'A famous person I would fan out over is ___.' },
-  { humanPrompt: 'The best vacation I ever took was to ___.', alienPrompt: 'Somewhere I would travel again in a heartbeat is ___.' },
+  {
+    humanPrompt: 'The best part of a road trip is ___.',
+    alienPrompt: 'The best part of a lazy Sunday is ___.',
+  },
+  {
+    humanPrompt: 'I would never trust someone who ___.',
+    alienPrompt: 'I secretly judge people who ___.',
+  },
+  {
+    humanPrompt: 'The most useless thing I learned in school was ___.',
+    alienPrompt: 'The most useless skill I have is ___.',
+  },
+  {
+    humanPrompt: 'My villain origin story would begin with ___.',
+    alienPrompt: 'The pettiest thing that can ruin my whole day is ___.',
+  },
+  {
+    humanPrompt: 'The last photo in my camera roll is ___.',
+    alienPrompt: 'The most random thing saved on my phone is ___.',
+  },
+  {
+    humanPrompt: 'If animals could talk, the rudest one would be ___.',
+    alienPrompt: 'The animal I trust the least is ___.',
+  },
+  {
+    humanPrompt: 'A word that should be banned forever is ___.',
+    alienPrompt: 'A word people use way too much is ___.',
+  },
+  {
+    humanPrompt: 'My most controversial food opinion is ___.',
+    alienPrompt: 'A food combination I secretly enjoy is ___.',
+  },
+  {
+    humanPrompt: 'The fastest way to make me angry is ___.',
+    alienPrompt: 'The fastest way to lose my respect is ___.',
+  },
+  {
+    humanPrompt: 'In a horror movie, I would die first because ___.',
+    alienPrompt: 'My friends would say my fatal flaw is ___.',
+  },
+  {
+    humanPrompt: '___ should be an Olympic sport.',
+    alienPrompt: '___ deserves way more respect as a skill.',
+  },
+  {
+    humanPrompt: 'The strangest thing I have ever eaten is ___.',
+    alienPrompt: 'A food I tried once and will never try again is ___.',
+  },
+  {
+    humanPrompt: 'My guilty pleasure show is ___.',
+    alienPrompt: 'A show I would defend with my life is ___.',
+  },
+  {
+    humanPrompt: 'The first thing I would buy after winning the lottery is ___.',
+    alienPrompt: 'My dream completely unnecessary purchase is ___.',
+  },
+  {
+    humanPrompt: 'If my pet could talk, the first thing they would expose about me is ___.',
+    alienPrompt: 'If my search history leaked, the worst part would be ___.',
+  },
+  {
+    humanPrompt: 'The worst text to get from your boss is ___.',
+    alienPrompt: 'The worst text to get from your landlord is ___.',
+  },
+  {
+    humanPrompt: 'My most irrational fear is ___.',
+    alienPrompt: 'As a kid, I was inexplicably terrified of ___.',
+  },
+  {
+    humanPrompt: 'The smell of ___ takes me straight back to childhood.',
+    alienPrompt: 'The sound of ___ instantly relaxes me.',
+  },
+  {
+    humanPrompt: 'I refuse to apologize for loving ___.',
+    alienPrompt: 'I will never understand the hate for ___.',
+  },
+  {
+    humanPrompt: 'My autobiography would be titled ___.',
+    alienPrompt: 'My personal warning label would read ___.',
+  },
+  {
+    humanPrompt: 'The worst advice I ever received was ___.',
+    alienPrompt: 'The worst advice I ever gave someone was ___.',
+  },
+  {
+    humanPrompt: '___ is always worth the extra money.',
+    alienPrompt: '___ is always worth waking up early for.',
+  },
+  {
+    humanPrompt: 'If I were a ghost, I would haunt ___.',
+    alienPrompt: 'If I could teleport once a day, I would go straight to ___.',
+  },
+  {
+    humanPrompt: 'The most chaotic item in my fridge right now is ___.',
+    alienPrompt: 'The most chaotic item in my bag or car right now is ___.',
+  },
+  {
+    humanPrompt: 'Aliens visiting Earth would be most confused by ___.',
+    alienPrompt: 'Aliens visiting Earth would be most impressed by ___.',
+  },
+  {
+    humanPrompt: 'The one chore I would pay anything to never do again is ___.',
+    alienPrompt: 'The one errand I will always put off is ___.',
+  },
+  {
+    humanPrompt: 'My biggest red flag is ___.',
+    alienPrompt: 'My biggest green flag is ___.',
+  },
+  {
+    humanPrompt: 'Nothing ruins a party faster than ___.',
+    alienPrompt: 'Nothing ruins a group chat faster than ___.',
+  },
+  {
+    humanPrompt: 'The pettiest reason I have ever disliked someone is ___.',
+    alienPrompt: 'The pettiest hill I will die on is ___.',
+  },
+  {
+    humanPrompt: 'My friends would roast me for still liking ___.',
+    alienPrompt: 'A childhood favorite I never grew out of is ___.',
+  },
+  {
+    humanPrompt: 'The weirdest compliment I have ever received is ___.',
+    alienPrompt: 'The weirdest thing I am lowkey proud of is ___.',
+  },
+  {
+    humanPrompt: 'If procrastination were a sport, my event would be ___.',
+    alienPrompt: 'The task I have been avoiding the longest is ___.',
+  },
 ];
 
-/** Parallel "most likely" prompts — often the same person fits both. */
+/** Likely Locker — overlapping trait, different criterion. No name slots (they roll differently per role). */
 export const MOST_LIKELY_TEMPLATES: {
   humanTemplate: string;
   alienTemplate: string;
 }[] = [
   {
-    humanTemplate: 'Who is most likely to laugh at the worst possible moment?',
-    alienTemplate: 'Who is most likely to snort-laugh when it gets quiet?',
+    humanTemplate: 'Who is most likely to survive a zombie apocalypse?',
+    alienTemplate: 'Who is most likely to win a fight against a goose?',
   },
   {
-    humanTemplate: 'Who is most likely to Google something mid-conversation?',
-    alienTemplate: 'Who is most likely to look something up instead of guessing?',
+    humanTemplate: 'Who is most likely to become famous by accident?',
+    alienTemplate: 'Who is most likely to go viral for a terrible take?',
   },
   {
-    humanTemplate: 'Who is most likely to survive on instant noodles alone?',
-    alienTemplate: 'Who is most likely to eat the same cheap meal every day?',
+    humanTemplate: 'Who is most likely to cry during a movie?',
+    alienTemplate: 'Who is most likely to get emotional over an animal video?',
   },
   {
-    humanTemplate: 'Who is most likely to send a voice memo instead of a text?',
-    alienTemplate: 'Who is most likely to talk instead of type?',
+    humanTemplate: 'Who is most likely to blow a paycheck on something dumb?',
+    alienTemplate: 'Who is most likely to fall for an obvious scam?',
   },
   {
-    humanTemplate: 'Who is most likely to forget why they walked into a room?',
-    alienTemplate: 'Who is most likely to walk into a room and just stand there?',
+    humanTemplate: 'Who is most likely to become a millionaire?',
+    alienTemplate: 'Who is most likely to start three businesses in one year?',
   },
   {
-    humanTemplate: 'Who is most likely to become a meme against their will?',
-    alienTemplate: 'Who is most likely to end up in an embarrassing viral photo?',
+    humanTemplate: 'Who is most likely to get lost with the GPS on?',
+    alienTemplate: 'Who is most likely to run out of gas on the highway?',
   },
   {
-    humanTemplate: 'Who is most likely to trip over absolutely nothing?',
-    alienTemplate: 'Who is most likely to spill something on themselves?',
+    humanTemplate: 'Who is most likely to talk their way out of a ticket?',
+    alienTemplate: 'Who is most likely to talk their way into a VIP section?',
   },
   {
-    humanTemplate: 'Who is most likely to accidentally reply-all?',
-    alienTemplate: 'Who is most likely to text the wrong group chat?',
+    humanTemplate: 'Who is most likely to adopt five pets without telling anyone?',
+    alienTemplate: 'Who is most likely to feed every stray in the neighborhood?',
   },
   {
-    humanTemplate: 'Who is most likely to eat the last slice without asking?',
-    alienTemplate: 'Who is most likely to grab the last bite without checking?',
+    humanTemplate: 'Who is most likely to sleep through their alarm?',
+    alienTemplate: 'Who is most likely to be late to their own wedding?',
   },
   {
-    humanTemplate: 'Who is most likely to fall asleep during a briefing?',
-    alienTemplate: 'Who is most likely to doze off in a long meeting?',
+    humanTemplate: 'Who is most likely to win a reality TV show?',
+    alienTemplate: 'Who is most likely to get eliminated first from a reality TV show?',
   },
   {
-    humanTemplate: "Who is most likely to borrow {a}'s charger and never return it?",
-    alienTemplate: "Who is most likely to still have {a}'s stuff at their place?",
+    humanTemplate: 'Who is most likely to start a conspiracy theory?',
+    alienTemplate: 'Who is most likely to believe a conspiracy theory?',
   },
   {
-    humanTemplate: 'Who is most likely to ugly-cry during a Pixar movie?',
-    alienTemplate: 'Who is most likely to tear up at a commercial?',
+    humanTemplate: 'Who is most likely to eat something off the floor?',
+    alienTemplate: 'Who is most likely to ignore an expiration date?',
   },
   {
-    humanTemplate: 'Who is most likely to be late to everything?',
-    alienTemplate: 'Who is most likely to say "on my way" and still be at home?',
+    humanTemplate: 'Who is most likely to accidentally start a cult?',
+    alienTemplate: 'Who is most likely to accidentally join a cult?',
   },
   {
-    humanTemplate: 'Who is most likely to overpack for a weekend trip?',
-    alienTemplate: 'Who is most likely to bring three outfits for one day?',
+    humanTemplate: 'Who is most likely to text an ex at 2am?',
+    alienTemplate: "Who is most likely to deep-stalk an ex's new partner online?",
+  },
+  {
+    humanTemplate: 'Who is most likely to survive alone on a deserted island?',
+    alienTemplate: 'Who is most likely to befriend a wild animal?',
+  },
+  {
+    humanTemplate: 'Who is most likely to laugh at a funeral?',
+    alienTemplate: 'Who is most likely to laugh when someone falls down?',
+  },
+  {
+    humanTemplate: "Who is most likely to forget a friend's birthday?",
+    alienTemplate: 'Who is most likely to forget where they parked?',
+  },
+  {
+    humanTemplate: 'Who is most likely to become president?',
+    alienTemplate: 'Who is most likely to get banned from a city council meeting?',
+  },
+  {
+    humanTemplate: 'Who is most likely to have 47 unread voicemails?',
+    alienTemplate: 'Who is most likely to leave everyone on read for days?',
+  },
+  {
+    humanTemplate: 'Who is most likely to win an argument with pure confidence and zero facts?',
+    alienTemplate: 'Who is most likely to double down after being proven wrong?',
+  },
+  {
+    humanTemplate: 'Who is most likely to spend a whole paycheck on concert tickets?',
+    alienTemplate: 'Who is most likely to camp overnight for a product launch?',
+  },
+  {
+    humanTemplate: 'Who is most likely to trip walking on stage to accept an award?',
+    alienTemplate: 'Who is most likely to knock over a display in a store?',
+  },
+  {
+    humanTemplate: 'Who is most likely to get kicked out of a library for laughing?',
+    alienTemplate: 'Who is most likely to get shushed at a movie theater?',
+  },
+  {
+    humanTemplate: 'Who is most likely to marry someone they met a month ago?',
+    alienTemplate: 'Who is most likely to get a tattoo on a whim?',
+  },
+  {
+    humanTemplate: 'Who is most likely to disappear into the mountains and become a hermit?',
+    alienTemplate: 'Who is most likely to not answer their phone for a week?',
+  },
+  {
+    humanTemplate: 'Who is most likely to steal fries off your plate?',
+    alienTemplate: 'Who is most likely to order "nothing" and then eat half your meal?',
+  },
+  {
+    humanTemplate: 'Who is most likely to vanish from the group chat and return like nothing happened?',
+    alienTemplate: 'Who is most likely to reply to a text three weeks later?',
+  },
+  {
+    humanTemplate: 'Who is most likely to type a whole paragraph and then delete it?',
+    alienTemplate: 'Who is most likely to rehearse a phone call before making it?',
+  },
+  {
+    humanTemplate: "Who is most likely to be the group's unofficial therapist?",
+    alienTemplate: "Who is most likely to know everyone's secrets?",
+  },
+  {
+    humanTemplate: 'Who is most likely to overshare with a total stranger?',
+    alienTemplate: 'Who is most likely to make a friend in a waiting room?',
+  },
+  {
+    humanTemplate: 'Who is most likely to plan an entire party around one theme?',
+    alienTemplate: 'Who is most likely to stress-clean before guests arrive?',
+  },
+  {
+    humanTemplate: "Who is most likely to find anyone's entire life story online in ten minutes?",
+    alienTemplate: 'Who is most likely to remember a tiny detail you mentioned once?',
+  },
+  {
+    humanTemplate: 'Who is most likely to end up as a game show contestant?',
+    alienTemplate: 'Who is most likely to yell answers at the TV?',
   },
 ];
 

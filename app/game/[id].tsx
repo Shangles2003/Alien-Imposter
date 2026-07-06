@@ -145,7 +145,10 @@ export default function GameScreen() {
         return (
           <ExtractionNominatePhase
             game={game}
-            onNominate={(ids) => runAction((s) => engine.nominateForExtraction(s, ids, me.uid))}
+            me={me}
+            onSubmitBallot={(ids) =>
+              runPlayerAction((s) => engine.submitExtractionBallot(s, me.uid, ids))
+            }
           />
         );
       case 'extraction_vote':

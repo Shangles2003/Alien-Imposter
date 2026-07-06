@@ -7,7 +7,13 @@ const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
 export const isSupabaseConfigured =
   Boolean(supabaseUrl) && Boolean(supabaseAnonKey) && !supabaseUrl.includes('your-project');
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// createClient THROWS on an empty URL, which crashes the app at startup if the
+// build was made without env vars (e.g. EAS without an `env` block). Fall back
+// to a harmless placeholder so the app boots and can show a real error instead.
+const safeUrl = isSupabaseConfigured ? supabaseUrl : 'https://missing-env.supabase.co';
+const safeKey = isSupabaseConfigured ? supabaseAnonKey : 'missing-env-key';
+
+export const supabase = createClient(safeUrl, safeKey, {
   auth: {
     storage: AsyncStorage,
     autoRefreshToken: true,

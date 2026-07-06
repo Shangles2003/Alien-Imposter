@@ -15,7 +15,8 @@ import {
 import { useAuth } from '@/context/AuthContext';
 import { usePremium } from '@/context/PremiumContext';
 import { HostSettingsPanel } from '@/components/settings/HostSettingsPanel';
-import { isDevModeEnabled } from '@/dev/config';
+import { PlayerModerationSheet, ModerationPlayer } from '@/components/moderation/PlayerModerationSheet';
+import { isDevBot, isDevModeEnabled } from '@/dev/config';
 import { useDevBotLobbyRunner } from '@/dev/useDevBotLobbyRunner';
 import { MIN_PLAYERS } from '@/game/rules';
 import {
@@ -37,6 +38,7 @@ export default function LobbyScreen() {
   const router = useRouter();
   const [lobby, setLobby] = useState<Lobby | null>(null);
   const [loading, setLoading] = useState(false);
+  const [moderatePlayer, setModeratePlayer] = useState<ModerationPlayer | null>(null);
 
   useDevBotLobbyRunner(id, lobby);
 
@@ -168,9 +170,21 @@ export default function LobbyScreen() {
             isHost={p.isHost}
             isReady={p.isReady}
             isMe={p.uid === user?.id}
+            onModerate={
+              p.uid !== user?.id && !isDevBot(p.uid)
+                ? () => setModeratePlayer({ uid: p.uid, displayName: p.displayName })
+                : undefined
+            }
           />
         </Animated.View>
       ))}
+
+      <PlayerModerationSheet
+        visible={moderatePlayer !== null}
+        player={moderatePlayer}
+        context={`lobby:${lobby.code}`}
+        onClose={() => setModeratePlayer(null)}
+      />
 
       <View style={styles.actions}>
         <Button

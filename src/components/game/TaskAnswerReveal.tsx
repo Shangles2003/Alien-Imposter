@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { MissionLogEntry } from '@/components/game/MissionLogEntry';
 import { CHAMBER_LABELS, GameState } from '@/types/game';
@@ -21,8 +21,15 @@ export function TaskAnswerReveal({ game }: { game: GameState }) {
           Mission {entry.round} · {CHAMBER_LABELS[entry.chamber]}
         </Text>
       </Animated.View>
-      <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.entryWrap}>
-        <MissionLogEntry entry={entry} game={game} />
+      <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.scrollWrap}>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator
+          keyboardShouldPersistTaps="handled"
+        >
+          <MissionLogEntry entry={entry} game={game} />
+        </ScrollView>
       </Animated.View>
     </View>
   );
@@ -34,5 +41,7 @@ const styles = StyleSheet.create({
   heroKicker: { ...typography.label, color: colors.textDim },
   heroTitle: { ...typography.heading, color: colors.text, fontSize: 20 },
   heroSub: { ...typography.caption, fontWeight: '700' },
-  entryWrap: { flex: 1, minHeight: 0 },
+  scrollWrap: { flex: 1, minHeight: 0 },
+  scroll: { flex: 1 },
+  scrollContent: { paddingBottom: spacing.sm },
 });

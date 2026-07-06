@@ -5,6 +5,7 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AlienIcon, Button, GlowCard, Input, ScreenShell, ScreenTopBar } from '@/components/ui';
 import { useAuth } from '@/context/AuthContext';
 import { joinLobbyByCode } from '@/services/lobby';
+import { mapJoinLobbyError } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
 import { colors, spacing, typography } from '@/theme';
 
@@ -22,7 +23,7 @@ export default function JoinLobbyScreen() {
       const joined = await joinLobbyByCode(joinCode.trim(), profile);
       router.replace(`/lobby/${joined.id}`);
     } catch (e) {
-      Alert.alert('Join failed', errorMessage(e));
+      Alert.alert('Join failed', mapJoinLobbyError(errorMessage(e)));
     } finally {
       setLoading(false);
     }

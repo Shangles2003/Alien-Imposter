@@ -145,6 +145,7 @@ export type BotActionKind =
   | 'chamber_response'
   | 'bioscanner_glyphs'
   | 'bioscanner_scan'
+  | 'extraction_ballot'
   | 'extraction_vote'
   | 'hack';
 
@@ -158,11 +159,27 @@ export interface BotActionPlan {
 
 const SYNC_PHASES: GameState['phase'][] = ['role_reveal', 'chamber_boarding', 'chamber_results'];
 
-const HACK_PHASES: GameState['phase'][] = [
-  'chamber_boarding',
-  'chamber_active',
-  'chamber_results',
-];
+function botAlienIds(state: GameState): Set<string> {
+  return new Set(
+    state.players
+      .filter((p) => p.isAlive && isDevBot(p.uid) && p.role === 'alien')
+      .map((p) => p.uid)
+  );
+}
+
+/** Bot aliens share the pool — at most one bot hack per mission round. */
+function botAlreadyHackedThisRound(state: GameState): boolean {
+  const aliens = botAlienIds(state);
+  return state.hackLog.some((h) => aliens.has(h.alienId) && h.applyAtRound === state.round);
+}
+
+function shouldBotScheduleHack(state: GameState): boolean {
+  if (state.phase !== 'chamber_boarding') return false;
+  if (state.hacksRemaining <= 0) return false;
+  if (botAlreadyHackedThisRound(state)) return false;
+  if (pendingSyncBotIds(state).length > 0) return false;
+  return true;
+}
 
 export function getNextBotAction(state: GameState): BotActionPlan | null {
   if (state.phase === 'game_over') return null;
@@ -226,6 +243,35 @@ export function getNextBotAction(state: GameState): BotActionPlan | null {
     }
   }
 
+  if (state.phase === 'extraction_nominate') {
+    const pendingBallots = aliveBots(state).filter(
+      (p) => !Array.isArray(state.extraction?.ballots?.[p.uid])
+    );
+    if (pendingBallots.length) {
+      const ids = pendingBallots.map((p) => p.uid);
+      return {
+        botId: ids[0]!,
+        botName: 'Crew bots',
+        kind: 'extraction_ballot',
+        description: 'accusation ballots',
+        run: (s) => {
+          let next = s;
+          for (const id of ids) {
+            if (next.phase !== 'extraction_nominate') break;
+            if (Array.isArray(next.extraction?.ballots?.[id])) continue;
+            const candidates = next.players.filter((p) => p.isAlive && p.uid !== id);
+            const picks = [...candidates]
+              .sort(() => Math.random() - 0.5)
+              .slice(0, next.alienCount)
+              .map((p) => p.uid);
+            next = engine.submitExtractionBallot(next, id, picks);
+          }
+          return next;
+        },
+      };
+    }
+  }
+
   if (state.phase === 'extraction_vote') {
     const pendingVoters = aliveBots(state).filter((p) => !state.extraction?.votes[p.uid]);
     if (pendingVoters.length) {
@@ -238,6 +284,7 @@ export function getNextBotAction(state: GameState): BotActionPlan | null {
         run: (s) => {
           let next = s;
           for (const id of ids) {
+            if (next.phase !== 'extraction_vote') break;
             if (!next.extraction?.votes[id]) {
               next = engine.castExtractionVote(next, id, 'eject');
             }
@@ -248,7 +295,7 @@ export function getNextBotAction(state: GameState): BotActionPlan | null {
     }
   }
 
-  if (HACK_PHASES.includes(state.phase) && state.hacksRemaining > 0) {
+  if (shouldBotScheduleHack(state)) {
     const alienBots = aliveBots(state).filter((p) => p.role === 'alien');
     const hacker = alienBots[0];
     if (hacker) {

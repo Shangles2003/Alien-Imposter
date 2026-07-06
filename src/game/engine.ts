@@ -459,50 +459,114 @@ export function startNextRound(state: GameState): GameState {
   });
 }
 
+/**
+ * FINAL EXTRACTION — ballot → majority loop.
+ *
+ * 1. Every living player secretly ballots for `alienCount` suspects.
+ * 2. The top `alienCount` vote-getters become "the accused" (ties at the
+ *    cutoff are broken randomly).
+ * 3. Everyone votes keep/eject on the accused as a group. A strict majority
+ *    ejects them; a tie or majority-keep starts a fresh ballot round.
+ * 4. Ejection resolves the game: all infiltrators ejected → crew wins,
+ *    any innocent ejected → infiltrators win.
+ */
+function freshBallotRound(round: number): import('@/types/game').ExtractionState {
+  return {
+    initiatorId: '',
+    round,
+    ballots: {},
+    voteTally: {},
+    nominatedIds: [],
+    votes: {},
+    resolved: false,
+    humansEjected: false,
+  };
+}
+
 export function startFinalExtraction(state: GameState): GameState {
   return {
     ...state,
     phase: 'extraction_nominate',
-    extraction: {
-      initiatorId: '',
-      nominatedIds: [],
-      votes: {},
-      resolved: false,
-      humansEjected: false,
-    },
+    extraction: freshBallotRound(1),
+    players: state.players.map((p) => ({ ...p, extractionVote: null })),
     updatedAt: Date.now(),
   };
 }
 
-export function nominateForExtraction(
+export function getExtractionBallotProgress(state: GameState): { done: number; total: number } {
+  const alive = getAlivePlayers(state);
+  const ballots = state.extraction?.ballots ?? {};
+  const done = alive.filter((p) => Array.isArray(ballots[p.uid])).length;
+  return { done, total: alive.length };
+}
+
+/** Submit one player's secret ballot; tallies and advances when everyone is in. */
+export function submitExtractionBallot(
   state: GameState,
-  nominatedIds: string[],
-  nominatorId: string
+  voterId: string,
+  suspectIds: string[]
 ): GameState {
   if (state.phase !== 'extraction_nominate') {
-    throw new Error('Not in the final vote nomination phase.');
+    throw new Error('Not in the accusation phase.');
+  }
+  const extraction = state.extraction ?? freshBallotRound(1);
+
+  const alive = getAlivePlayers(state);
+  const aliveIds = new Set(alive.map((p) => p.uid));
+  if (!aliveIds.has(voterId)) throw new Error('Only active crew can vote.');
+
+  const unique = [...new Set(suspectIds)].filter((id) => aliveIds.has(id));
+  if (unique.length !== state.alienCount) {
+    throw new Error(`Pick exactly ${state.alienCount} suspect${state.alienCount > 1 ? 's' : ''}.`);
   }
 
-  const aliveIds = getAlivePlayers(state).map((p) => p.uid);
-  const valid = nominatedIds.filter((id) => aliveIds.includes(id));
+  const ballots = { ...(extraction.ballots ?? {}), [voterId]: unique };
+  const allIn = alive.every((p) => Array.isArray(ballots[p.uid]));
 
-  if (valid.length !== state.alienCount) {
-    throw new Error(`Nominate exactly ${state.alienCount} suspect(s).`);
+  if (!allIn) {
+    return {
+      ...state,
+      extraction: { ...extraction, ballots },
+      updatedAt: Date.now(),
+    };
   }
+
+  // Tally all ballots.
+  const tally: Record<string, number> = {};
+  for (const picks of Object.values(ballots)) {
+    for (const id of picks) {
+      tally[id] = (tally[id] ?? 0) + 1;
+    }
+  }
+
+  const accused = pickTopAccused(tally, state.alienCount);
 
   return {
     ...state,
     phase: 'extraction_vote',
     extraction: {
-      initiatorId: nominatorId,
-      nominatedIds: valid,
+      ...extraction,
+      ballots,
+      voteTally: tally,
+      nominatedIds: accused,
       votes: {},
-      resolved: false,
-      humansEjected: false,
     },
     players: state.players.map((p) => ({ ...p, extractionVote: null })),
     updatedAt: Date.now(),
   };
+}
+
+/** Top-N vote-getters; ties at the cutoff are broken by random draw. */
+function pickTopAccused(tally: Record<string, number>, count: number): string[] {
+  const entries = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+  if (entries.length <= count) return entries.map(([id]) => id);
+
+  const cutoff = entries[count - 1]![1];
+  const locked = entries.filter(([, votes]) => votes > cutoff).map(([id]) => id);
+  const tied = entries.filter(([, votes]) => votes === cutoff).map(([id]) => id);
+
+  const shuffled = [...tied].sort(() => Math.random() - 0.5);
+  return [...locked, ...shuffled.slice(0, count - locked.length)];
 }
 
 export function castExtractionVote(
@@ -510,15 +574,19 @@ export function castExtractionVote(
   voterId: string,
   vote: 'eject' | 'keep'
 ): GameState {
+  if (state.phase !== 'extraction_vote') throw new Error('Not in the keep/eject vote.');
   if (!state.extraction) throw new Error('No extraction in progress.');
+
   const alive = getAlivePlayers(state);
+  if (!alive.some((p) => p.uid === voterId)) throw new Error('Only active crew can vote.');
+
   const votes = { ...state.extraction.votes, [voterId]: vote };
 
   const players = state.players.map((p) =>
     p.uid === voterId ? { ...p, extractionVote: vote } : p
   );
 
-  if (Object.keys(votes).length < alive.length) {
+  if (Object.keys(votes).filter((id) => alive.some((p) => p.uid === id)).length < alive.length) {
     return {
       ...state,
       players,
@@ -533,38 +601,38 @@ export function castExtractionVote(
 export function resolveFinalExtraction(state: GameState): GameState {
   const extraction = state.extraction!;
   const alive = getAlivePlayers(state);
-  const allEject = alive.every((p) => extraction.votes[p.uid] === 'eject');
 
-  if (!allEject) {
-    return endGame(
-      { ...state, extraction: { ...extraction, resolved: true } },
-      'aliens',
-      'The crew could not reach a unanimous eject vote. Infiltrators win.'
-    );
+  const ejectCount = alive.filter((p) => extraction.votes[p.uid] === 'eject').length;
+  const keepCount = alive.filter((p) => extraction.votes[p.uid] === 'keep').length;
+
+  // Majority ejects. A tie (or majority keep) spares them — back to the ballot.
+  if (ejectCount <= keepCount) {
+    return {
+      ...state,
+      phase: 'extraction_nominate',
+      extraction: freshBallotRound((extraction.round ?? 1) + 1),
+      players: state.players.map((p) => ({ ...p, extractionVote: null })),
+      updatedAt: Date.now(),
+    };
   }
 
-  const nominatedAllAliens = extraction.nominatedIds.every((id) => {
+  const allAccusedAreAliens = extraction.nominatedIds.every((id) => {
     const p = state.players.find((pl) => pl.uid === id);
     return p?.role === 'alien';
   });
 
-  const anyHumanNominated = extraction.nominatedIds.some((id) => {
-    const p = state.players.find((pl) => pl.uid === id);
-    return p?.role === 'human';
-  });
-
-  if (anyHumanNominated || !nominatedAllAliens) {
+  if (!allAccusedAreAliens) {
     return endGame(
       { ...state, extraction: { ...extraction, resolved: true, humansEjected: true } },
       'aliens',
-      'A crew member was wrongly accused. Infiltrators win.'
+      'The crew ejected an innocent crew member. Infiltrators win.'
     );
   }
 
   return endGame(
     { ...state, extraction: { ...extraction, resolved: true, humansEjected: false } },
     'humans',
-    'All infiltrators were correctly identified! Crew wins.'
+    'Every infiltrator was ejected into space. Crew wins!'
   );
 }
 

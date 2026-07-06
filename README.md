@@ -18,7 +18,7 @@ Inspired by hidden-role party games — original prompts, chambers, and branding
   - **Bio Scanner** — glyph matching + hidden scan
   - **Mission Log** — review every answer from every task
   - **Neural Hacks** — infiltrators flip prompt alignment (shared pool)
-  - **Final Extraction** — nominate suspects, unanimous vote to eject
+  - **Final Extraction** — secret accusation ballots put the most-suspected on trial; majority vote ejects (loops until the crew commits)
 - Player scaling (4–10): infiltrator count and hack pool adjust automatically
 - Animated "deep space terminal" UI: nebula glows, parallax starfield, vector alien mascot
 
@@ -84,8 +84,8 @@ src/theme/           Colors, typography, spacing tokens
 
 - Infiltrators see each other; crew must deduce from test answers
 - Hacks flip prompt alignment (shared pool, 2 per infiltrator)
-- Wrong ejection or a non-unanimous vote → infiltrators win
-- All infiltrators ejected → crew wins
+- Final vote: everyone secretly ballots for N suspects (N = infiltrator count); the most-accused go on trial and a majority ejects them — ties keep them and trigger a re-vote
+- All infiltrators ejected → crew wins; any innocent ejected → infiltrators win
 
 ## Notes
 

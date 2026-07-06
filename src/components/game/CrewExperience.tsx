@@ -213,10 +213,7 @@ const styles = StyleSheet.create({
   },
   promptHeroCompact: { padding: spacing.sm, gap: 2 },
   promptHeader: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
+    gap: 2,
   },
   chamberNameSmall: { ...typography.label, fontSize: 11 },
   chamberTagline: { ...typography.small, color: colors.textDim, fontSize: 10 },

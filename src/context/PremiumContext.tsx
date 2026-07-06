@@ -1,10 +1,22 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 
 import { ContentPackId } from '@/content/types';
-import { useAuth } from '@/context/AuthContext';
-import { PremiumState, premiumService } from '@/premium/PremiumService';
 
-interface PremiumContextValue extends PremiumState {
+/**
+ * Everything is free right now — there is no paid tier.
+ *
+ * This context used to talk to RevenueCat (see src/premium/ for the dormant
+ * plumbing). It now grants full access unconditionally, so host settings and
+ * all content are available to every player. If a paid "After Dark" pack
+ * ships later, swap this stub back to the PremiumService-backed provider.
+ */
+interface PremiumContextValue {
+  initialized: boolean;
+  loading: boolean;
+  subscriptionActive: boolean;
+  ownedPacks: ContentPackId[];
+  devUnlock: boolean;
+  mockMode: boolean;
   hasPremiumAccess: boolean;
   hasPack: (packId: ContentPackId) => boolean;
   ownedContentPacks: ContentPackId[];
@@ -16,28 +28,26 @@ interface PremiumContextValue extends PremiumState {
 
 const PremiumContext = createContext<PremiumContextValue | null>(null);
 
+const noop = async () => {};
+
 export function PremiumProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
-  const [state, setState] = useState<PremiumState>(premiumService.getState());
-
-  useEffect(() => premiumService.subscribe(setState), []);
-
-  useEffect(() => {
-    premiumService.initialize(user?.id);
-  }, [user?.id]);
-
   const value = useMemo<PremiumContextValue>(
     () => ({
-      ...state,
-      hasPremiumAccess: premiumService.hasPremiumAccess(),
-      hasPack: (packId) => premiumService.hasPack(packId),
-      ownedContentPacks: premiumService.ownedContentPacks(),
-      purchaseSubscription: () => premiumService.purchaseSubscription(),
-      purchaseSpicyPack: () => premiumService.purchaseSpicyPack(),
-      restorePurchases: () => premiumService.restorePurchases(),
-      setDevUnlock: (enabled) => premiumService.setDevUnlock(enabled),
+      initialized: true,
+      loading: false,
+      subscriptionActive: false,
+      ownedPacks: ['core'],
+      devUnlock: false,
+      mockMode: false,
+      hasPremiumAccess: true,
+      hasPack: () => true,
+      ownedContentPacks: ['core'],
+      purchaseSubscription: noop,
+      purchaseSpicyPack: noop,
+      restorePurchases: noop,
+      setDevUnlock: noop,
     }),
-    [state]
+    []
   );
 
   return <PremiumContext.Provider value={value}>{children}</PremiumContext.Provider>;

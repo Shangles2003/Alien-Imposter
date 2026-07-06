@@ -33,7 +33,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } else {
       setProfile({
         uid: u.id,
-        displayName: u.user_metadata?.display_name ?? 'Crew Member',
+        username: u.user_metadata?.username ?? undefined,
+        displayName: u.user_metadata?.display_name ?? u.user_metadata?.username ?? 'Crew Member',
         avatarColor: u.user_metadata?.avatar_color ?? '#6366f1',
         createdAt: Date.now(),
       });

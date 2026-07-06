@@ -171,6 +171,7 @@ interface InputProps {
   placeholder?: string;
   secureTextEntry?: boolean;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  autoCorrect?: boolean;
   error?: string;
 }
 
@@ -181,6 +182,7 @@ export function Input({
   placeholder,
   secureTextEntry,
   autoCapitalize = 'none',
+  autoCorrect,
   error,
 }: InputProps) {
   const [focused, setFocused] = useState(false);
@@ -197,6 +199,7 @@ export function Input({
         placeholderTextColor={colors.textDim}
         secureTextEntry={secureTextEntry}
         autoCapitalize={autoCapitalize}
+        autoCorrect={autoCorrect}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={[
@@ -428,12 +431,14 @@ export function CrewRow({
   isHost,
   isReady,
   isMe,
+  onModerate,
 }: {
   name: string;
   color: string;
   isHost?: boolean;
   isReady?: boolean;
   isMe?: boolean;
+  onModerate?: () => void;
 }) {
   const glow = useSharedValue(isReady ? 1 : 0);
 
@@ -460,6 +465,11 @@ export function CrewRow({
         label={isReady ? 'READY' : 'HOLD'}
         color={isReady ? colors.success : colors.textDim}
       />
+      {onModerate ? (
+        <Pressable onPress={onModerate} hitSlop={12} style={crewStyles.menuBtn}>
+          <Text style={crewStyles.menuIcon}>⋯</Text>
+        </Pressable>
+      ) : null}
     </Animated.View>
   );
 }
@@ -835,6 +845,12 @@ const crewStyles = StyleSheet.create({
   info: { flex: 1, minWidth: 0 },
   name: { ...typography.heading, color: colors.text },
   status: { ...typography.small, color: colors.textMuted, marginTop: 2, textTransform: 'uppercase' },
+  menuBtn: {
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xs,
+    marginLeft: -spacing.xs,
+  },
+  menuIcon: { fontSize: 22, color: colors.textDim, fontWeight: '700', lineHeight: 24 },
 });
 
 const timerStyles = StyleSheet.create({

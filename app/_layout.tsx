@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { AuthProvider } from '@/context/AuthContext';
+import { BlockListProvider } from '@/context/BlockListContext';
 import { PremiumProvider } from '@/context/PremiumContext';
 import { colors } from '@/theme';
 
@@ -30,6 +31,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <BlockListProvider>
       <PremiumProvider>
         <StatusBar style="light" />
       <Stack
@@ -46,8 +48,11 @@ export default function RootLayout() {
         <Stack.Screen name="lobby/join" options={{ headerShown: false }} />
         <Stack.Screen name="lobby/[id]" options={{ headerShown: false }} />
         <Stack.Screen name="game/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="legal/privacy" options={{ headerShown: false }} />
+        <Stack.Screen name="legal/terms" options={{ headerShown: false }} />
       </Stack>
       </PremiumProvider>
+      </BlockListProvider>
     </AuthProvider>
   );
 }

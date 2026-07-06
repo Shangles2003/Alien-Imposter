@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Avatar, Button } from '@/components/ui';
+import { getExtractionBallotProgress } from '@/game/engine';
 import { GamePlayer, GameState } from '@/types/game';
 import { colors, radius, shadows, spacing, typography } from '@/theme';
 
@@ -36,18 +37,34 @@ function AlertStrip({ label }: { label: string }) {
   );
 }
 
+/**
+ * Accusation ballot — every player secretly picks `alienCount` suspects.
+ * When all ballots are in, the engine puts the top vote-getters on trial.
+ */
 export function ExtractionNominatePhase({
   game,
-  onNominate,
+  me,
+  onSubmitBallot,
 }: {
   game: GameState;
-  onNominate: (ids: string[]) => void;
+  me: GamePlayer;
+  onSubmitBallot: (ids: string[]) => void;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
   const alive = game.players.filter((p) => p.isAlive);
   const needed = game.alienCount;
+  const round = game.extraction?.round ?? 1;
+  const myBallot = game.extraction?.ballots?.[me.uid];
+  const submitted = Array.isArray(myBallot);
+  const progress = getExtractionBallotProgress(game);
+
+  // Reset local picks when a new ballot round starts.
+  useEffect(() => {
+    setSelected([]);
+  }, [round]);
 
   const toggle = (uid: string) => {
+    if (submitted) return;
     setSelected((prev) => {
       if (prev.includes(uid)) return prev.filter((id) => id !== uid);
       if (prev.length >= needed) return prev;
@@ -55,19 +72,37 @@ export function ExtractionNominatePhase({
     });
   };
 
+  if (submitted) {
+    return (
+      <View style={styles.fillCenter}>
+        <Animated.View entering={FadeInDown.duration(300)} style={styles.lockedBadge}>
+          <Text style={styles.lockedCheck}>✓</Text>
+        </Animated.View>
+        <Text style={styles.waitTitle}>Ballot cast</Text>
+        <Text style={styles.waitCopy}>
+          {progress.done}/{progress.total} ballots in — the most-accused go on trial
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)}>
-        <AlertStrip label="FINAL EXTRACTION" />
+        <AlertStrip
+          label={round > 1 ? `BALLOT ROUND ${round} — VOTE AGAIN` : 'FINAL EXTRACTION'}
+        />
         <View style={styles.hero}>
           <Text style={styles.heroTitle}>Who are the infiltrators?</Text>
           <Text style={styles.heroDesc}>
-            Tap {needed === 1 ? 'the crew member' : `${needed} crew members`} you believe{' '}
-            {needed === 1 ? 'is an' : 'are'} infiltrator{needed > 1 ? 's' : ''}. Everyone must
-            unanimously agree to eject them.
+            {round > 1
+              ? 'The crew voted to keep the last group. Everyone votes again — pick '
+              : 'Everyone votes in secret — pick '}
+            {needed === 1 ? 'the 1 player' : `the ${needed} players`} you suspect. The most-accused
+            go on trial.
           </Text>
           <Text style={styles.heroHint}>
-            SELECTED {selected.length} OF {needed}
+            SELECTED {selected.length} OF {needed} · BALLOTS IN {progress.done}/{progress.total}
           </Text>
         </View>
       </Animated.View>
@@ -75,6 +110,7 @@ export function ExtractionNominatePhase({
       <View style={styles.targetGrid}>
         {alive.map((p, i) => {
           const picked = selected.includes(p.uid);
+          const isMe = p.uid === me.uid;
           return (
             <Animated.View
               key={p.uid}
@@ -82,15 +118,17 @@ export function ExtractionNominatePhase({
               style={styles.targetItem}
             >
               <Pressable
-                style={[styles.targetBtn, picked && styles.targetBtnOn]}
+                disabled={isMe}
+                style={[styles.targetBtn, picked && styles.targetBtnOn, isMe && styles.targetBtnMe]}
                 onPress={() => toggle(p.uid)}
               >
                 <Avatar name={p.displayName} color={p.avatarColor} size={52} ring={picked} />
                 <Text style={styles.targetName} numberOfLines={2}>
                   {p.displayName}
+                  {isMe ? ' (you)' : ''}
                 </Text>
                 <Text style={[styles.targetMeta, picked && styles.targetMetaOn]}>
-                  {picked ? 'NOMINATED' : 'Tap to nominate'}
+                  {isMe ? "Can't vote yourself" : picked ? 'ACCUSED' : 'Tap to accuse'}
                 </Text>
               </Pressable>
             </Animated.View>
@@ -101,19 +139,23 @@ export function ExtractionNominatePhase({
       <Button
         title={
           selected.length === needed
-            ? 'Lock in nomination'
-            : `Select ${needed - selected.length} more`
+            ? 'Cast secret ballot'
+            : `Pick ${needed - selected.length} more suspect${needed - selected.length > 1 ? 's' : ''}`
         }
         variant="danger"
         fullWidth
         size="md"
         disabled={selected.length !== needed}
-        onPress={() => onNominate(selected)}
+        onPress={() => onSubmitBallot(selected)}
       />
     </View>
   );
 }
 
+/**
+ * The trial — the most-accused stand before the crew. Majority ejects;
+ * a tie or majority-keep sends everyone back to a fresh ballot.
+ */
 export function ExtractionVotePhase({
   game,
   me,
@@ -124,6 +166,7 @@ export function ExtractionVotePhase({
   onVote: (vote: 'eject' | 'keep') => void;
 }) {
   const nominated = game.extraction?.nominatedIds ?? [];
+  const tally = game.extraction?.voteTally ?? {};
   const myVote = me.extractionVote;
   const nominees = nominated
     .map((id) => game.players.find((p) => p.uid === id))
@@ -131,16 +174,20 @@ export function ExtractionVotePhase({
 
   const alive = game.players.filter((p) => p.isAlive);
   const votesIn = Object.keys(game.extraction?.votes ?? {}).length;
+  const ballotsTotal = Object.keys(game.extraction?.ballots ?? {}).length;
 
   return (
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)}>
-        <AlertStrip label="UNANIMOUS VOTE REQUIRED" />
+        <AlertStrip label="THE CREW HAS SPOKEN" />
         <View style={styles.hero}>
-          <Text style={styles.heroTitle}>Eject the suspects?</Text>
+          <Text style={styles.heroTitle}>
+            {nominees.length === 1 ? 'Eject this suspect?' : 'Eject these suspects?'}
+          </Text>
           <Text style={styles.heroDesc}>
-            The crew nominated {nominees.length === 1 ? 'one suspect' : `${nominees.length} suspects`}.
-            Every living crew member must vote to eject — one keep vote spares them all.
+            The ballots singled {nominees.length === 1 ? 'out this player' : 'out these players'}.
+            Majority rules: more ejects than keeps and they go out the airlock. A tie keeps them
+            aboard and triggers a re-vote.
           </Text>
         </View>
       </Animated.View>
@@ -154,13 +201,18 @@ export function ExtractionVotePhase({
           >
             <Avatar name={p.displayName} color={p.avatarColor} size={48} />
             <View style={styles.nomineeCopy}>
-              <Text style={styles.nomineeName}>{p.displayName}</Text>
-              <Text style={styles.nomineeMeta}>ACCUSED OF INFILTRATION</Text>
+              <Text style={styles.nomineeName}>
+                {p.displayName}
+                {p.uid === me.uid ? ' (you)' : ''}
+              </Text>
+              <Text style={styles.nomineeMeta}>
+                ACCUSED BY {tally[p.uid] ?? 0} OF {ballotsTotal || alive.length}
+              </Text>
             </View>
           </Animated.View>
         ))}
         <Text style={styles.voteCount}>
-          {votesIn}/{alive.length} votes in
+          {votesIn}/{alive.length} votes in · majority decides
         </Text>
       </View>
 
@@ -179,14 +231,14 @@ export function ExtractionVotePhase({
             onPress={() => onVote('eject')}
           >
             <Text style={styles.ejectBtnText}>EJECT</Text>
-            <Text style={styles.ejectBtnSub}>They leave the ship</Text>
+            <Text style={styles.ejectBtnSub}>Out the airlock</Text>
           </Pressable>
           <Pressable
             style={({ pressed }) => [styles.keepBtn, pressed && styles.btnPressed]}
             onPress={() => onVote('keep')}
           >
             <Text style={styles.keepBtnText}>KEEP</Text>
-            <Text style={styles.keepBtnSub}>They stay aboard</Text>
+            <Text style={styles.keepBtnSub}>Re-vote suspects</Text>
           </Pressable>
         </View>
       )}
@@ -196,6 +248,7 @@ export function ExtractionVotePhase({
 
 const styles = StyleSheet.create({
   fill: { flex: 1, minHeight: 0, justifyContent: 'space-between', gap: spacing.sm },
+  fillCenter: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
   alertStrip: {
     backgroundColor: 'rgba(251,77,109,0.14)',
     borderWidth: 1,
@@ -218,7 +271,7 @@ const styles = StyleSheet.create({
   },
   heroTitle: { ...typography.heading, color: colors.text },
   heroDesc: { ...typography.caption, color: colors.textMuted, lineHeight: 20 },
-  heroHint: { ...typography.label, color: colors.accentSoft, marginTop: spacing.xs },
+  heroHint: { ...typography.label, color: colors.accentSoft, marginTop: spacing.xs, fontSize: 9 },
   targetGrid: {
     flex: 1,
     flexDirection: 'row',
@@ -230,7 +283,7 @@ const styles = StyleSheet.create({
   },
   targetItem: { width: '47%' },
   targetBtn: {
-    minHeight: 120,
+    minHeight: 116,
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,
@@ -244,6 +297,7 @@ const styles = StyleSheet.create({
     borderColor: colors.danger,
     backgroundColor: 'rgba(251,77,109,0.12)',
   },
+  targetBtnMe: { opacity: 0.45 },
   targetName: {
     ...typography.caption,
     color: colors.text,
@@ -253,6 +307,19 @@ const styles = StyleSheet.create({
   },
   targetMeta: { ...typography.small, color: colors.textDim, fontSize: 10 },
   targetMetaOn: { color: colors.danger, fontWeight: '800' },
+  lockedBadge: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(251,77,109,0.14)',
+    borderWidth: 1.5,
+    borderColor: colors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  lockedCheck: { fontSize: 26, color: colors.danger, fontWeight: '800' },
+  waitTitle: { ...typography.heading, color: colors.text },
+  waitCopy: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },
   nomineeList: { flex: 1, justifyContent: 'center', gap: spacing.sm },
   nomineeCard: {
     flexDirection: 'row',

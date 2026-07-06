@@ -39,6 +39,7 @@ export type AgreementLevel =
 
 export interface PlayerProfile {
   uid: string;
+  username?: string;
   displayName: string;
   avatarColor: string;
   createdAt: number;
@@ -121,8 +122,17 @@ export interface BioscannerState {
 }
 
 export interface ExtractionState {
+  /** @deprecated Legacy field from the single-nominator flow. */
   initiatorId: string;
+  /** Ballot round number — increments every time the crew votes to keep. */
+  round: number;
+  /** Secret ballots: voterId → the suspect ids they picked (length = alienCount). */
+  ballots: Record<string, string[]>;
+  /** Tally from the last completed ballot (uid → nomination count), for display. */
+  voteTally: Record<string, number>;
+  /** The accused — top vote-getters currently on the chopping block. */
   nominatedIds: string[];
+  /** Keep/eject votes on the accused. Majority ejects; tie keeps. */
   votes: Record<string, 'eject' | 'keep'>;
   resolved: boolean;
   humansEjected: boolean;

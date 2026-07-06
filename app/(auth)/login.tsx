@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { LegalConsentNotice } from '@/components/legal/LegalConsentNotice';
 import { Button, FloatingAlien, GlowCard, Input, ScreenShell } from '@/components/ui';
 import { signIn } from '@/services/auth';
 import { errorMessage } from '@/utils/errors';
@@ -10,14 +11,18 @@ import { colors, spacing, typography } from '@/theme';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    if (!username.trim()) {
+      Alert.alert('Username required', 'Enter your username to sign in.');
+      return;
+    }
     setLoading(true);
     try {
-      await signIn(email.trim(), password);
+      await signIn(username.trim(), password);
       router.replace(HOME_ROUTE);
     } catch (e) {
       Alert.alert('Login failed', errorMessage(e));
@@ -38,7 +43,14 @@ export default function LoginScreen() {
         <Animated.View entering={FadeInUp.delay(120).duration(500)} style={styles.formWrap}>
           <GlowCard accent="purple">
             <View style={styles.form}>
-              <Input label="Email" value={email} onChangeText={setEmail} placeholder="you@ship.com" />
+              <Input
+                label="Username"
+                value={username}
+                onChangeText={setUsername}
+                placeholder="commander_nova"
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
               <Input
                 label="Password"
                 value={password}
@@ -49,6 +61,8 @@ export default function LoginScreen() {
               <Button title="Launch In" icon="🚀" fullWidth loading={loading} onPress={handleLogin} />
             </View>
           </GlowCard>
+
+          <LegalConsentNotice />
 
           <Link href="/(auth)/signup" asChild>
             <Button title="New crew member? Create account" variant="ghost" fullWidth />
