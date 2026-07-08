@@ -24,6 +24,7 @@ import { useBlockList } from '@/context/BlockListContext';
 import { deleteAccount, logOut, updateDisplayName } from '@/services/auth';
 import { blockUserByUsername, unblockUser } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
+import { censorProfanity } from '@/utils/profanityFilter';
 import { normalizeUsername, validateUsername } from '@/utils/username';
 import { colors, radius, spacing, typography } from '@/theme';
 
@@ -84,11 +85,12 @@ export default function SettingsScreen() {
 
   const saveCallsign = async () => {
     if (!user || !editName.trim()) return;
+    const censored = censorProfanity(editName.trim());
     setSaving(true);
     try {
-      await updateDisplayName(user.id, editName.trim());
+      await updateDisplayName(user.id, censored);
       await refreshProfile();
-      setName(editName.trim());
+      setName(censored);
       setEditOpen(false);
     } catch (e) {
       Alert.alert('Error', e instanceof Error ? e.message : 'Could not save callsign');

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import {
   Button,
@@ -71,7 +71,7 @@ export default function LobbyScreen() {
     if (!lobby || !user) return;
     setLoading(true);
     try {
-      const gameId = await startGame(lobby.id, user.id);
+      const gameId = await startGame(lobby.id, user.id, hasPremiumAccess);
       router.replace(`/game/${gameId}`);
     } catch (e) {
       Alert.alert('Launch failed', errorMessage(e));
@@ -150,6 +150,8 @@ export default function LobbyScreen() {
           settings={lobby.hostSettings}
           onChange={handleHostSettingsChange}
           disabled={loading}
+          hasPremium={hasPremiumAccess}
+          onRequestUpgrade={() => router.push('/paywall' as Href)}
         />
       )}
 

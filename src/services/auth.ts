@@ -1,7 +1,9 @@
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/config/supabase';
 import { PlayerProfile } from '@/types/game';
 import { pickAvatarColor } from '@/game/rules';
+import { censorProfanity, wasProfanityCensored } from '@/utils/profanityFilter';
 import { normalizeUsername, usernameToAuthEmail, validateUsername } from '@/utils/username';
 
 function rowToProfile(row: {
@@ -38,6 +40,10 @@ export async function signUp(username: string, password: string): Promise<User> 
   const normalized = normalizeUsername(trimmed);
   const validationError = validateUsername(trimmed);
   if (validationError) throw new Error(validationError);
+
+  if (wasProfanityCensored(trimmed, censorProfanity(trimmed))) {
+    throw new Error('Username contains inappropriate language. Please choose another.');
+  }
 
   if (password.length < 6) {
     throw new Error('Password must be at least 6 characters.');
@@ -104,6 +110,48 @@ export async function signIn(username: string, password: string): Promise<User> 
   return data.user;
 }
 
+/**
+ * Sign in / up with Apple. Ties the account to the user's Apple ID — no email
+ * confirmation, no password to forget, and it restores on any device with the
+ * same Apple ID. A DB trigger creates the profile ("Crew Member" default); on
+ * the FIRST authorization Apple gives us the person's name, which we use as a
+ * nicer callsign (they can change it in Settings). Apple omits the name on later
+ * sign-ins, so that upgrade only runs once and never overwrites a custom name.
+ */
+export async function signInWithApple(): Promise<User> {
+  const credential = await AppleAuthentication.signInAsync({
+    requestedScopes: [
+      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+    ],
+  });
+
+  if (!credential.identityToken) {
+    throw new Error('Apple sign-in failed — no identity token returned.');
+  }
+
+  const { data, error } = await supabase.auth.signInWithIdToken({
+    provider: 'apple',
+    token: credential.identityToken,
+  });
+
+  if (error) throw error;
+  const user = data.user;
+  if (!user) throw new Error('Apple sign-in failed — no user returned.');
+
+  const given = credential.fullName?.givenName?.trim();
+  if (given) {
+    const callsign = censorProfanity(given).slice(0, 24);
+    await supabase
+      .from('profiles')
+      .update({ display_name: callsign })
+      .eq('id', user.id)
+      .eq('display_name', 'Crew Member');
+  }
+
+  return user;
+}
+
 export async function logOut(): Promise<void> {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
@@ -129,9 +177,11 @@ export async function getProfile(uid: string): Promise<PlayerProfile | null> {
 }
 
 export async function updateDisplayName(uid: string, displayName: string): Promise<void> {
+  const trimmed = censorProfanity(displayName.trim());
+
   const { error } = await supabase
     .from('profiles')
-    .update({ display_name: displayName })
+    .update({ display_name: trimmed })
     .eq('id', uid);
 
   if (error) throw error;

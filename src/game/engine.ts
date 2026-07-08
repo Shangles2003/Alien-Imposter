@@ -2,11 +2,13 @@ import {
   BioscannerState,
   ChamberResponse,
   ChamberType,
+  CustomPrompt,
   ExtractionState,
   GamePhase,
   GamePlayer,
   GameState,
   HostSettings,
+  IdentityCheckState,
   LobbyPlayer,
   RoundHistoryEntry,
 } from '@/types/game';
@@ -19,6 +21,20 @@ import {
   TOTAL_TASKS,
 } from '@/game/rules';
 import { generateGlyphSet, getPromptForChamber, pickCaptainGlyphs } from '@/game/prompts';
+import {
+  REPAIR_DURATION_MS,
+  REPAIR_MAX_STRIKES,
+  shouldRunIdentityCheck,
+} from '@/game/identityCheck';
+import {
+  generateRepairRun,
+  getRepairProgress as repairProgress,
+  isRepairRunComplete,
+  resolveConduitCut,
+  resolveFrequencyCode,
+  resolveGlyphOrder,
+  type RepairResolution,
+} from '@/game/repairProtocol';
 
 export function createInitialGameState(
   gameId: string,
@@ -26,7 +42,8 @@ export function createInitialGameState(
   hostId: string,
   lobbyPlayers: LobbyPlayer[],
   isDevMode = false,
-  hostSettings: HostSettings = DEFAULT_HOST_SETTINGS
+  hostSettings: HostSettings = DEFAULT_HOST_SETTINGS,
+  customPrompts: CustomPrompt[] = []
 ): GameState {
   const alivePlayers = lobbyPlayers.slice(0, 10);
   const rules = getRulesForPlayerCount(alivePlayers.length, hostSettings.missionCount);
@@ -80,6 +97,7 @@ export function createInitialGameState(
       unlocked: false,
     },
     extraction: null,
+    identityCheck: null,
     history: [],
     winner: null,
     winReason: null,
@@ -88,9 +106,14 @@ export function createInitialGameState(
     hostId,
     isDevMode,
     contentPacks: hostSettings.contentPacks,
+    fullLibrary: hostSettings.fullLibrary,
+    customPrompts: hostSettings.useCustomDeck ? customPrompts : [],
     phaseReady: {},
   };
 }
+
+/** Auto-advance boarding after this many milliseconds (no ready-up). */
+export const CHAMBER_BOARDING_DURATION_MS = 3000;
 
 function allCrewSynced(state: GameState): boolean {
   return getAlivePlayers(state).every((p) => state.phaseReady[p.uid]);
@@ -142,12 +165,12 @@ function advanceIfAllCrewSynced(state: GameState, fromPhase: GamePhase): GameSta
   switch (fromPhase) {
     case 'role_reveal':
       return beginMissionRound({ ...state, phaseReady: {} });
-    case 'chamber_boarding':
-      return { ...state, phase: 'chamber_active', phaseReady: {} };
     case 'chamber_results':
       return advanceAfterTask({ ...state, phaseReady: {} });
     case 'probe':
       return advanceAfterTask({ ...state, phaseReady: {} });
+    case 'identity_debrief':
+      return advanceAfterIdentityCheck({ ...state, phaseReady: {} });
     default:
       return state;
   }
@@ -161,9 +184,25 @@ export function getAliens(state: GameState): GamePlayer[] {
   return state.players.filter((p) => p.isAlive && p.role === 'alien');
 }
 
-/** Timer disabled — 5-task mode uses task count instead. */
-export function checkTimerExpired(_state: GameState): GameState | null {
-  return null;
+/** Timer disabled for mission clock — used for chamber boarding and identity co-op rounds. */
+export function checkTimerExpired(state: GameState): GameState | null {
+  const boarding = advanceBoardingIfExpired(state);
+  if (boarding !== state) return boarding;
+  const repair = advanceRepairIfExpired(state);
+  return repair !== state ? repair : null;
+}
+
+export function advanceBoardingIfExpired(state: GameState): GameState {
+  if (state.phase !== 'chamber_boarding') return state;
+  if (!state.timerEndsAt || Date.now() < state.timerEndsAt) return state;
+  return {
+    ...state,
+    phase: 'chamber_active',
+    phaseReady: {},
+    timerEndsAt: null,
+    timerPaused: true,
+    updatedAt: Date.now(),
+  };
 }
 
 /** Launch the fixed-order chamber for the current round (no captain pick). */
@@ -210,9 +249,17 @@ export function launchChamber(
       phase: 'chamber_boarding',
       selectedChamber: chamber,
       testeeIds: crewIds,
-      activePrompt: getPromptForChamber(chamber, promptContext(primed), primed.contentPacks ?? ['core']),
+      activePrompt: getPromptForChamber(
+        chamber,
+        promptContext(primed),
+        primed.contentPacks ?? ['core'],
+        primed.fullLibrary ?? true,
+        primed.customPrompts ?? []
+      ),
       chamberResponses: {},
       phaseReady: {},
+      timerEndsAt: Date.now() + CHAMBER_BOARDING_DURATION_MS,
+      timerPaused: false,
       bioscanner: {
         ...primed.bioscanner,
         captainGlyphs,
@@ -236,10 +283,14 @@ export function launchChamber(
         ...promptContext(primed),
         testeeIds: crewIds,
       },
-      primed.contentPacks ?? ['core']
+      primed.contentPacks ?? ['core'],
+      primed.fullLibrary ?? true,
+      primed.customPrompts ?? []
     ),
     chamberResponses: {},
     phaseReady: {},
+    timerEndsAt: Date.now() + CHAMBER_BOARDING_DURATION_MS,
+    timerPaused: false,
     updatedAt: Date.now(),
   };
 }
@@ -356,12 +407,19 @@ function advanceAfterTask(state: GameState): GameState {
     return startFinalExtraction(state);
   }
 
-  const aliveIds = getAlivePlayers(state).map((p) => p.uid);
+  const nextRound = state.round + 1;
+  const alive = getAlivePlayers(state);
+
+  if (shouldRunIdentityCheck(nextRound, alive.length, state.alienCount)) {
+    return startIdentityCheck(state, nextRound);
+  }
+
+  const aliveIds = alive.map((p) => p.uid);
   const nextCaptain = pickRandomCaptain(aliveIds, state.captainId ?? undefined);
 
   return beginMissionRound({
     ...state,
-    round: state.round + 1,
+    round: nextRound,
     captainId: nextCaptain,
     phaseReady: {},
   });
@@ -756,6 +814,302 @@ export function getPartnerHackAlerts(
     targetName: state.players.find((p) => p.uid === h.targetId)?.displayName ?? 'Unknown',
     hackerName: state.players.find((p) => p.uid === h.alienId)?.displayName ?? 'Infiltrator',
   }));
+}
+
+// ─── Identity Check (round 3, 6+ crew, 2 aliens) ───────────────────────────
+
+function freshIdentityCheck(): IdentityCheckState {
+  return {
+    nomineeId: null,
+    nominations: {},
+    tieRevoteUsed: false,
+    abortedNoConsensus: false,
+    coopPassed: null,
+    repair: null,
+    scanResult: null,
+    scanCompleted: false,
+  };
+}
+
+function startIdentityCheck(state: GameState, nextRound: number): GameState {
+  const aliveIds = getAlivePlayers(state).map((p) => p.uid);
+  const nextCaptain = pickRandomCaptain(aliveIds, state.captainId ?? undefined);
+  // Repair the reactor FIRST to power the scanner; the crew votes who to scan
+  // only once the repair succeeds.
+  const base: GameState = {
+    ...state,
+    round: nextRound,
+    captainId: nextCaptain,
+    identityCheck: freshIdentityCheck(),
+    phaseReady: {},
+    selectedChamber: null,
+    testeeIds: [],
+    activePrompt: null,
+    chamberResponses: {},
+    timerEndsAt: null,
+    timerPaused: true,
+    updatedAt: Date.now(),
+  };
+  return startIdentityCoop(base);
+}
+
+function goToIdentityDebrief(state: GameState): GameState {
+  return {
+    ...state,
+    phase: 'identity_debrief',
+    phaseReady: {},
+    updatedAt: Date.now(),
+  };
+}
+
+function goToIdentityNominate(state: GameState): GameState {
+  return {
+    ...state,
+    phase: 'identity_nominate',
+    phaseReady: {},
+    updatedAt: Date.now(),
+  };
+}
+
+function goToIdentityScan(state: GameState): GameState {
+  return {
+    ...state,
+    phase: 'identity_scan',
+    phaseReady: {},
+    updatedAt: Date.now(),
+  };
+}
+
+function pickTwoOperators(aliveIds: string[]): [string, string] {
+  const pool = [...aliveIds].sort(() => Math.random() - 0.5);
+  return [pool[0]!, pool[1]!];
+}
+
+function assignRepairRoles(a: string, b: string): { engineer: string; operator: string } {
+  return Math.random() < 0.5 ? { engineer: a, operator: b } : { engineer: b, operator: a };
+}
+
+function completeRepairSuccess(state: GameState): GameState {
+  const ic = state.identityCheck!;
+  // Reactor stabilized → scanner online. Crew now votes who to scan.
+  return goToIdentityNominate({
+    ...state,
+    identityCheck: { ...ic, coopPassed: true },
+  });
+}
+
+function completeRepairFailure(state: GameState): GameState {
+  const ic = state.identityCheck!;
+  return goToIdentityDebrief({
+    ...state,
+    identityCheck: { ...ic, coopPassed: false },
+  });
+}
+
+/** Turn a module resolution into the next game state (advance / fail / breach). */
+function applyRepairResolution(state: GameState, res: RepairResolution): GameState {
+  const ic = state.identityCheck!;
+  const withRepair: GameState = {
+    ...state,
+    identityCheck: { ...ic, repair: res.repair },
+    updatedAt: Date.now(),
+  };
+  if (res.failed) return completeRepairFailure(withRepair);
+  if (res.runComplete) return completeRepairSuccess(withRepair);
+  return withRepair;
+}
+
+function assertRepairOperator(state: GameState, playerId: string) {
+  const repair = state.identityCheck?.repair;
+  if (!repair || repair.operatorId !== playerId) {
+    throw new Error('Only the operator can work the panel.');
+  }
+}
+
+function startIdentityCoop(state: GameState): GameState {
+  const now = Date.now();
+  const ic = state.identityCheck!;
+  const aliveIds = getAlivePlayers(state).map((p) => p.uid);
+  if (aliveIds.length < 2) {
+    return goToIdentityDebrief({
+      ...state,
+      identityCheck: { ...ic, abortedNoConsensus: true, coopPassed: false },
+    });
+  }
+  const [opA, opB] = pickTwoOperators(aliveIds);
+  const { engineer, operator } = assignRepairRoles(opA, opB);
+  const repair = generateRepairRun(engineer, operator, now, REPAIR_DURATION_MS, REPAIR_MAX_STRIKES);
+
+  return {
+    ...state,
+    phase: 'identity_coop',
+    identityCheck: { ...ic, repair, coopPassed: null },
+    phaseReady: {},
+    updatedAt: now,
+  };
+}
+
+function tallyIdentityNomination(state: GameState): GameState {
+  const ic = state.identityCheck!;
+  const tally: Record<string, number> = {};
+  for (const targetId of Object.values(ic.nominations)) {
+    tally[targetId] = (tally[targetId] ?? 0) + 1;
+  }
+
+  const maxVotes = Math.max(...Object.values(tally), 0);
+  const leaders = Object.keys(tally).filter((id) => tally[id] === maxVotes);
+
+  if (leaders.length === 1) {
+    const nomineeId = leaders[0]!;
+    const nominee = state.players.find((p) => p.uid === nomineeId);
+    return goToIdentityScan({
+      ...state,
+      identityCheck: { ...ic, nomineeId, scanResult: nominee?.role ?? null },
+    });
+  }
+
+  if (!ic.tieRevoteUsed) {
+    return {
+      ...state,
+      identityCheck: { ...ic, nominations: {}, tieRevoteUsed: true },
+      updatedAt: Date.now(),
+    };
+  }
+
+  return goToIdentityDebrief({
+    ...state,
+    identityCheck: { ...ic, abortedNoConsensus: true },
+  });
+}
+
+function advanceAfterIdentityCheck(state: GameState): GameState {
+  const nextRound = state.round + 1;
+  if (nextRound > state.totalTasks) {
+    return startFinalExtraction({ ...state, identityCheck: null, phaseReady: {} });
+  }
+  const aliveIds = getAlivePlayers(state).map((p) => p.uid);
+  const nextCaptain = pickRandomCaptain(aliveIds, state.captainId ?? undefined);
+  return beginMissionRound({
+    ...state,
+    round: nextRound,
+    captainId: nextCaptain,
+    identityCheck: null,
+    phaseReady: {},
+  });
+}
+
+export function getIdentityNominationProgress(state: GameState): { done: number; total: number } {
+  const alive = getAlivePlayers(state);
+  const nominations = state.identityCheck?.nominations ?? {};
+  const done = alive.filter((p) => nominations[p.uid]).length;
+  return { done, total: alive.length };
+}
+
+export function getRepairProgress(state: GameState): {
+  modulesCompleted: number;
+  moduleTotal: number;
+  strikes: number;
+  maxStrikes: number;
+  msRemaining: number;
+} | null {
+  const repair = state.identityCheck?.repair;
+  if (!repair) return null;
+  return repairProgress(repair);
+}
+
+/** Each alive player nominates one other player for the identity scan. */
+export function submitIdentityNomination(
+  state: GameState,
+  voterId: string,
+  targetId: string
+): GameState {
+  if (state.phase !== 'identity_nominate') throw new Error('Not in nomination phase.');
+  const ic = state.identityCheck;
+  if (!ic || ic.nomineeId || ic.abortedNoConsensus) throw new Error('Nomination closed.');
+
+  const alive = getAlivePlayers(state);
+  const aliveIds = new Set(alive.map((p) => p.uid));
+  if (!aliveIds.has(voterId)) throw new Error('Only active crew can vote.');
+  if (!aliveIds.has(targetId)) throw new Error('Invalid target.');
+  if (voterId === targetId) throw new Error('Cannot vote for yourself.');
+
+  const nominations = { ...ic.nominations, [voterId]: targetId };
+  const allIn = alive.every((p) => nominations[p.uid]);
+
+  if (!allIn) {
+    return {
+      ...state,
+      identityCheck: { ...ic, nominations },
+      updatedAt: Date.now(),
+    };
+  }
+
+  return tallyIdentityNomination({ ...state, identityCheck: { ...ic, nominations } });
+}
+
+/** Operator severs a conduit on the Conduit Array module. */
+export function submitConduitCut(
+  state: GameState,
+  playerId: string,
+  conduitId: string
+): GameState {
+  if (state.phase !== 'identity_coop') throw new Error('Not in repair phase.');
+  const ic = state.identityCheck;
+  if (!ic?.repair || ic.coopPassed !== null) return state;
+  assertRepairOperator(state, playerId);
+
+  return applyRepairResolution(state, resolveConduitCut(ic.repair, conduitId));
+}
+
+/** Operator locks in a glyph press order on the Airlock Cipher module. */
+export function submitGlyphOrder(
+  state: GameState,
+  playerId: string,
+  order: number[]
+): GameState {
+  if (state.phase !== 'identity_coop') throw new Error('Not in repair phase.');
+  const ic = state.identityCheck;
+  if (!ic?.repair || ic.coopPassed !== null) return state;
+  assertRepairOperator(state, playerId);
+
+  return applyRepairResolution(state, resolveGlyphOrder(ic.repair, order));
+}
+
+/** Operator locks in a 3-digit code on the Frequency Lock module. */
+export function submitFrequencyCode(
+  state: GameState,
+  playerId: string,
+  code: number[]
+): GameState {
+  if (state.phase !== 'identity_coop') throw new Error('Not in repair phase.');
+  const ic = state.identityCheck;
+  if (!ic?.repair || ic.coopPassed !== null) return state;
+  assertRepairOperator(state, playerId);
+
+  return applyRepairResolution(state, resolveFrequencyCode(ic.repair, code));
+}
+
+/** Auto-fail repair when the timer expires without completing all modules. */
+export function advanceRepairIfExpired(state: GameState): GameState {
+  if (state.phase !== 'identity_coop') return state;
+  const ic = state.identityCheck;
+  if (!ic?.repair || ic.coopPassed !== null) return state;
+  if (Date.now() < ic.repair.endsAt) return state;
+  if (isRepairRunComplete(ic.repair)) return completeRepairSuccess(state);
+  return completeRepairFailure(state);
+}
+
+/** Captain acknowledges the scan result and advances to crew debrief. */
+export function captainAcknowledgeScan(state: GameState, captainId: string): GameState {
+  if (state.phase !== 'identity_scan') throw new Error('Not in scan phase.');
+  if (state.captainId !== captainId) throw new Error('Only the captain can acknowledge the scan.');
+  const ic = state.identityCheck;
+  if (!ic?.coopPassed) throw new Error('Scan not available.');
+
+  return goToIdentityDebrief({
+    ...state,
+    identityCheck: { ...ic, scanCompleted: true },
+  });
 }
 
 export { TOTAL_TASKS };

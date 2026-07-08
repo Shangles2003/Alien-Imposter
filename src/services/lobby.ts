@@ -5,10 +5,12 @@ import {
   DEFAULT_HOST_SETTINGS,
   HostSettings,
   normalizeHostSettings,
+  ownedPacksForPremium,
   sanitizeHostSettingsForEntitlements,
 } from '@/content/types';
-import { Lobby, LobbyPlayer, PlayerProfile, GameState } from '@/types/game';
+import { CustomPrompt, Lobby, LobbyPlayer, PlayerProfile, GameState } from '@/types/game';
 import { createInitialGameState } from '@/game/engine';
+import { fetchMyCustomPrompts } from '@/services/customDecks';
 import { generateLobbyCode, MAX_PLAYERS, MIN_PLAYERS } from '@/game/rules';
 import { createDevBotPlayers } from '@/dev/bots';
 import { isDevBot, isDevModeEnabled } from '@/dev/config';
@@ -153,6 +155,14 @@ export async function joinLobbyByCode(
   return rowToLobby({ ...row, players: row.players ?? [] });
 }
 
+/** Navigate to lobby or active game after joining by code. */
+export function getPostJoinPath(lobby: Lobby): `/lobby/${string}` | `/game/${string}` {
+  if (lobby.status === 'in_game' && lobby.gameId) {
+    return `/game/${lobby.gameId}`;
+  }
+  return `/lobby/${lobby.id}`;
+}
+
 export async function leaveLobby(lobbyId: string, uid: string): Promise<void> {
   const { data: row, error } = await supabase
     .from('lobbies')
@@ -240,7 +250,11 @@ export async function readyAllDevBots(lobbyId: string): Promise<void> {
   if (updateError) throw updateError;
 }
 
-export async function startGame(lobbyId: string, hostId: string): Promise<string> {
+export async function startGame(
+  lobbyId: string,
+  hostId: string,
+  hasPremium: boolean
+): Promise<string> {
   const { data: row, error } = await supabase
     .from('lobbies')
     .select('*')
@@ -262,13 +276,31 @@ export async function startGame(lobbyId: string, hostId: string): Promise<string
 
   const gameId = Crypto.randomUUID();
   const devMode = lobby.players.some((p) => isDevBot(p.uid));
+  // The host's live entitlement is authoritative at launch — this covers hosts
+  // who never opened settings, and re-clamps stages/library to what they own.
+  const effectiveSettings = sanitizeHostSettingsForEntitlements(
+    normalizeHostSettings(lobby.hostSettings),
+    ownedPacksForPremium(hasPremium),
+    hasPremium
+  );
+  // Bake the host's personal deck into the shared game state so any client can
+  // draw from it during selection (the captain — not always the host — picks).
+  let customPrompts: CustomPrompt[] = [];
+  if (effectiveSettings.useCustomDeck) {
+    try {
+      customPrompts = await fetchMyCustomPrompts();
+    } catch {
+      customPrompts = [];
+    }
+  }
   const gameState = createInitialGameState(
     gameId,
     lobbyId,
     hostId,
     lobby.players,
     devMode,
-    lobby.hostSettings
+    effectiveSettings,
+    customPrompts
   );
 
   const { error: gameError } = await supabase.from('games').insert({
@@ -380,10 +412,13 @@ export function rowToGameState(row: {
     hostId: row.host_id,
     totalTasks: state.totalTasks ?? 5,
     contentPacks: state.contentPacks ?? ['core'],
+    fullLibrary: state.fullLibrary ?? true,
+    customPrompts: state.customPrompts ?? [],
     usedChambers: state.usedChambers ?? [],
     timerEndsAt: state.timerEndsAt ?? null,
     isDevMode: state.isDevMode ?? state.players?.some((p) => p.uid.startsWith('dev-bot-')),
     phaseReady: state.phaseReady ?? {},
+    identityCheck: state.identityCheck ?? null,
     hackLog:
       state.hackLog ??
       (state as GameState & { hacksUsed?: { alienId: string; targetId: string; usedAt: number }[] }).hacksUsed?.map(

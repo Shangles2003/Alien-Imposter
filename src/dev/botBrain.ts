@@ -1,6 +1,7 @@
 import * as engine from '@/game/engine';
 import { getPromptForPlayer } from '@/game/prompts';
 import { isDevBot } from '@/dev/config';
+import { getCurrentModule } from '@/game/repairProtocol';
 import { AgreementLevel, GamePlayer, GameState } from '@/types/game';
 
 function pickRandom<T>(arr: T[]): T {
@@ -145,6 +146,9 @@ export type BotActionKind =
   | 'chamber_response'
   | 'bioscanner_glyphs'
   | 'bioscanner_scan'
+  | 'identity_nomination'
+  | 'identity_repair'
+  | 'identity_scan_ack'
   | 'extraction_ballot'
   | 'extraction_vote'
   | 'hack';
@@ -157,7 +161,44 @@ export interface BotActionPlan {
   run: (state: GameState) => GameState;
 }
 
-const SYNC_PHASES: GameState['phase'][] = ['role_reveal', 'chamber_boarding', 'chamber_results'];
+const SYNC_PHASES: GameState['phase'][] = ['role_reveal', 'chamber_results', 'identity_debrief'];
+
+function botExecuteRepairStep(state: GameState, operatorId: string): GameState {
+  const repair = state.identityCheck?.repair;
+  if (!repair || repair.operatorId !== operatorId) return state;
+
+  const module = getCurrentModule(repair);
+  if (!module) return state;
+
+  const player = state.players.find((p) => p.uid === operatorId);
+  // A saboteur operator occasionally "misreads" and locks in a wrong answer,
+  // burning a strike — deniable, just like a human throw.
+  const sabotage = player?.role === 'alien' && Math.random() < 0.25;
+
+  if (module.type === 'conduit') {
+    if (sabotage) {
+      const wrong = module.conduits.find((c) => c.id !== module.solution.cutId);
+      if (wrong) return engine.submitConduitCut(state, operatorId, wrong.id);
+    }
+    return engine.submitConduitCut(state, operatorId, module.solution.cutId);
+  }
+
+  if (module.type === 'glyph_lock') {
+    const order = [...module.solution.order];
+    if (sabotage && order.length >= 2) {
+      [order[0], order[1]] = [order[1]!, order[0]!]; // swap first two
+    }
+    return engine.submitGlyphOrder(state, operatorId, order);
+  }
+
+  if (module.type === 'frequency') {
+    const code = [...module.solution.code];
+    if (sabotage) code[0] = (code[0]! + 1) % 10;
+    return engine.submitFrequencyCode(state, operatorId, code);
+  }
+
+  return state;
+}
 
 function botAlienIds(state: GameState): Set<string> {
   return new Set(
@@ -177,7 +218,6 @@ function shouldBotScheduleHack(state: GameState): boolean {
   if (state.phase !== 'chamber_boarding') return false;
   if (state.hacksRemaining <= 0) return false;
   if (botAlreadyHackedThisRound(state)) return false;
-  if (pendingSyncBotIds(state).length > 0) return false;
   return true;
 }
 
@@ -239,6 +279,61 @@ export function getNextBotAction(state: GameState): BotActionPlan | null {
         kind: 'chamber_response',
         description: 'task responses',
         run: botSubmitAllChamberResponses,
+      };
+    }
+  }
+
+  if (state.phase === 'identity_nominate') {
+    const pending = aliveBots(state).filter(
+      (p) => !state.identityCheck?.nominations[p.uid]
+    );
+    if (pending.length) {
+      const ids = pending.map((p) => p.uid);
+      return {
+        botId: ids[0]!,
+        botName: 'Crew bots',
+        kind: 'identity_nomination',
+        description: 'identity nomination',
+        run: (s) => {
+          let next = s;
+          for (const id of ids) {
+            if (next.phase !== 'identity_nominate') break;
+            if (next.identityCheck?.nominations[id]) continue;
+            const candidates = next.players.filter((p) => p.isAlive && p.uid !== id);
+            const target = pickRandom(candidates);
+            next = engine.submitIdentityNomination(next, id, target.uid);
+          }
+          return next;
+        },
+      };
+    }
+  }
+
+  if (state.phase === 'identity_coop') {
+    const repair = state.identityCheck?.repair;
+    const operatorId = repair?.operatorId;
+    if (operatorId && isDevBot(operatorId)) {
+      const operator = state.players.find((p) => p.uid === operatorId);
+      return {
+        botId: operatorId,
+        botName: operator?.displayName ?? 'Operator',
+        kind: 'identity_repair',
+        description: 'repair protocol',
+        run: (s) => botExecuteRepairStep(s, operatorId),
+      };
+    }
+  }
+
+  if (state.phase === 'identity_scan') {
+    const captainId = state.captainId;
+    if (captainId && isDevBot(captainId)) {
+      const captain = state.players.find((p) => p.uid === captainId);
+      return {
+        botId: captainId,
+        botName: captain?.displayName ?? 'Captain',
+        kind: 'identity_scan_ack',
+        description: 'acknowledge scan',
+        run: (s) => engine.captainAcknowledgeScan(s, captainId),
       };
     }
   }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import {
   Button,
@@ -13,7 +13,7 @@ import {
 import { GearIcon } from '@/components/ui/GearIcon';
 import { useAuth } from '@/context/AuthContext';
 import { isDevModeEnabled } from '@/dev/config';
-import { createDevLobby, createLobby, joinLobbyByCode } from '@/services/lobby';
+import { createDevLobby, createLobby, joinLobbyByCode, getPostJoinPath } from '@/services/lobby';
 import { mapJoinLobbyError } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
 import { SETTINGS_ROUTE } from '@/navigation/routes';
@@ -46,7 +46,7 @@ export default function HomeScreen() {
     setLoading('join');
     try {
       const lobby = await joinLobbyByCode(code, profile);
-      router.push(`/lobby/${lobby.id}`);
+      router.push(getPostJoinPath(lobby));
     } catch (e) {
       Alert.alert('Join failed', mapJoinLobbyError(errorMessage(e)));
     } finally {
@@ -119,6 +119,14 @@ export default function HomeScreen() {
             onPress={joinParty}
           />
         </GlowCard>
+
+        <Button
+          title="Custom Deck"
+          icon="🗂️"
+          variant="ghost"
+          fullWidth
+          onPress={() => router.push('/deck' as Href)}
+        />
       </Animated.View>
 
       {isDevModeEnabled() ? (

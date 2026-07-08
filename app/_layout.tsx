@@ -46,10 +46,21 @@ export default function RootLayout() {
         <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="lobby/join" options={{ headerShown: false }} />
-        <Stack.Screen name="lobby/[id]" options={{ headerShown: false }} />
-        <Stack.Screen name="game/[id]" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="lobby/[id]"
+          options={{ headerShown: false, gestureEnabled: false, fullScreenGestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="game/[id]"
+          options={{ headerShown: false, gestureEnabled: false, fullScreenGestureEnabled: false }}
+        />
         <Stack.Screen name="legal/privacy" options={{ headerShown: false }} />
         <Stack.Screen name="legal/terms" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="paywall"
+          options={{ headerShown: false, presentation: 'modal' }}
+        />
+        <Stack.Screen name="deck" options={{ headerShown: false }} />
       </Stack>
       </PremiumProvider>
       </BlockListProvider>

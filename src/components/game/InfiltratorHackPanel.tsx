@@ -3,6 +3,7 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar } from '@/components/ui';
 import { getAlienHackIntel } from '@/game/engine';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { GamePlayer, GameState } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
 
@@ -26,6 +27,7 @@ export function InfiltratorHackPanel({
   onClose,
   onHack,
 }: InfiltratorHackPanelProps) {
+  const { accentSoft } = useGameAccent();
   const intel = getAlienHackIntel(game);
   const canHack = game.hacksRemaining > 0;
   const humans = game.players.filter((p) => p.isAlive && p.role === 'human');
@@ -45,7 +47,7 @@ export function InfiltratorHackPanel({
             <Text style={styles.countLabel}>left</Text>
           </View>
           <Pressable onPress={onClose} style={styles.doneBtn} hitSlop={12}>
-            <Text style={styles.doneText}>Done</Text>
+            <Text style={[styles.doneText, { color: accentSoft }]}>Done</Text>
           </Pressable>
         </View>
 
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
   countValue: { ...typography.heading, color: colors.alien, fontSize: 18, lineHeight: 20 },
   countLabel: { ...typography.small, color: colors.alien, fontSize: 9, fontWeight: '800' },
   doneBtn: { paddingHorizontal: spacing.sm, paddingVertical: spacing.xs },
-  doneText: { ...typography.caption, color: colors.accentSoft, fontWeight: '700' },
+  doneText: { ...typography.caption, fontWeight: '700' },
   scroll: { flex: 1 },
   scrollContent: { padding: spacing.md, gap: spacing.md, paddingBottom: spacing.xxl },
   help: {

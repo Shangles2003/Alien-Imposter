@@ -1,6 +1,11 @@
 import { ChamberPrompt } from '@/types/game';
 
-export type ContentPackId = 'core' | 'spicy';
+export type ContentPackId = 'core' | 'spicy' | 'betrayal';
+
+/** Packs a host owns given their entitlement. Premium unlocks every pack. */
+export function ownedPacksForPremium(hasPremium: boolean): ContentPackId[] {
+  return hasPremium ? ['core', 'betrayal'] : ['core'];
+}
 
 export type MissionCount = 3 | 5 | 7;
 
@@ -28,14 +33,28 @@ export interface HostSettings {
   /** Always includes `core`; premium hosts can add packs they own. */
   contentPacks: ContentPackId[];
   missionCount: MissionCount;
+  /**
+   * Whether this host's games draw from the full prompt library. Free hosts
+   * get a small fixed sample (see FREE_SAMPLE_* in prompts); premium hosts get
+   * everything. Derived from the host's entitlement at settings-save / launch.
+   */
+  fullLibrary: boolean;
+  /** Premium host wants their personal custom deck mixed into this game. */
+  useCustomDeck: boolean;
 }
 
 export const CORE_PACK_ID: ContentPackId = 'core';
 
+/** Free-tier default: 5 stages, core pack, sampled prompt library. */
 export const DEFAULT_HOST_SETTINGS: HostSettings = {
   contentPacks: ['core'],
   missionCount: 5,
+  fullLibrary: false,
+  useCustomDeck: false,
 };
+
+/** Mission length free hosts are locked to. */
+export const FREE_MISSION_COUNT: MissionCount = 5;
 
 export function normalizeHostSettings(raw?: Partial<HostSettings> | null): HostSettings {
   const packs = raw?.contentPacks?.length ? [...raw.contentPacks] : ['core'];
@@ -46,6 +65,8 @@ export function normalizeHostSettings(raw?: Partial<HostSettings> | null): HostS
   return {
     contentPacks: [...new Set(packs)] as ContentPackId[],
     missionCount: validMission,
+    fullLibrary: Boolean(raw?.fullLibrary),
+    useCustomDeck: Boolean(raw?.useCustomDeck),
   };
 }
 
@@ -60,6 +81,11 @@ export function sanitizeHostSettingsForEntitlements(
 
   return {
     contentPacks,
-    missionCount: hasPremium ? settings.missionCount : DEFAULT_HOST_SETTINGS.missionCount,
+    // Premium unlocks 3/5/7 stages; free hosts are pinned to 5.
+    missionCount: hasPremium ? settings.missionCount : FREE_MISSION_COUNT,
+    // Premium unlocks the full prompt library for everyone in the host's game.
+    fullLibrary: hasPremium,
+    // Custom decks are a premium feature.
+    useCustomDeck: hasPremium && settings.useCustomDeck,
   };
 }

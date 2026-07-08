@@ -1,14 +1,17 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 import { ContentPackId } from '@/content/types';
+import { useAuth } from '@/context/AuthContext';
+import { premiumService, PremiumState } from '@/premium/PremiumService';
 
 /**
- * Everything is free right now — there is no paid tier.
+ * Live entitlement state, backed by RevenueCat (see src/premium/).
  *
- * This context used to talk to RevenueCat (see src/premium/ for the dormant
- * plumbing). It now grants full access unconditionally, so host settings and
- * all content are available to every player. If a paid "After Dark" pack
- * ships later, swap this stub back to the PremiumService-backed provider.
+ * `hasPremiumAccess` is the single gate the rest of the app reads. It is true
+ * when the user owns the Expansion (subscription or lifetime), has the dev
+ * unlock on, or is on a build where the store isn't available (so we never
+ * show a paywall nobody can complete). Entitlements are attached to the signed
+ * in account, so premium restores on any device after login.
  */
 interface PremiumContextValue {
   initialized: boolean;
@@ -20,34 +23,48 @@ interface PremiumContextValue {
   hasPremiumAccess: boolean;
   hasPack: (packId: ContentPackId) => boolean;
   ownedContentPacks: ContentPackId[];
+  /** Localized store prices for display; null until offerings load. */
+  monthlyPrice: string | null;
+  lifetimePrice: string | null;
   purchaseSubscription: () => Promise<void>;
-  purchaseSpicyPack: () => Promise<void>;
+  purchaseLifetime: () => Promise<void>;
   restorePurchases: () => Promise<void>;
+  getManagementURL: () => Promise<string | null>;
   setDevUnlock: (enabled: boolean) => Promise<void>;
 }
 
 const PremiumContext = createContext<PremiumContextValue | null>(null);
 
-const noop = async () => {};
-
 export function PremiumProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const [state, setState] = useState<PremiumState>(() => premiumService.getState());
+
+  useEffect(() => premiumService.subscribe(setState), []);
+
+  useEffect(() => {
+    premiumService.initialize(user?.id).catch(() => {});
+  }, [user?.id]);
+
   const value = useMemo<PremiumContextValue>(
     () => ({
-      initialized: true,
-      loading: false,
-      subscriptionActive: false,
-      ownedPacks: ['core'],
-      devUnlock: false,
-      mockMode: false,
-      hasPremiumAccess: true,
-      hasPack: () => true,
-      ownedContentPacks: ['core'],
-      purchaseSubscription: noop,
-      purchaseSpicyPack: noop,
-      restorePurchases: noop,
-      setDevUnlock: noop,
+      initialized: state.initialized,
+      loading: state.loading,
+      subscriptionActive: state.subscriptionActive,
+      ownedPacks: state.ownedPacks,
+      devUnlock: state.devUnlock,
+      mockMode: state.mockMode,
+      hasPremiumAccess: premiumService.hasPremiumAccess(),
+      hasPack: (packId) => premiumService.hasPack(packId),
+      ownedContentPacks: premiumService.ownedContentPacks(),
+      monthlyPrice: premiumService.priceString('monthly'),
+      lifetimePrice: premiumService.priceString('lifetime'),
+      purchaseSubscription: () => premiumService.purchaseSubscription(),
+      purchaseLifetime: () => premiumService.purchaseLifetime(),
+      restorePurchases: () => premiumService.restorePurchases(),
+      getManagementURL: () => premiumService.getManagementURL(),
+      setDevUnlock: (enabled) => premiumService.setDevUnlock(enabled),
     }),
-    []
+    [state]
   );
 
   return <PremiumContext.Provider value={value}>{children}</PremiumContext.Provider>;

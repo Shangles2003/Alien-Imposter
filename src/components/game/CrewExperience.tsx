@@ -2,14 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
-import { Button } from '@/components/ui';
 import { CrewSyncBar, PhaseSyncGate } from '@/components/game/CrewSyncBar';
 import { getTaskProgress } from '@/game/engine';
 import {
   CHAMBER_DESCRIPTIONS,
   CHAMBER_LABELS,
   CHAMBER_TAGLINES,
-  GamePlayer,
   GameState,
 } from '@/types/game';
 import {
@@ -37,21 +35,9 @@ export function CrewDots({
 }
 
 /** Full-bleed chamber door — gradient hero shown while the crew boards. */
-export function ChamberBoarding({
-  game,
-  me,
-  onBoard,
-  boardingPending = false,
-}: {
-  game: GameState;
-  me: GamePlayer;
-  onBoard: () => void;
-  boardingPending?: boolean;
-}) {
+export function ChamberBoarding({ game }: { game: GameState }) {
   const chamber = game.selectedChamber!;
-  const boarded = Boolean(game.phaseReady[me.uid]);
   const gradient = chamberGradients[chamber] ?? chamberGradients.opinion_hold!;
-  const accent = chamberAccents[chamber] ?? colors.accent;
 
   return (
     <View style={styles.fill}>
@@ -75,12 +61,7 @@ export function ChamberBoarding({
         </LinearGradient>
       </Animated.View>
       <Animated.View entering={FadeInUp.delay(120).duration(400)} style={styles.footer}>
-        <CrewSyncBar game={game} mode="sync" />
-        {boarded ? (
-          <Text style={styles.waitingCopy}>Waiting for crew...</Text>
-        ) : (
-          <Button title="Enter chamber" fullWidth loading={boardingPending} onPress={onBoard} />
-        )}
+        <CrewSyncBar game={game} mode="countdown" />
       </Animated.View>
     </View>
   );

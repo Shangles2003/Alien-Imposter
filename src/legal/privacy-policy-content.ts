@@ -1,7 +1,7 @@
 export const PRIVACY_POLICY = {
   title: 'Privacy Policy',
   appName: 'Alien Imposter',
-  effectiveDate: 'July 6, 2026',
+  effectiveDate: 'July 7, 2026',
   intro:
     'This Privacy Policy describes how Joseph Samuel Tornari (“we,” “us,” or “our”) collects, uses, shares, and protects information when you use the Alien Imposter mobile application and related services (collectively, the “App”).\n\nBy using the App, you agree to this Privacy Policy. If you do not agree, do not use the App.',
   sections: [
@@ -16,8 +16,8 @@ export const PRIVACY_POLICY = {
     {
       title: '2. Summary',
       paragraphs: [
-        'Alien Imposter is a free multiplayer social deduction party game. To play online, you authenticate an account. We store your profile, lobby participation, and in-game responses on our backend so you and your friends can play together in real time.',
-        'We do not sell your personal information. We do not use third-party advertising or analytics SDKs in the App. We do not have in-app purchases. We use service providers only to operate the basic functions of the App.',
+        'Alien Imposter is a free-to-play multiplayer social deduction party game with an optional paid upgrade (the "Expansion Pass"). To play online, you authenticate an account. We store your profile, lobby participation, and in-game responses on our backend so you and your friends can play together in real time.',
+        'We do not sell your personal information. We do not use third-party advertising SDKs in the App. The App offers optional in-app purchases, which are processed by Apple and managed through RevenueCat (see Sections 3 and 5). We use service providers only to operate the basic functions of the App.',
       ],
     },
     {
@@ -28,6 +28,7 @@ export const PRIVACY_POLICY = {
         'Profile Data: Your display name (“callsign”) and avatar color choice.',
         'In-Game Content: Answers, drawings, votes, and other gameplay actions you submit during a live session.',
         'Support Communications: Information you provide if you email us for help.',
+        'Purchase & Subscription Data: If you buy the Expansion Pass, Apple processes the payment. We and our purchases provider (RevenueCat) receive your entitlement status, the product purchased, and anonymized transaction identifiers so we can unlock features and restore them across your devices. We do NOT receive or store your credit-card number or full payment details — those stay with Apple.',
         '3.2 Information Collected Automatically',
         'Account Identifier (UUID): A unique string that links your profile, lobbies, and game sessions.',
         'Authentication Tokens: Secure tokens stored locally on your device to keep you signed in.',
@@ -42,6 +43,7 @@ export const PRIVACY_POLICY = {
         '• Create, authenticate, and manage your account.',
         '• Host private lobbies and sync multiplayer gameplay in real time.',
         '• Display your callsign and gameplay submissions to the other players in your specific lobby.',
+        '• Unlock, verify, and restore Expansion Pass purchases across your devices.',
         '• Maintain security, enforce game rules, and fix technical bugs.',
         '• Respond to your support inquiries.',
       ],
@@ -51,7 +53,7 @@ export const PRIVACY_POLICY = {
       paragraphs: [
         'We only share information in the following ways:',
         'With Other Players: When you join a lobby, the other participants in that specific session can see your display name, avatar color, and the content (drawings, answers, votes) you submit during that game.',
-        'With Service Providers: We use trusted third-party services to operate the App. These include Supabase (for database hosting, authentication, and real-time multiplayer syncing), Apple / Google (for app distribution and native sign-in), and Expo (for app infrastructure). These providers process data on our behalf and are bound by their own strict privacy agreements.',
+        'With Service Providers: We use trusted third-party services to operate the App. These include Supabase (for database hosting, authentication, and real-time multiplayer syncing), Apple (for app distribution, native sign-in, and in-app purchase processing), RevenueCat (for managing in-app purchases and entitlements), and Expo (for app infrastructure). These providers process data on our behalf and are bound by their own privacy agreements.',
         'Legal Requirements: We may disclose information if required by law, court order, or to protect the safety and security of our users or the public.',
       ],
     },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Switch, Text, View } from 'react-native';
+import { Alert, Linking, StyleSheet, Switch, Text, View } from 'react-native';
+import { Href, useRouter } from 'expo-router';
 import {
   SettingsGroup,
   SettingsRow,
@@ -10,16 +11,15 @@ import { usePremium } from '@/context/PremiumContext';
 import { colors, spacing, typography } from '@/theme';
 
 export function PremiumSettingsSection() {
+  const router = useRouter();
   const {
     hasPremiumAccess,
-    hasPack,
     subscriptionActive,
     mockMode,
     devUnlock,
     loading,
-    purchaseSubscription,
-    purchaseSpicyPack,
     restorePurchases,
+    getManagementURL,
     setDevUnlock,
   } = usePremium();
   const [busy, setBusy] = useState(false);
@@ -36,53 +36,65 @@ export function PremiumSettingsSection() {
     }
   };
 
+  const manageSubscription = async () => {
+    const url = await getManagementURL();
+    if (url) {
+      Linking.openURL(url).catch(() => {});
+    } else {
+      Alert.alert(
+        'Manage subscription',
+        'Open the Settings app → your Apple ID → Subscriptions to change or cancel.'
+      );
+    }
+  };
+
   const statusLabel = hasPremiumAccess
     ? subscriptionActive
-      ? 'Captain\'s Pass active'
+      ? 'Expansion active'
       : devUnlock
         ? 'Dev unlock on'
-        : 'Premium unlocked'
+        : 'Unlocked'
     : 'Free tier';
-
-  const spicyStatus = hasPack('spicy') ? 'Owned' : 'Not owned';
 
   return (
     <>
-      <SettingsSectionTitle>Premium</SettingsSectionTitle>
+      <SettingsSectionTitle>{PREMIUM_COPY.title}</SettingsSectionTitle>
       <SettingsGroup delay={30}>
         <SettingsRow icon="⭐" label="Your tier" value={statusLabel} />
-        <SettingsRow icon="🌶️" label={PREMIUM_COPY.spicyTitle} value={spicyStatus} />
+
         {!hasPremiumAccess && (
           <SettingsRow
-            icon="🎫"
-            label={PREMIUM_COPY.subscriptionTitle}
-            value="Subscribe"
+            icon="✨"
+            label={`Unlock ${PREMIUM_COPY.title}`}
+            value="Upgrade"
             showChevron
-            onPress={() => run('Subscription', purchaseSubscription)}
+            onPress={() => router.push('/paywall' as Href)}
           />
         )}
-        {!hasPack('spicy') && (
+
+        {subscriptionActive && (
           <SettingsRow
-            icon="🔥"
-            label="Buy Spicy Pack"
-            value="One-time"
+            icon="⚙️"
+            label="Manage subscription"
             showChevron
-            onPress={() => run('Spicy Pack', purchaseSpicyPack)}
+            onPress={manageSubscription}
           />
         )}
+
         <SettingsRow
           icon="↩️"
-          label="Restore Purchases"
+          label="Restore purchases"
           showChevron
           isLast={!__DEV__}
           onPress={() => run('Restore', restorePurchases)}
         />
+
         {__DEV__ && (
           <View style={styles.devRow}>
             <View style={styles.devCopy}>
               <Text style={styles.devLabel}>Dev: simulate premium</Text>
               <Text style={styles.devHint}>
-                {mockMode ? 'Expo Go — toggles packs & host settings for testing.' : 'Development build'}
+                {mockMode ? 'Expo Go — toggles the Expansion for testing.' : 'Development build'}
               </Text>
             </View>
             <Switch
@@ -95,7 +107,9 @@ export function PremiumSettingsSection() {
         )}
       </SettingsGroup>
       <Text style={styles.footer}>
-        Core Crew is always free — the full base game. Captain&apos;s Pass unlocks host settings and all packs.
+        {PREMIUM_COPY.freeSummary} {PREMIUM_COPY.tagline} Only the host needs the Expansion — it
+        covers everyone in their game. Subscriptions renew monthly until canceled in your Apple
+        account settings; the one-time unlock is permanent.
       </Text>
     </>
   );
@@ -121,5 +135,6 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
     marginBottom: spacing.md,
     paddingHorizontal: spacing.sm,
+    lineHeight: 17,
   },
 });

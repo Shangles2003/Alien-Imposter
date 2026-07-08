@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { AppleSignInButton } from '@/components/auth/AppleSignInButton';
 import { LegalConsentNotice } from '@/components/legal/LegalConsentNotice';
 import { Button, FloatingAlien, GlowCard, Input, ScreenShell } from '@/components/ui';
 import { signIn } from '@/services/auth';
@@ -61,6 +62,8 @@ export default function LoginScreen() {
               <Button title="Launch In" icon="🚀" fullWidth loading={loading} onPress={handleLogin} />
             </View>
           </GlowCard>
+
+          <AppleSignInButton onSignedIn={() => router.replace(HOME_ROUTE)} />
 
           <LegalConsentNotice />
 

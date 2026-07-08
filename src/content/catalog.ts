@@ -19,8 +19,16 @@ export const PACK_LISTINGS: PackListing[] = [
     free: true,
     purchasable: false,
   },
+  {
+    id: 'betrayal',
+    name: 'Betrayal Pack',
+    tagline: 'Juicy friend-group prompts — who would really do you dirty?',
+    emoji: '🔪',
+    free: false,
+    purchasable: true,
+  },
   // The spicy pack was retired — its best prompts were reworked and folded
-  // into the free core pool. A separate "After Dark" pack may return later.
+  // into the free core pool.
 ];
 
 export function getPackListing(id: ContentPackId): PackListing {

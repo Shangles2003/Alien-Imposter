@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { Button } from '@/components/ui';
 import { ActiveTaskFrame } from '@/components/game/CrewExperience';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { GameState } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
+import { censorProfanity } from '@/utils/profanityFilter';
 
 interface WritingPodInputProps {
   game: GameState;
@@ -21,6 +23,7 @@ interface WritingPodInputProps {
 }
 
 export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps) {
+  const { accentSoft } = useGameAccent();
   const [text, setText] = React.useState('');
   const inputRef = useRef<TextInput>(null);
 
@@ -33,7 +36,7 @@ export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps
     const answer = text.trim();
     if (!answer) return;
     dismissKeyboard();
-    onSubmit(answer);
+    onSubmit(censorProfanity(answer));
   };
 
   return (
@@ -63,7 +66,7 @@ export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps
         }
       >
         <Pressable style={styles.inputWrap} onPress={() => inputRef.current?.focus()}>
-          <Text style={styles.inputLabel}>Your answer</Text>
+          <Text style={[styles.inputLabel, { color: accentSoft }]}>Your answer</Text>
           <TextInput
             ref={inputRef}
             value={text}
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     gap: spacing.xs,
   },
-  inputLabel: { ...typography.small, color: colors.accentSoft, fontWeight: '800' },
+  inputLabel: { ...typography.small, fontWeight: '800' },
   textInput: {
     minHeight: 52,
     color: colors.text,

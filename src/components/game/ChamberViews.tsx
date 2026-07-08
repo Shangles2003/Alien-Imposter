@@ -10,6 +10,7 @@ import { GLYPH_SYMBOLS, getPromptForPlayer } from '@/game/prompts';
 import { AgreementLevel, GamePlayer, GameState } from '@/types/game';
 import { colors, gradients, radius, spacing, typography } from '@/theme';
 import { WritingPodInput } from '@/components/game/WritingPodInput';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { DrawingPad } from './DrawingPad';
 
 const AGREEMENT: {
@@ -32,6 +33,8 @@ interface ChamberInputProps {
 }
 
 export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInputProps) {
+  const { accent, accentSoft, glow } = useGameAccent();
+  const accentOn = { borderColor: accent, backgroundColor: glow };
   const chamber = game.selectedChamber!;
   const prompt = game.activePrompt!;
   const promptText = getPromptForPlayer(prompt, player.role, player.isHacked);
@@ -78,11 +81,13 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
           {options.map((opt, i) => (
             <Animated.View key={opt} entering={FadeInUp.delay(70 * i).duration(300)}>
               <Pressable
-                style={({ pressed }) => [styles.choiceBtn, pressed && styles.choiceBtnPressed]}
+                style={({ pressed }) => [styles.choiceBtn, pressed && accentOn]}
                 onPress={() => onSubmit(opt, {})}
               >
                 <View style={styles.choiceNumWrap}>
-                  <Text style={styles.choiceNum}>{String.fromCharCode(65 + i)}</Text>
+                  <Text style={[styles.choiceNum, { color: accentSoft }]}>
+                    {String.fromCharCode(65 + i)}
+                  </Text>
                 </View>
                 <Text style={styles.choiceText}>{opt}</Text>
               </Pressable>
@@ -146,7 +151,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
             return (
               <Animated.View key={c.uid} entering={FadeInUp.delay(40 * i).duration(280)}>
                 <Pressable
-                  style={[styles.voteCard, picked && styles.voteCardOn]}
+                  style={[styles.voteCard, picked && accentOn]}
                   onPress={() => setSelectedPlayer(c.uid)}
                 >
                   <Avatar name={c.displayName} color={c.avatarColor} size={44} ring={picked} />
@@ -205,7 +210,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
                 key={g}
                 style={({ pressed }) => [
                   styles.glyphBtn,
-                  selectedGlyphs.includes(g) && styles.glyphBtnOn,
+                  selectedGlyphs.includes(g) && accentOn,
                   pressed && { transform: [{ scale: 0.92 }] },
                 ]}
                 onPress={() => toggle(g)}
@@ -229,6 +234,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
 }
 
 export function ChamberResults({ game }: { game: GameState }) {
+  const { accentSoft } = useGameAccent();
   const lastRound = game.history[game.history.length - 1];
   if (!lastRound) return null;
 
@@ -249,7 +255,7 @@ export function ChamberResults({ game }: { game: GameState }) {
               <DrawingPreview paths={r.drawingPaths} height={isDrawing ? 64 : 48} />
             ) : (
               <View style={styles.answerPill}>
-                <Text style={styles.answerText} numberOfLines={3}>
+                <Text style={[styles.answerText, { color: accentSoft }]} numberOfLines={3}>
                   {formatChamberAnswer(r, game)}
                 </Text>
               </View>
@@ -292,7 +298,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  choiceBtnPressed: { borderColor: colors.accent, backgroundColor: colors.glowCyan },
   choiceNumWrap: {
     width: 28,
     height: 28,
@@ -303,7 +308,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  choiceNum: { color: colors.accentSoft, fontWeight: '800', fontSize: 13 },
+  choiceNum: { fontWeight: '800', fontSize: 13 },
   choiceText: { ...typography.caption, color: colors.text, flex: 1, fontSize: 14, lineHeight: 20 },
   voteGrid: {
     flexDirection: 'row',
@@ -322,7 +327,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surfaceSolid,
   },
-  voteCardOn: { borderColor: colors.accent, backgroundColor: colors.glowCyan },
   voteName: { ...typography.caption, color: colors.textMuted, fontSize: 11, fontWeight: '600' },
   voteNameOn: { color: colors.text, fontWeight: '800' },
   glyphPanel: {
@@ -345,7 +349,6 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surfaceSolid,
   },
-  glyphBtnOn: { borderColor: colors.accent, backgroundColor: colors.glowCyan },
   hint: { ...typography.caption, color: colors.textMuted, textAlign: 'center' },
   results: { flex: 1, gap: spacing.xs, minHeight: 0 },
   resultsTitle: { ...typography.caption, color: colors.textDim, fontWeight: '700' },
@@ -383,5 +386,5 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     maxWidth: '100%',
   },
-  answerText: { ...typography.caption, color: colors.accentSoft, fontSize: 13, lineHeight: 18 },
+  answerText: { ...typography.caption, fontSize: 13, lineHeight: 18 },
 });

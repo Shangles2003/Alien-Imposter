@@ -2,8 +2,8 @@ import { GamePhase } from '@/types/game';
 
 export const CREW_SYNC_PHASES: GamePhase[] = [
   'role_reveal',
-  'chamber_boarding',
   'chamber_results',
+  'identity_debrief',
 ];
 
 export function isCrewSyncPhase(phase: GamePhase): boolean {

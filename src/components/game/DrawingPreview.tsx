@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { colors, radius } from '@/theme';
+import { useGameAccent } from '@/context/GameAccentContext';
+import { radius } from '@/theme';
 
 /** Human pads store JSON arrays; legacy/bot paths may be a single SVG path string. */
 export function parseDrawingPaths(raw: string): string[] {
@@ -47,6 +48,7 @@ interface DrawingPreviewProps {
 }
 
 export function DrawingPreview({ paths, height = 72 }: DrawingPreviewProps) {
+  const { accentSoft, accentMuted } = useGameAccent();
   const [width, setWidth] = useState(0);
   const parsed = parseDrawingPaths(paths);
   if (parsed.length === 0) return null;
@@ -54,7 +56,7 @@ export function DrawingPreview({ paths, height = 72 }: DrawingPreviewProps) {
 
   return (
     <View
-      style={[styles.frame, { height }]}
+      style={[styles.frame, { height, borderColor: accentMuted }]}
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
     >
       {width > 0 ? (
@@ -63,7 +65,7 @@ export function DrawingPreview({ paths, height = 72 }: DrawingPreviewProps) {
             <Path
               key={i}
               d={d}
-              stroke={colors.accentSoft}
+              stroke={accentSoft}
               strokeWidth={3}
               fill="none"
               strokeLinecap="round"
@@ -82,7 +84,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a1628',
     borderRadius: radius.sm,
     borderWidth: 1,
-    borderColor: 'rgba(34,211,238,0.25)',
     overflow: 'hidden',
   },
 });

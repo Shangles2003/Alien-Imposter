@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { AppleSignInButton } from '@/components/auth/AppleSignInButton';
 import { LegalConsentNotice } from '@/components/legal/LegalConsentNotice';
 import { AlienIcon, Button, GlowCard, Input, ScreenShell } from '@/components/ui';
 import { isUsernameAvailable, signUp } from '@/services/auth';
 import { errorMessage } from '@/utils/errors';
+import { censorProfanity, wasProfanityCensored } from '@/utils/profanityFilter';
 import { validateUsername } from '@/utils/username';
 import { HOME_ROUTE } from '@/navigation/routes';
 import { colors, spacing, typography } from '@/theme';
@@ -21,6 +23,10 @@ export default function SignupScreen() {
     const validationError = validateUsername(trimmed);
     if (validationError) {
       Alert.alert('Invalid username', validationError);
+      return;
+    }
+    if (wasProfanityCensored(trimmed, censorProfanity(trimmed))) {
+      Alert.alert('Invalid username', 'Username contains inappropriate language. Please choose another.');
       return;
     }
     if (password.length < 6) {
@@ -75,6 +81,8 @@ export default function SignupScreen() {
               <Button title="Create Account" icon="✨" fullWidth loading={loading} onPress={handleSignup} />
             </View>
           </GlowCard>
+
+          <AppleSignInButton mode="signUp" onSignedIn={() => router.replace(HOME_ROUTE)} />
 
           <LegalConsentNotice />
 

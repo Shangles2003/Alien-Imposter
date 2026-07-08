@@ -13,6 +13,12 @@ export function mapJoinLobbyError(message: string): string {
   if (/blocked player is in this lobby/i.test(message)) {
     return "You can't join this lobby because a blocked player is here. Unblock them in Settings to join.";
   }
+  if (/only original crew can rejoin/i.test(message)) {
+    return 'This mission is already running. Only players who started the game can rejoin with the lobby code.';
+  }
+  if (/mission has ended/i.test(message)) {
+    return 'This mission has already ended.';
+  }
   return message;
 }
 

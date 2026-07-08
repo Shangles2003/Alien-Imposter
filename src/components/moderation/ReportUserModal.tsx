@@ -13,6 +13,7 @@ import { Button } from '@/components/ui';
 import { REPORT_REASONS, ReportReason } from '@/constants/reportReasons';
 import { reportUser } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
+import { censorProfanity } from '@/utils/profanityFilter';
 import { colors, radius, spacing, typography } from '@/theme';
 
 interface ReportUserModalProps {
@@ -50,10 +51,11 @@ export function ReportUserModal({
     if (!reason) return;
     setSubmitting(true);
     try {
+      const censoredDetails = censorProfanity(details.trim());
       await reportUser({
         targetId,
         reason,
-        details: details.trim() || undefined,
+        details: censoredDetails || undefined,
         context,
       });
       Alert.alert('Report submitted', 'Thanks — we will review this within 24 hours.');

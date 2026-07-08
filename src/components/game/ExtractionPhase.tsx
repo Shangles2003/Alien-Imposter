@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Avatar, Button } from '@/components/ui';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { getExtractionBallotProgress } from '@/game/engine';
 import { GamePlayer, GameState } from '@/types/game';
 import { colors, radius, shadows, spacing, typography } from '@/theme';
@@ -50,6 +51,7 @@ export function ExtractionNominatePhase({
   me: GamePlayer;
   onSubmitBallot: (ids: string[]) => void;
 }) {
+  const { accentSoft } = useGameAccent();
   const [selected, setSelected] = useState<string[]>([]);
   const alive = game.players.filter((p) => p.isAlive);
   const needed = game.alienCount;
@@ -101,7 +103,7 @@ export function ExtractionNominatePhase({
             {needed === 1 ? 'the 1 player' : `the ${needed} players`} you suspect. The most-accused
             go on trial.
           </Text>
-          <Text style={styles.heroHint}>
+          <Text style={[styles.heroHint, { color: accentSoft }]}>
             SELECTED {selected.length} OF {needed} · BALLOTS IN {progress.done}/{progress.total}
           </Text>
         </View>
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
   },
   heroTitle: { ...typography.heading, color: colors.text },
   heroDesc: { ...typography.caption, color: colors.textMuted, lineHeight: 20 },
-  heroHint: { ...typography.label, color: colors.accentSoft, marginTop: spacing.xs, fontSize: 9 },
+  heroHint: { ...typography.label, marginTop: spacing.xs, fontSize: 9 },
   targetGrid: {
     flex: 1,
     flexDirection: 'row',

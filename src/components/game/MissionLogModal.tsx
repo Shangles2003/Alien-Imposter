@@ -5,6 +5,7 @@ import { MissionLogEntry } from '@/components/game/MissionLogEntry';
 import { PlayerModerationSheet, ModerationPlayer } from '@/components/moderation/PlayerModerationSheet';
 import { Avatar } from '@/components/ui';
 import { isDevBot } from '@/dev/config';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { getAlienHackIntel } from '@/game/engine';
 import { GamePlayer, GameState } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
@@ -17,6 +18,7 @@ interface MissionLogModalProps {
 }
 
 export function MissionLogModal({ visible, game, me, onClose }: MissionLogModalProps) {
+  const { accentSoft } = useGameAccent();
   const intel = me.role === 'alien' ? getAlienHackIntel(game) : null;
   const [moderatePlayer, setModeratePlayer] = useState<ModerationPlayer | null>(null);
 
@@ -32,7 +34,7 @@ export function MissionLogModal({ visible, game, me, onClose }: MissionLogModalP
               <Text style={styles.subtitle}>Every answer from every task</Text>
             </View>
             <Pressable onPress={onClose} style={styles.closeBtn} hitSlop={12}>
-              <Text style={styles.closeText}>Done</Text>
+              <Text style={[styles.closeText, { color: accentSoft }]}>Done</Text>
             </Pressable>
           </View>
 
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.borderBright,
   },
-  closeText: { ...typography.caption, color: colors.accentSoft, fontWeight: '700' },
+  closeText: { ...typography.caption, fontWeight: '700' },
   scroll: { flex: 1 },
   scrollContent: { padding: spacing.md, gap: spacing.md, paddingBottom: spacing.xxl },
   crewSection: {

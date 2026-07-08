@@ -4,9 +4,11 @@ import {
   HostSettings,
   MissionCount,
 } from '@/content/types';
+import type { RepairRunState } from '@/game/repairProtocol';
 
 export type { ContentPackId, HostSettings, MissionCount };
 export { DEFAULT_HOST_SETTINGS };
+export type { RepairModule, RepairRunState } from '@/game/repairProtocol';
 
 export type PlayerRole = 'human' | 'alien';
 
@@ -19,6 +21,10 @@ export type GamePhase =
   | 'chamber_active'
   | 'chamber_results'
   | 'probe'
+  | 'identity_nominate'
+  | 'identity_coop'
+  | 'identity_scan'
+  | 'identity_debrief'
   | 'extraction_nominate'
   | 'extraction_vote'
   | 'game_over';
@@ -110,6 +116,18 @@ export interface ChamberResponse {
   selectedGlyphs?: number[];
 }
 
+/** A user-authored prompt from their personal custom deck. */
+export interface CustomPrompt {
+  id: string;
+  chamber: ChamberType;
+  humanPrompt: string;
+  alienPrompt: string;
+  /** Deliberation only — the crew's scenario text. */
+  scenario?: string;
+  /** Deliberation only — the shared answer options. */
+  options?: string[];
+}
+
 export interface BioscannerState {
   glyphSet: number[];
   captainGlyphs: number[];
@@ -119,6 +137,18 @@ export interface BioscannerState {
   scanResult: PlayerRole | null;
   cooldownUntil: number | null;
   unlocked: boolean;
+}
+
+export interface IdentityCheckState {
+  nomineeId: string | null;
+  /** voterId → targetId */
+  nominations: Record<string, string>;
+  tieRevoteUsed: boolean;
+  abortedNoConsensus: boolean;
+  coopPassed: boolean | null;
+  repair: RepairRunState | null;
+  scanResult: PlayerRole | null;
+  scanCompleted: boolean;
 }
 
 export interface ExtractionState {
@@ -171,6 +201,7 @@ export interface GameState {
   activePrompt: ChamberPrompt | null;
   chamberResponses: Record<string, ChamberResponse>;
   bioscanner: BioscannerState;
+  identityCheck: IdentityCheckState | null;
   extraction: ExtractionState | null;
   history: RoundHistoryEntry[];
   winner: 'humans' | 'aliens' | null;
@@ -181,6 +212,10 @@ export interface GameState {
   isDevMode?: boolean;
   /** Question packs enabled for this mission (always includes core). */
   contentPacks: ContentPackId[];
+  /** Whether prompts draw from the full library (premium host) or a free sample. */
+  fullLibrary: boolean;
+  /** Host's personal custom-deck prompts, baked in at launch when they enable it. */
+  customPrompts: CustomPrompt[];
   /** Tracks who has synced for the current gated phase. */
   phaseReady: Record<string, boolean>;
 }

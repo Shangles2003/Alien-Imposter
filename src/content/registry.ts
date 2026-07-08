@@ -1,3 +1,4 @@
+import { BETRAYAL_PACK } from '@/content/packs/betrayal';
 import { CORE_PACK } from '@/content/packs/core';
 import { SPICY_PACK } from '@/content/packs/spicy';
 import {
@@ -11,6 +12,7 @@ import { ChamberType } from '@/types/game';
 const PACKS: Record<ContentPackId, ContentPack> = {
   core: CORE_PACK,
   spicy: SPICY_PACK,
+  betrayal: BETRAYAL_PACK,
 };
 
 export function getContentPack(id: ContentPackId): ContentPack {

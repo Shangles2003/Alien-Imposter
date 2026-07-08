@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { AlienIcon, Button, GlowCard, Input, ScreenShell, ScreenTopBar } from '@/components/ui';
 import { useAuth } from '@/context/AuthContext';
-import { joinLobbyByCode } from '@/services/lobby';
+import { joinLobbyByCode, getPostJoinPath } from '@/services/lobby';
 import { mapJoinLobbyError } from '@/services/moderation';
 import { errorMessage } from '@/utils/errors';
 import { colors, spacing, typography } from '@/theme';
@@ -21,7 +21,7 @@ export default function JoinLobbyScreen() {
     setLoading(true);
     try {
       const joined = await joinLobbyByCode(joinCode.trim(), profile);
-      router.replace(`/lobby/${joined.id}`);
+      router.replace(getPostJoinPath(joined));
     } catch (e) {
       Alert.alert('Join failed', mapJoinLobbyError(errorMessage(e)));
     } finally {
@@ -36,7 +36,7 @@ export default function JoinLobbyScreen() {
       <Animated.View entering={FadeInDown.duration(400)} style={styles.top}>
         <AlienIcon size={56} mood="happy" />
         <Text style={styles.title}>Join Lobby</Text>
-        <Text style={styles.subtitle}>Enter the 6-character crew code</Text>
+        <Text style={styles.subtitle}>Enter the crew code — works for lobbies and active games</Text>
       </Animated.View>
       <Animated.View entering={FadeInUp.delay(100).duration(400)}>
         <GlowCard accent="cyan">

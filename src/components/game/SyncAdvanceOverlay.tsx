@@ -8,9 +8,11 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { colors, radius, spacing, typography } from '@/theme';
 
 export function SyncAdvanceOverlay({ visible }: { visible: boolean }) {
+  const { accent, glow } = useGameAccent();
   const pulse = useSharedValue(0.25);
 
   useEffect(() => {
@@ -34,8 +36,8 @@ export function SyncAdvanceOverlay({ visible }: { visible: boolean }) {
   return (
     <Animated.View entering={FadeIn.duration(220)} style={styles.overlay}>
       <View style={styles.card}>
-        <Animated.View style={[styles.glow, glowStyle]} />
-        <ActivityIndicator color={colors.accent} size="small" />
+        <Animated.View style={[styles.glow, { backgroundColor: glow }, glowStyle]} />
+        <ActivityIndicator color={accent} size="small" />
         <Text style={styles.title}>Syncing crew</Text>
         <Text style={styles.sub}>Hold tight — advancing together</Text>
       </View>
@@ -67,7 +69,6 @@ const styles = StyleSheet.create({
   },
   glow: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.glowCyan,
   },
   title: { ...typography.heading, color: colors.text, zIndex: 1 },
   sub: { ...typography.caption, color: colors.textMuted, textAlign: 'center', zIndex: 1 },

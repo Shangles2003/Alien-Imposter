@@ -1,45 +1,61 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
-import Purchases, {
+import type {
   CustomerInfo,
-  LOG_LEVEL,
   PurchasesOffering,
   PurchasesPackage,
 } from 'react-native-purchases';
 
-import { ContentPackId } from '@/content/types';
-import {
-  ENTITLEMENT_IDS,
-  packFromEntitlements,
-  PRODUCT_IDS,
-  hasPremiumFeatures,
-} from '@/premium/products';
+import { ContentPackId, ownedPacksForPremium } from '@/content/types';
+import { ENTITLEMENT_IDS, hasPremiumFeatures, PRODUCT_IDS } from '@/premium/products';
 
 const DEV_UNLOCK_KEY = '@premium/devUnlock';
+
+/**
+ * Load the native purchases SDK lazily. Types are imported with `import type`
+ * (fully erased at build time), so the native module is never touched until we
+ * actually call into it — which only happens on real store builds, never in
+ * Expo Go. This keeps dev/Expo-Go from loading native code that isn't there.
+ */
+type PurchasesModule = typeof import('react-native-purchases').default;
+type LogLevelEnum = typeof import('react-native-purchases').LOG_LEVEL;
+let purchasesRef: PurchasesModule | null = null;
+let logLevelRef: LogLevelEnum | null = null;
+function loadPurchases(): PurchasesModule {
+  if (!purchasesRef) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require('react-native-purchases');
+    purchasesRef = mod.default;
+    logLevelRef = mod.LOG_LEVEL;
+  }
+  return purchasesRef!;
+}
 
 export interface PremiumState {
   initialized: boolean;
   loading: boolean;
+  /** True when the "premium" entitlement is active (via subscription OR lifetime). */
   subscriptionActive: boolean;
   ownedPacks: ContentPackId[];
   /** Dev-only simulated premium for Expo Go testing. */
   devUnlock: boolean;
   /** True when running in Expo Go or Purchases failed to configure. */
   mockMode: boolean;
+  /** Running in Expo Go (dev). Kept separate from mockMode so production builds
+   *  on a platform without a store key can grant full access instead of gating. */
+  isExpoGo: boolean;
+  /** No store configured for this platform on a real build (e.g. Android while
+   *  the paywall is iOS-only) — grant everything rather than show a dead paywall. */
+  storeUnavailable: boolean;
   offering: PurchasesOffering | null;
 }
 
 export type PremiumListener = (state: PremiumState) => void;
 
-function readEntitlements(info: CustomerInfo | null): Pick<PremiumState, 'subscriptionActive' | 'ownedPacks'> {
+function readEntitlements(info: CustomerInfo | null): boolean {
   const active = info?.entitlements.active ?? {};
-  const subscriptionActive = Boolean(active[ENTITLEMENT_IDS.premium]?.isActive);
-  const ownedIds = Object.keys(active);
-  return {
-    subscriptionActive,
-    ownedPacks: packFromEntitlements(subscriptionActive, ownedIds),
-  };
+  return Boolean(active[ENTITLEMENT_IDS.premium]?.isActive);
 }
 
 class PremiumService {
@@ -50,6 +66,8 @@ class PremiumService {
     ownedPacks: ['core'],
     devUnlock: false,
     mockMode: false,
+    isExpoGo: false,
+    storeUnavailable: false,
     offering: null,
   };
 
@@ -66,18 +84,19 @@ class PremiumService {
   }
 
   hasPremiumAccess(): boolean {
-    return this.state.devUnlock || hasPremiumFeatures(this.state.subscriptionActive);
+    if (this.state.devUnlock) return true;
+    // A real build with no store configured for this platform gets everything —
+    // we can't sell to them yet, so we don't cripple them.
+    if (this.state.storeUnavailable) return true;
+    return hasPremiumFeatures(this.state.subscriptionActive);
   }
 
   hasPack(packId: ContentPackId): boolean {
-    if (packId === 'core') return true;
-    if (this.state.devUnlock) return true;
-    return this.state.ownedPacks.includes(packId);
+    return packId === 'core' || this.hasPremiumAccess();
   }
 
   ownedContentPacks(): ContentPackId[] {
-    if (this.state.devUnlock) return ['core', 'spicy'];
-    return this.state.ownedPacks;
+    return ownedPacksForPremium(this.hasPremiumAccess());
   }
 
   private emit(partial: Partial<PremiumState>) {
@@ -86,7 +105,10 @@ class PremiumService {
   }
 
   async initialize(userId?: string): Promise<void> {
-    if (this.state.initialized) return;
+    if (this.state.initialized) {
+      if (userId) await this.identify(userId);
+      return;
+    }
 
     const devUnlock = (await AsyncStorage.getItem(DEV_UNLOCK_KEY)) === 'true';
     const isExpoGo = Constants.appOwnership === 'expo';
@@ -95,29 +117,43 @@ class PremiumService {
     const androidKey = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY;
     const apiKey = Platform.OS === 'ios' ? iosKey : androidKey;
 
-    if (isExpoGo || !apiKey) {
+    // Expo Go: no native purchases. Default free; the dev toggle simulates premium.
+    if (isExpoGo) {
       this.emit({
         initialized: true,
         loading: false,
         mockMode: true,
+        isExpoGo: true,
+        storeUnavailable: false,
         devUnlock,
-        ownedPacks: devUnlock ? (['core', 'spicy'] as ContentPackId[]) : ['core'],
-        subscriptionActive: devUnlock,
+        subscriptionActive: false,
+      });
+      return;
+    }
+
+    // Real build but no store key for this platform (iOS-only release on Android):
+    // grant full access rather than show a paywall nobody can complete.
+    if (!apiKey) {
+      this.emit({
+        initialized: true,
+        loading: false,
+        mockMode: true,
+        isExpoGo: false,
+        storeUnavailable: true,
+        devUnlock,
+        subscriptionActive: false,
       });
       return;
     }
 
     try {
-      Purchases.setLogLevel(__DEV__ ? LOG_LEVEL.DEBUG : LOG_LEVEL.INFO);
+      const Purchases = loadPurchases();
+      if (logLevelRef) Purchases.setLogLevel(__DEV__ ? logLevelRef.DEBUG : logLevelRef.INFO);
       Purchases.configure({ apiKey, appUserID: userId });
       if (userId) await Purchases.logIn(userId);
 
       Purchases.addCustomerInfoUpdateListener((info) => {
-        const ent = readEntitlements(info);
-        this.emit({
-          ...ent,
-          ownedPacks: this.state.devUnlock ? (['core', 'spicy'] as ContentPackId[]) : ent.ownedPacks,
-        });
+        this.emit({ subscriptionActive: readEntitlements(info) });
       });
 
       const [info, offerings] = await Promise.all([
@@ -125,83 +161,109 @@ class PremiumService {
         Purchases.getOfferings(),
       ]);
 
-      const ent = readEntitlements(info);
       this.emit({
         initialized: true,
         loading: false,
         mockMode: false,
+        isExpoGo: false,
+        storeUnavailable: false,
         devUnlock,
         offering: offerings.current,
-        subscriptionActive: devUnlock || ent.subscriptionActive,
-        ownedPacks: devUnlock ? (['core', 'spicy'] as ContentPackId[]) : ent.ownedPacks,
+        subscriptionActive: readEntitlements(info),
       });
     } catch {
+      // Configuration failed — fail open to free tier (never block the game).
       this.emit({
         initialized: true,
         loading: false,
         mockMode: true,
+        isExpoGo: false,
+        storeUnavailable: false,
         devUnlock,
-        ownedPacks: devUnlock ? (['core', 'spicy'] as ContentPackId[]) : ['core'],
-        subscriptionActive: devUnlock,
+        subscriptionActive: false,
       });
+    }
+  }
+
+  /** Attach the store customer to a logged-in account so premium follows them. */
+  async identify(userId: string): Promise<void> {
+    if (this.state.mockMode) return;
+    try {
+      const { customerInfo } = await loadPurchases().logIn(userId);
+      this.emit({ subscriptionActive: readEntitlements(customerInfo) });
+    } catch {
+      // ignore — entitlements will refresh on next customer-info update
     }
   }
 
   async setDevUnlock(enabled: boolean): Promise<void> {
     await AsyncStorage.setItem(DEV_UNLOCK_KEY, enabled ? 'true' : 'false');
-    this.emit({
-      devUnlock: enabled,
-      subscriptionActive: enabled || this.state.subscriptionActive,
-      ownedPacks: enabled ? (['core', 'spicy'] as ContentPackId[]) : ['core'],
-    });
+    this.emit({ devUnlock: enabled });
   }
 
   async restorePurchases(): Promise<void> {
     if (this.state.mockMode) {
-      throw new Error('Purchases are not available in Expo Go. Use dev unlock or a development build.');
+      throw new Error('Purchases are only available in a TestFlight or App Store build.');
     }
-    const info = await Purchases.restorePurchases();
-    this.emit(readEntitlements(info));
+    const info = await loadPurchases().restorePurchases();
+    this.emit({ subscriptionActive: readEntitlements(info) });
   }
 
-  private findPackage(kind: 'monthly' | 'spicy'): PurchasesPackage | null {
+  /** Deep link the user to Apple's subscription management (to cancel). */
+  async getManagementURL(): Promise<string | null> {
+    if (this.state.mockMode) return null;
+    try {
+      const info = await loadPurchases().getCustomerInfo();
+      return info.managementURL ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private findPackage(kind: 'monthly' | 'lifetime'): PurchasesPackage | null {
     const offering = this.state.offering;
     if (!offering) return null;
     if (kind === 'monthly') {
       return (
         offering.monthly ??
-        offering.availablePackages.find((p) => p.identifier === PRODUCT_IDS.monthlySubscription) ??
-        offering.availablePackages[0] ??
+        offering.availablePackages.find(
+          (p) => p.product.identifier === PRODUCT_IDS.monthlySubscription
+        ) ??
         null
       );
     }
     return (
+      offering.lifetime ??
       offering.availablePackages.find(
-        (p) =>
-          p.identifier === PRODUCT_IDS.spicyPack ||
-          p.product.identifier === PRODUCT_IDS.spicyPack
-      ) ?? null
+        (p) => p.product.identifier === PRODUCT_IDS.lifetime
+      ) ??
+      null
     );
   }
 
-  async purchaseSubscription(): Promise<void> {
+  private async purchase(kind: 'monthly' | 'lifetime'): Promise<void> {
     if (this.state.mockMode) {
-      throw new Error('In-app purchases require a development build with store products configured.');
+      throw new Error('In-app purchases require a TestFlight or App Store build.');
     }
-    const pkg = this.findPackage('monthly');
-    if (!pkg) throw new Error('Subscription is not available yet. Check RevenueCat offerings.');
-    const { customerInfo } = await Purchases.purchasePackage(pkg);
-    this.emit(readEntitlements(customerInfo));
+    const pkg = this.findPackage(kind);
+    if (!pkg) {
+      throw new Error('This option is not available yet. Check your RevenueCat offering.');
+    }
+    const { customerInfo } = await loadPurchases().purchasePackage(pkg);
+    this.emit({ subscriptionActive: readEntitlements(customerInfo) });
   }
 
-  async purchaseSpicyPack(): Promise<void> {
-    if (this.state.mockMode) {
-      throw new Error('In-app purchases require a development build with store products configured.');
-    }
-    const pkg = this.findPackage('spicy');
-    if (!pkg) throw new Error('Spicy Pack is not available yet. Check RevenueCat offerings.');
-    const { customerInfo } = await Purchases.purchasePackage(pkg);
-    this.emit(readEntitlements(customerInfo));
+  async purchaseSubscription(): Promise<void> {
+    return this.purchase('monthly');
+  }
+
+  async purchaseLifetime(): Promise<void> {
+    return this.purchase('lifetime');
+  }
+
+  /** Localized store price (e.g. "$0.99") for display, or null if unavailable. */
+  priceString(kind: 'monthly' | 'lifetime'): string | null {
+    return this.findPackage(kind)?.product.priceString ?? null;
   }
 }
 

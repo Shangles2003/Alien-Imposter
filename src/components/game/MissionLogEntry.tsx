@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Avatar } from '@/components/ui';
 import { formatChamberAnswer } from '@/components/game/chamberFormat';
 import { DrawingPreview } from '@/components/game/DrawingPreview';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { CHAMBER_LABELS, GameState, RoundHistoryEntry } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
 
@@ -15,12 +16,13 @@ export function MissionLogEntry({
   game: GameState;
   compact?: boolean;
 }) {
+  const { accent, accentSoft } = useGameAccent();
   const isDrawing = entry.chamber === 'drawing_quarters';
 
   return (
     <View style={[styles.block, compact && styles.blockCompact]}>
       <View style={styles.blockHeader}>
-        <Text style={styles.missionNum}>Mission {entry.round}</Text>
+        <Text style={[styles.missionNum, { color: accent }]}>Mission {entry.round}</Text>
         <Text style={styles.chamberName}>{CHAMBER_LABELS[entry.chamber]}</Text>
       </View>
       <View style={[styles.grid, isDrawing && styles.gridDraw]}>
@@ -36,7 +38,7 @@ export function MissionLogEntry({
               <DrawingPreview paths={r.drawingPaths} height={compact ? 52 : 72} />
             ) : (
               <View style={styles.answerBox}>
-                <Text style={styles.answerText}>{formatChamberAnswer(r, game)}</Text>
+                <Text style={[styles.answerText, { color: accentSoft }]}>{formatChamberAnswer(r, game)}</Text>
               </View>
             )}
           </View>
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
   },
   blockCompact: { padding: spacing.sm, gap: spacing.xs },
   blockHeader: { flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm },
-  missionNum: { ...typography.caption, color: colors.accent, fontWeight: '800' },
+  missionNum: { ...typography.caption, fontWeight: '800' },
   chamberName: { ...typography.caption, color: colors.textMuted, flex: 1 },
   grid: { gap: spacing.sm },
   gridDraw: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
@@ -77,5 +79,5 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     padding: spacing.sm,
   },
-  answerText: { ...typography.body, color: colors.accentSoft, fontSize: 15, lineHeight: 22 },
+  answerText: { ...typography.body, fontSize: 15, lineHeight: 22 },
 });

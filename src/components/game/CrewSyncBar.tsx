@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Easing,
@@ -7,7 +7,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Avatar, Button } from '@/components/ui';
-import { getCrewSyncProgress } from '@/game/engine';
+import { useGameAccent } from '@/context/GameAccentContext';
+import { CHAMBER_BOARDING_DURATION_MS, getCrewSyncProgress } from '@/game/engine';
 import { GamePlayer, GameState } from '@/types/game';
 import { colors, spacing, typography } from '@/theme';
 
@@ -16,13 +17,31 @@ export function CrewSyncBar({
   mode = 'sync',
 }: {
   game: GameState;
-  mode?: 'sync' | 'task';
+  mode?: 'sync' | 'task' | 'countdown';
 }) {
+  const { accent } = useGameAccent();
   const alive = game.players.filter((p) => p.isAlive);
   const { ready, total } = getCrewSyncProgress(game);
   const taskDone = alive.filter((p) => Boolean(game.chamberResponses[p.uid])).length;
-  const done = mode === 'task' ? taskDone : ready;
-  const progress = total > 0 ? done / total : 0;
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    if (mode !== 'countdown' || !game.timerEndsAt) return;
+    const id = setInterval(() => setNow(Date.now()), 50);
+    return () => clearInterval(id);
+  }, [mode, game.timerEndsAt]);
+
+  let done = mode === 'task' ? taskDone : ready;
+  let progress = total > 0 ? done / total : 0;
+  let label = mode === 'task' ? 'Locked in' : 'Crew ready';
+
+  if (mode === 'countdown') {
+    const endsAt = game.timerEndsAt ?? now;
+    const remaining = Math.max(0, endsAt - now);
+    progress = 1 - remaining / CHAMBER_BOARDING_DURATION_MS;
+    const seconds = Math.ceil(remaining / 1000);
+    label = seconds > 0 ? `Entering chamber · ${seconds}s` : 'Entering chamber';
+  }
 
   const width = useSharedValue(progress);
 
@@ -37,22 +56,24 @@ export function CrewSyncBar({
   return (
     <View style={styles.wrap}>
       <Text style={styles.label}>
-        {mode === 'task' ? 'Locked in' : 'Crew ready'} · {done}/{total}
+        {mode === 'countdown' ? label : `${label} · ${done}/${total}`}
       </Text>
       <View style={styles.track}>
-        <Animated.View style={[styles.fill, barStyle]} />
+        <Animated.View style={[styles.fill, { backgroundColor: accent }, barStyle]} />
       </View>
-      <View style={styles.dotsRow}>
-        {alive.map((p) => {
-          const isDone =
-            mode === 'task'
-              ? Boolean(game.chamberResponses[p.uid])
-              : Boolean(game.phaseReady[p.uid]);
-          return (
-            <AnimatedDot key={p.uid} name={p.displayName} color={p.avatarColor} ready={isDone} />
-          );
-        })}
-      </View>
+      {mode !== 'countdown' ? (
+        <View style={styles.dotsRow}>
+          {alive.map((p) => {
+            const isDone =
+              mode === 'task'
+                ? Boolean(game.chamberResponses[p.uid])
+                : Boolean(game.phaseReady[p.uid]);
+            return (
+              <AnimatedDot key={p.uid} name={p.displayName} color={p.avatarColor} ready={isDone} />
+            );
+          })}
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -131,7 +152,6 @@ const styles = StyleSheet.create({
   },
   fill: {
     height: '100%',
-    backgroundColor: colors.accent,
     borderRadius: 2,
   },
   dotsRow: {

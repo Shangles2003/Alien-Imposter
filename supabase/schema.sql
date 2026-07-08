@@ -501,8 +501,13 @@ declare
   v_players jsonb;
   v_member_uid text;
   v_now_ms bigint;
+  v_display text;
+  v_color text;
 begin
   if auth.uid() is null then raise exception 'Not authenticated.'; end if;
+
+  v_display := coalesce(nullif(trim(p_display_name), ''), 'Crew');
+  v_color := coalesce(nullif(trim(p_avatar_color), ''), '#6366f1');
 
   select * into v_lobby
   from public.lobbies
@@ -513,11 +518,59 @@ begin
     raise exception 'Lobby not found. Check the code and try again.';
   end if;
 
-  if v_lobby.status <> 'waiting' then
-    raise exception 'This lobby is no longer accepting players.';
+  if v_lobby.status = 'finished' then
+    raise exception 'This mission has ended.';
   end if;
 
   v_players := coalesce(v_lobby.players, '[]'::jsonb);
+
+  if v_lobby.status = 'in_game' then
+    if v_lobby.game_id is null then
+      raise exception 'Game not found for this lobby.';
+    end if;
+
+    if not exists (
+      select 1
+      from public.games g,
+           jsonb_array_elements(g.state -> 'players') elem
+      where g.id = v_lobby.game_id
+        and elem ->> 'uid' = auth.uid()::text
+    ) then
+      raise exception 'This game is already in progress. Only original crew can rejoin.';
+    end if;
+
+    if exists (
+      select 1
+      from jsonb_array_elements(v_players) elem
+      where elem ->> 'uid' = auth.uid()::text
+    ) then
+      return v_lobby;
+    end if;
+
+    v_now_ms := (extract(epoch from now()) * 1000)::bigint;
+
+    v_players := v_players || jsonb_build_array(
+      jsonb_build_object(
+        'uid', auth.uid(),
+        'displayName', v_display,
+        'avatarColor', v_color,
+        'isHost', false,
+        'isReady', true,
+        'joinedAt', v_now_ms
+      )
+    );
+
+    update public.lobbies
+    set players = v_players
+    where id = v_lobby.id
+    returning * into v_lobby;
+
+    return v_lobby;
+  end if;
+
+  if v_lobby.status <> 'waiting' then
+    raise exception 'This lobby is no longer accepting players.';
+  end if;
 
   if jsonb_array_length(v_players) >= v_lobby.max_players then
     raise exception 'Lobby is full.';
@@ -526,7 +579,7 @@ begin
   if exists (
     select 1
     from jsonb_array_elements(v_players) elem
-    where elem->>'uid' = auth.uid()::text
+    where elem ->> 'uid' = auth.uid()::text
   ) then
     return v_lobby;
   end if;
@@ -547,8 +600,8 @@ begin
   v_players := v_players || jsonb_build_array(
     jsonb_build_object(
       'uid', auth.uid(),
-      'displayName', coalesce(nullif(trim(p_display_name), ''), 'Crew'),
-      'avatarColor', coalesce(nullif(trim(p_avatar_color), ''), '#6366f1'),
+      'displayName', v_display,
+      'avatarColor', v_color,
       'isHost', false,
       'isReady', false,
       'joinedAt', v_now_ms

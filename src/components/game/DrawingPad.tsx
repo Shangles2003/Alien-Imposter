@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useGameAccent } from '@/context/GameAccentContext';
 import { colors, radius, spacing, typography } from '@/theme';
 
 interface DrawingPadProps {
@@ -9,6 +10,7 @@ interface DrawingPadProps {
 }
 
 export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
+  const { accentSoft } = useGameAccent();
   const [paths, setPaths] = useState<string[]>([]);
   const currentPath = useRef('');
   const pathsRef = useRef<string[]>([]);
@@ -22,7 +24,10 @@ export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponderCapture: () => true,
       onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponderCapture: () => true,
+      onPanResponderTerminationRequest: () => false,
       onPanResponderGrant: (evt) => {
         const { locationX, locationY } = evt.nativeEvent;
         currentPath.current = `M${locationX.toFixed(1)},${locationY.toFixed(1)}`;
@@ -50,7 +55,7 @@ export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
             <Path
               key={i}
               d={d}
-              stroke={colors.accentSoft}
+              stroke={accentSoft}
               strokeWidth={3.5}
               fill="none"
               strokeLinecap="round"
@@ -58,12 +63,14 @@ export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
             />
           ))}
         </Svg>
-        {paths.length > 0 ? (
-          <Pressable onPress={() => syncPaths([])} style={styles.clearOverlay}>
-            <Text style={styles.clearText}>Clear</Text>
-          </Pressable>
-        ) : null}
       </View>
+      {/* Sibling of the canvas (NOT a child) so the pan responder's capture
+          handlers don't swallow the tap before onPress fires. */}
+      {paths.length > 0 ? (
+        <Pressable onPress={() => syncPaths([])} style={styles.clearOverlay} hitSlop={10}>
+          <Text style={styles.clearText}>Clear</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 }

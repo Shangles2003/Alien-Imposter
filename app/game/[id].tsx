@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Animated, { FadeIn, FadeInDown, FadeInUp, ZoomIn } from 'react-native-reanimated';
 import {
@@ -19,12 +19,19 @@ import {
   WaitingForCrew,
 } from '@/components/game/CrewExperience';
 import { ExtractionNominatePhase, ExtractionVotePhase } from '@/components/game/ExtractionPhase';
+import {
+  CaptainScanReveal,
+  IdentityDebrief,
+  IdentityNominatePhase,
+  RepairProtocolPhase,
+} from '@/components/game/IdentityCheckPhase';
 import { InfiltratorHackPanel } from '@/components/game/InfiltratorHackPanel';
 import { MissionLogModal } from '@/components/game/MissionLogModal';
 import { MissionHud } from '@/components/game/MissionHud';
 import { PhaseTransition } from '@/components/game/PhaseTransition';
 import { SyncAdvanceOverlay } from '@/components/game/SyncAdvanceOverlay';
 import { TaskAnswerReveal } from '@/components/game/TaskAnswerReveal';
+import { GameAccentProvider } from '@/context/GameAccentContext';
 import { useAuth } from '@/context/AuthContext';
 import { DevGamePanel } from '@/dev/DevGamePanel';
 import { isDevGame, isDevModeEnabled } from '@/dev/config';
@@ -36,7 +43,7 @@ import { useOptimisticGameActions } from '@/hooks/useOptimisticGameActions';
 import { HOME_ROUTE } from '@/navigation/routes';
 import { applyGameAction, subscribeToGame } from '@/services/gameSync';
 import { GamePlayer, GameState } from '@/types/game';
-import { colors, phaseLabels, radius, shadows, spacing, typography } from '@/theme';
+import { colors, radius, shadows, spacing, typography } from '@/theme';
 
 export default function GameScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -64,21 +71,74 @@ export default function GameScreen() {
     }
   }, [game?.phase, id]);
 
+  useEffect(() => {
+    if (!id || !game || game.phase !== 'chamber_boarding' || !game.timerEndsAt) return;
+    const delay = Math.max(0, game.timerEndsAt - Date.now()) + 50;
+    const timer = setTimeout(() => {
+      applyGameAction(id, game, engine.advanceBoardingIfExpired).catch(() => {});
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [id, game?.phase, game?.timerEndsAt]);
+
+  useEffect(() => {
+    const endsAt = game?.identityCheck?.repair?.endsAt;
+    if (!id || !game || game.phase !== 'identity_coop' || !endsAt) return;
+    const delay = Math.max(0, endsAt - Date.now()) + 50;
+    const timer = setTimeout(() => {
+      applyGameAction(id, game, engine.advanceRepairIfExpired).catch(() => {});
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [id, game?.phase, game?.identityCheck?.repair?.endsAt]);
+
   const me = useMemo(
     () => game?.players.find((p) => p.uid === user?.id) ?? null,
     [game, user]
   );
 
-  if (!game || !me || !profile) {
+  const handleLeaveMission = () => {
+    Alert.alert(
+      'Leave mission?',
+      'You can rejoin anytime using the same lobby code.',
+      [
+        { text: 'Stay', style: 'cancel' },
+        {
+          text: 'Leave',
+          style: 'destructive',
+          onPress: () => router.replace(HOME_ROUTE),
+        },
+      ]
+    );
+  };
+
+  if (!game || !user) {
     return <LoadingState message="Loading mission..." />;
+  }
+
+  if (!profile) {
+    return <LoadingState message="Loading mission..." />;
+  }
+
+  if (!me) {
+    return (
+      <ScreenShell contentStyle={styles.shell}>
+        <View style={styles.notOnMission}>
+          <Text style={styles.notOnMissionTitle}>Not on this mission</Text>
+          <Text style={styles.notOnMissionBody}>
+            Enter your crew&apos;s lobby code on the home screen to rejoin a game in progress.
+          </Text>
+          <Button title="Back to home" fullWidth onPress={() => router.replace(HOME_ROUTE)} />
+        </View>
+      </ScreenShell>
+    );
   }
 
   const aliens = game.players.filter((p) => p.role === 'alien' && p.uid !== me.uid);
   const showAlienIntel = me.role === 'alien' && game.phase !== 'game_over';
   const hideDevDuringPlay =
-    game.phase === 'chamber_boarding' || game.phase === 'chamber_active';
+    game.phase === 'chamber_boarding' ||
+    game.phase === 'chamber_active' ||
+    game.phase === 'identity_coop';
   const showDevPanel = isDevModeEnabled() && isDevGame(game) && !hideDevDuringPlay;
-  const phaseInfo = phaseLabels[game.phase] ?? { title: 'Mission', subtitle: '' };
   const showLogButton =
     game.phase !== 'role_reveal' &&
     game.phase !== 'game_over' &&
@@ -95,14 +155,7 @@ export default function GameScreen() {
           <RoleRevealPhase me={me} aliens={aliens} game={game} onReady={handleSync} syncPending={syncPending} />
         );
       case 'chamber_boarding':
-        return (
-          <ChamberBoarding
-            game={game}
-            me={me}
-            onBoard={handleSync}
-            boardingPending={syncPending}
-          />
-        );
+        return <ChamberBoarding game={game} />;
       case 'chamber_active':
         return (
           <ChamberActivePhase
@@ -151,6 +204,52 @@ export default function GameScreen() {
             }
           />
         );
+      case 'identity_nominate':
+        return (
+          <IdentityNominatePhase
+            game={game}
+            me={me}
+            onSubmit={(targetId) =>
+              runPlayerAction((s) => engine.submitIdentityNomination(s, me.uid, targetId))
+            }
+          />
+        );
+      case 'identity_coop':
+        return (
+          <RepairProtocolPhase
+            game={game}
+            me={me}
+            onCutConduit={(conduitId) =>
+              runPlayerAction((s) => engine.submitConduitCut(s, me.uid, conduitId))
+            }
+            onLockGlyphs={(order) =>
+              runPlayerAction((s) => engine.submitGlyphOrder(s, me.uid, order))
+            }
+            onLockCode={(code) =>
+              runPlayerAction((s) => engine.submitFrequencyCode(s, me.uid, code))
+            }
+          />
+        );
+      case 'identity_scan':
+        return (
+          <CaptainScanReveal
+            game={game}
+            me={me}
+            syncPending={syncPending}
+            onAcknowledge={() =>
+              runPlayerAction((s) => engine.captainAcknowledgeScan(s, me.uid))
+            }
+          />
+        );
+      case 'identity_debrief':
+        return (
+          <IdentityDebrief
+            game={game}
+            me={me}
+            syncPending={syncPending}
+            onReady={handleSync}
+          />
+        );
       case 'extraction_vote':
         return (
           <ExtractionVotePhase
@@ -167,15 +266,15 @@ export default function GameScreen() {
   })();
 
   return (
+    <GameAccentProvider isAlien={me.role === 'alien'}>
     <ScreenShell contentStyle={styles.shell}>
       <MissionHud
         round={game.round}
         totalTasks={game.totalTasks}
-        phaseTitle={phaseInfo.title}
-        subtitle={phaseInfo.subtitle}
         logCount={game.history.length}
         onOpenLog={showLogButton ? () => setLogOpen(true) : undefined}
         onOpenHack={showAlienIntel ? () => setHackOpen(true) : undefined}
+        onLeave={game.phase !== 'game_over' ? handleLeaveMission : undefined}
         hacksRemaining={game.hacksRemaining}
       />
 
@@ -209,6 +308,7 @@ export default function GameScreen() {
         />
       ) : null}
     </ScreenShell>
+    </GameAccentProvider>
   );
 }
 
@@ -435,6 +535,19 @@ const styles = StyleSheet.create({
   fill: { flex: 1, minHeight: 0, justifyContent: 'space-between' },
   scrollFill: { flex: 1, minHeight: 0 },
   fillCenter: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing.sm },
+  notOnMission: {
+    flex: 1,
+    justifyContent: 'center',
+    gap: spacing.md,
+    paddingHorizontal: spacing.lg,
+  },
+  notOnMissionTitle: { ...typography.heading, color: colors.text, textAlign: 'center' },
+  notOnMissionBody: {
+    ...typography.caption,
+    color: colors.textMuted,
+    textAlign: 'center',
+    lineHeight: 20,
+  },
   waitText: {
     ...typography.caption,
     color: colors.textMuted,
