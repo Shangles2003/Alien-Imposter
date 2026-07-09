@@ -1249,11 +1249,18 @@ export function getPromptForChamber(
   const id = `${chamber}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   const packs = contentPacks.length ? contentPacks : (['core'] as ContentPackId[]);
 
-  // A host's own custom prompts take priority for any chamber they've written
-  // for; chambers with no custom prompts fall back to the enabled packs.
+  // Merge every enabled source for this chamber: the host's custom prompts PLUS
+  // whichever packs are on (core/betrayal). If the merge is somehow empty (e.g.
+  // custom-only for a chamber they wrote nothing in), fall back to core so a
+  // round can always be generated.
   const custom = customTemplatesFor(chamber, customPrompts);
-  const pool = <T,>(): T[] =>
-    custom.length ? (custom as unknown as T[]) : limitPool(getPoolForChamber(chamber, packs) as T[], fullLibrary);
+  const pool = <T,>(): T[] => {
+    const packPool = packs.length
+      ? (limitPool(getPoolForChamber(chamber, packs) as T[], fullLibrary))
+      : [];
+    const merged = [...(custom as unknown as T[]), ...packPool];
+    return merged.length ? merged : (getPoolForChamber(chamber, ['core']) as T[]);
+  };
 
   switch (chamber) {
     case 'opinion_hold':
@@ -1270,9 +1277,13 @@ export function getPromptForChamber(
       return { id, chamber, ...pickRandom(pool<(typeof WRITING_PROMPTS)[number]>()) };
     case 'most_likely_to': {
       const customML = customMostLikelyFor(customPrompts);
-      const templatePool = customML.length
-        ? customML
-        : limitPool(getPoolForChamber(chamber, packs) as typeof MOST_LIKELY_TEMPLATES, fullLibrary);
+      const packML = packs.length
+        ? limitPool(getPoolForChamber(chamber, packs) as typeof MOST_LIKELY_TEMPLATES, fullLibrary)
+        : [];
+      let templatePool: MostLikelyTemplate[] = [...customML, ...packML];
+      if (!templatePool.length) {
+        templatePool = getPoolForChamber(chamber, ['core']) as typeof MOST_LIKELY_TEMPLATES;
+      }
       const template = pickRandom(templatePool);
       const humanPrompt = fillNames(template.humanTemplate, ctx.players);
       return {

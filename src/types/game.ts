@@ -49,6 +49,8 @@ export interface PlayerProfile {
   displayName: string;
   avatarColor: string;
   createdAt: number;
+  /** Manual premium grant (comp account) set in the database. */
+  premiumGrant?: boolean;
 }
 
 export interface LobbyPlayer {

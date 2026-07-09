@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
-import { useRouter, type Href } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import {
   Button,
@@ -119,14 +119,6 @@ export default function HomeScreen() {
             onPress={joinParty}
           />
         </GlowCard>
-
-        <Button
-          title="Custom Deck"
-          icon="🗂️"
-          variant="ghost"
-          fullWidth
-          onPress={() => router.push('/deck' as Href)}
-        />
       </Animated.View>
 
       {isDevModeEnabled() ? (

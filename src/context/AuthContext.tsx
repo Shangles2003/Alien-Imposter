@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
+import { supabase } from '@/config/supabase';
 import { getProfile, subscribeToAuth } from '@/services/auth';
 import { PlayerProfile } from '@/types/game';
 
@@ -50,8 +51,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsub;
   }, []);
 
+  // Re-fetch the CURRENT session user (not the possibly-stale `user` state) so
+  // this works right after a fresh sign-in, before onAuthStateChange re-renders.
   const refreshProfile = async () => {
-    await loadProfile(user);
+    const { data } = await supabase.auth.getUser();
+    await loadProfile(data.user ?? user);
   };
 
   return (

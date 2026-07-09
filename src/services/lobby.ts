@@ -293,6 +293,11 @@ export async function startGame(
       customPrompts = [];
     }
   }
+  // Backstop: a custom-only game needs a real deck. If they turned off every
+  // pack but don't have enough custom prompts, keep the base pack on.
+  if (effectiveSettings.contentPacks.length === 0 && customPrompts.length < 7) {
+    effectiveSettings.contentPacks = ['core'];
+  }
   const gameState = createInitialGameState(
     gameId,
     lobbyId,

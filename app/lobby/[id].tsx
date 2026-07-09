@@ -27,6 +27,7 @@ import {
   subscribeToLobby,
   updateLobbyHostSettings,
 } from '@/services/lobby';
+import { fetchMyCustomPrompts } from '@/services/customDecks';
 import { Lobby } from '@/types/game';
 import { errorMessage } from '@/utils/errors';
 import { colors, radius, spacing, typography } from '@/theme';
@@ -39,8 +40,23 @@ export default function LobbyScreen() {
   const [lobby, setLobby] = useState<Lobby | null>(null);
   const [loading, setLoading] = useState(false);
   const [moderatePlayer, setModeratePlayer] = useState<ModerationPlayer | null>(null);
+  const [customCount, setCustomCount] = useState(0);
 
   useDevBotLobbyRunner(id, lobby);
+
+  useEffect(() => {
+    if (!hasPremiumAccess) {
+      setCustomCount(0);
+      return;
+    }
+    let active = true;
+    fetchMyCustomPrompts()
+      .then((p) => active && setCustomCount(p.length))
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [hasPremiumAccess]);
 
   useEffect(() => {
     if (!id || id === 'join') return;
@@ -151,7 +167,9 @@ export default function LobbyScreen() {
           onChange={handleHostSettingsChange}
           disabled={loading}
           hasPremium={hasPremiumAccess}
+          customCount={customCount}
           onRequestUpgrade={() => router.push('/paywall' as Href)}
+          onEditCustomDeck={() => router.push('/deck' as Href)}
         />
       )}
 

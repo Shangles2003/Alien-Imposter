@@ -56,14 +56,23 @@ export const DEFAULT_HOST_SETTINGS: HostSettings = {
 /** Mission length free hosts are locked to. */
 export const FREE_MISSION_COUNT: MissionCount = 5;
 
+const KNOWN_PACK_IDS: ContentPackId[] = ['core', 'spicy', 'betrayal'];
+
 export function normalizeHostSettings(raw?: Partial<HostSettings> | null): HostSettings {
-  const packs = raw?.contentPacks?.length ? [...raw.contentPacks] : ['core'];
-  if (!packs.includes('core')) packs.unshift('core');
+  const provided = raw?.contentPacks;
+  // An explicit (even empty) list is respected — the base pack is toggleable now.
+  // Only a missing list defaults to core.
+  const packs: ContentPackId[] =
+    provided == null
+      ? ['core']
+      : ([...new Set(provided)].filter((id) =>
+          KNOWN_PACK_IDS.includes(id as ContentPackId)
+        ) as ContentPackId[]);
   const missionCount = raw?.missionCount;
   const validMission: MissionCount =
     missionCount === 3 || missionCount === 7 ? missionCount : 5;
   return {
-    contentPacks: [...new Set(packs)] as ContentPackId[],
+    contentPacks: packs,
     missionCount: validMission,
     fullLibrary: Boolean(raw?.fullLibrary),
     useCustomDeck: Boolean(raw?.useCustomDeck),
@@ -77,7 +86,14 @@ export function sanitizeHostSettingsForEntitlements(
 ): HostSettings {
   const allowed = new Set<ContentPackId>(['core', ...ownedPacks.filter((id) => id !== 'core')]);
   const contentPacks = settings.contentPacks.filter((id) => allowed.has(id));
-  if (!contentPacks.includes('core')) contentPacks.unshift('core');
+  const useCustomDeck = hasPremium && settings.useCustomDeck;
+
+  // Never leave a host with zero prompt sources. Free hosts always keep core;
+  // a premium host can drop core only if another source (a pack or their custom
+  // deck) is on.
+  if (contentPacks.length === 0 && !useCustomDeck) {
+    contentPacks.push('core');
+  }
 
   return {
     contentPacks,
@@ -85,7 +101,6 @@ export function sanitizeHostSettingsForEntitlements(
     missionCount: hasPremium ? settings.missionCount : FREE_MISSION_COUNT,
     // Premium unlocks the full prompt library for everyone in the host's game.
     fullLibrary: hasPremium,
-    // Custom decks are a premium feature.
-    useCustomDeck: hasPremium && settings.useCustomDeck,
+    useCustomDeck,
   };
 }

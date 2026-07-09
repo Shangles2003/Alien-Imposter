@@ -40,6 +40,8 @@ export interface PremiumState {
   ownedPacks: ContentPackId[];
   /** Dev-only simulated premium for Expo Go testing. */
   devUnlock: boolean;
+  /** Manual premium grant from the database (comp account). */
+  grant: boolean;
   /** True when running in Expo Go or Purchases failed to configure. */
   mockMode: boolean;
   /** Running in Expo Go (dev). Kept separate from mockMode so production builds
@@ -48,6 +50,10 @@ export interface PremiumState {
   /** No store configured for this platform on a real build (e.g. Android while
    *  the paywall is iOS-only) — grant everything rather than show a dead paywall. */
   storeUnavailable: boolean;
+  /** Why the store is in mock mode — for accurate diagnostics. */
+  mockReason: 'expo-go' | 'no-key' | 'config-failed' | null;
+  /** The error string when RevenueCat configuration failed. */
+  storeError: string | null;
   offering: PurchasesOffering | null;
 }
 
@@ -65,9 +71,12 @@ class PremiumService {
     subscriptionActive: false,
     ownedPacks: ['core'],
     devUnlock: false,
+    grant: false,
     mockMode: false,
     isExpoGo: false,
     storeUnavailable: false,
+    mockReason: null,
+    storeError: null,
     offering: null,
   };
 
@@ -84,9 +93,14 @@ class PremiumService {
   }
 
   hasPremiumAccess(): boolean {
-    if (this.state.devUnlock) return true;
+    // Manual comp grant from the database (works in any build).
+    if (this.state.grant) return true;
+    // Dev unlock is a DEV-only testing switch — never honor a stale flag in a
+    // release build (that would hand every account premium).
+    if (__DEV__ && this.state.devUnlock) return true;
     // A real build with no store configured for this platform gets everything —
-    // we can't sell to them yet, so we don't cripple them.
+    // we can't sell to them yet, so we don't cripple them. Only ever true off
+    // iOS (iOS must have a key configured; see initialize()).
     if (this.state.storeUnavailable) return true;
     return hasPremiumFeatures(this.state.subscriptionActive);
   }
@@ -125,21 +139,25 @@ class PremiumService {
         mockMode: true,
         isExpoGo: true,
         storeUnavailable: false,
+        mockReason: 'expo-go',
         devUnlock,
         subscriptionActive: false,
       });
       return;
     }
 
-    // Real build but no store key for this platform (iOS-only release on Android):
-    // grant full access rather than show a paywall nobody can complete.
+    // No store key for this platform. On Android (iOS-only release for now) we
+    // grant full access rather than show a paywall nobody can complete. On iOS
+    // a missing key is a MISCONFIGURATION — default to free rather than hand
+    // every account premium.
     if (!apiKey) {
       this.emit({
         initialized: true,
         loading: false,
         mockMode: true,
         isExpoGo: false,
-        storeUnavailable: true,
+        storeUnavailable: Platform.OS !== 'ios',
+        mockReason: 'no-key',
         devUnlock,
         subscriptionActive: false,
       });
@@ -167,18 +185,25 @@ class PremiumService {
         mockMode: false,
         isExpoGo: false,
         storeUnavailable: false,
+        mockReason: null,
+        storeError: null,
         devUnlock,
         offering: offerings.current,
         subscriptionActive: readEntitlements(info),
       });
-    } catch {
+    } catch (e) {
       // Configuration failed — fail open to free tier (never block the game).
+      const storeError = e instanceof Error ? e.message : String(e);
+      // eslint-disable-next-line no-console
+      console.warn('[PremiumService] RevenueCat init failed:', storeError);
       this.emit({
         initialized: true,
         loading: false,
         mockMode: true,
         isExpoGo: false,
         storeUnavailable: false,
+        mockReason: 'config-failed',
+        storeError,
         devUnlock,
         subscriptionActive: false,
       });
@@ -196,6 +221,25 @@ class PremiumService {
     }
   }
 
+  /** Set by the app from the signed-in profile's `premium_grant` flag. */
+  setGrant(enabled: boolean): void {
+    if (this.state.grant !== enabled) this.emit({ grant: enabled });
+  }
+
+  /** Accurate reason the store is unavailable, for user-facing errors. */
+  private unavailableMessage(): string {
+    switch (this.state.mockReason) {
+      case 'expo-go':
+        return 'In-app purchases need a development or store build — not Expo Go.';
+      case 'no-key':
+        return 'This build has no RevenueCat key. Rebuild the production profile after the key was added to eas.json.';
+      case 'config-failed':
+        return `Couldn’t reach the store${this.state.storeError ? `: ${this.state.storeError}` : ''}. Check the RevenueCat key and that an Offering is set as Current.`;
+      default:
+        return 'In-app purchases aren’t available in this build.';
+    }
+  }
+
   async setDevUnlock(enabled: boolean): Promise<void> {
     await AsyncStorage.setItem(DEV_UNLOCK_KEY, enabled ? 'true' : 'false');
     this.emit({ devUnlock: enabled });
@@ -203,7 +247,7 @@ class PremiumService {
 
   async restorePurchases(): Promise<void> {
     if (this.state.mockMode) {
-      throw new Error('Purchases are only available in a TestFlight or App Store build.');
+      throw new Error(this.unavailableMessage());
     }
     const info = await loadPurchases().restorePurchases();
     this.emit({ subscriptionActive: readEntitlements(info) });
@@ -243,7 +287,7 @@ class PremiumService {
 
   private async purchase(kind: 'monthly' | 'lifetime'): Promise<void> {
     if (this.state.mockMode) {
-      throw new Error('In-app purchases require a TestFlight or App Store build.');
+      throw new Error(this.unavailableMessage());
     }
     const pkg = this.findPackage(kind);
     if (!pkg) {

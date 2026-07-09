@@ -17,6 +17,7 @@ export function PremiumSettingsSection() {
     subscriptionActive,
     mockMode,
     devUnlock,
+    grant,
     loading,
     restorePurchases,
     getManagementURL,
@@ -48,19 +49,28 @@ export function PremiumSettingsSection() {
     }
   };
 
-  const statusLabel = hasPremiumAccess
+  const statusDetail = hasPremiumAccess
     ? subscriptionActive
-      ? 'Expansion active'
-      : devUnlock
-        ? 'Dev unlock on'
-        : 'Unlocked'
-    : 'Free tier';
+      ? 'Expansion Pass — monthly subscription'
+      : grant
+        ? 'Granted (comp account)'
+        : devUnlock
+          ? 'Dev unlock (testing only)'
+          : 'Expansion Pass unlocked'
+    : 'Unlock every prompt, pack, and setting';
 
   return (
     <>
       <SettingsSectionTitle>{PREMIUM_COPY.title}</SettingsSectionTitle>
+
+      <View style={[styles.statusBanner, hasPremiumAccess ? styles.statusPremium : styles.statusFree]}>
+        <Text style={[styles.statusText, { color: hasPremiumAccess ? colors.success : colors.textMuted }]}>
+          {hasPremiumAccess ? '✓ PREMIUM' : 'FREE ACCOUNT'}
+        </Text>
+        <Text style={styles.statusSub}>{statusDetail}</Text>
+      </View>
+
       <SettingsGroup delay={30}>
-        <SettingsRow icon="⭐" label="Your tier" value={statusLabel} />
 
         {!hasPremiumAccess && (
           <SettingsRow
@@ -116,6 +126,24 @@ export function PremiumSettingsSection() {
 }
 
 const styles = StyleSheet.create({
+  statusBanner: {
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.sm,
+    gap: 2,
+  },
+  statusPremium: {
+    borderColor: 'rgba(52,211,153,0.5)',
+    backgroundColor: 'rgba(52,211,153,0.1)',
+  },
+  statusFree: {
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  statusText: { ...typography.label, fontSize: 13 },
+  statusSub: { ...typography.small, color: colors.textDim },
   devRow: {
     flexDirection: 'row',
     alignItems: 'center',

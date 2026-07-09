@@ -4,7 +4,12 @@ import { supabase } from '@/config/supabase';
 import { PlayerProfile } from '@/types/game';
 import { pickAvatarColor } from '@/game/rules';
 import { censorProfanity, wasProfanityCensored } from '@/utils/profanityFilter';
-import { normalizeUsername, usernameToAuthEmail, validateUsername } from '@/utils/username';
+import {
+  normalizeUsername,
+  USERNAME_MAX,
+  usernameToAuthEmail,
+  validateUsername,
+} from '@/utils/username';
 
 function rowToProfile(row: {
   id: string;
@@ -12,6 +17,7 @@ function rowToProfile(row: {
   username: string | null;
   avatar_color: string;
   created_at: string;
+  premium_grant?: boolean | null;
 }): PlayerProfile {
   return {
     uid: row.id,
@@ -19,6 +25,7 @@ function rowToProfile(row: {
     displayName: row.display_name,
     avatarColor: row.avatar_color,
     createdAt: new Date(row.created_at).getTime(),
+    premiumGrant: Boolean(row.premium_grant),
   };
 }
 
@@ -110,13 +117,33 @@ export async function signIn(username: string, password: string): Promise<User> 
   return data.user;
 }
 
+/** A valid username base derived from a name (fallback "crew"). */
+function usernameBaseFromName(name?: string): string {
+  const slug = (name ?? '').toLowerCase().replace(/[^a-z0-9_]/g, '');
+  return slug.length >= 3 ? slug.slice(0, 12) : 'crew';
+}
+
+/** Find an available username like "joseph4821" (Apple gives no username). */
+async function generateUniqueUsername(base: string): Promise<string> {
+  for (let i = 0; i < 12; i++) {
+    const candidate = `${base}${Math.floor(1000 + Math.random() * 9000)}`.slice(0, USERNAME_MAX);
+    try {
+      if (await isUsernameAvailable(candidate)) return candidate;
+    } catch {
+      // availability check failed — try another candidate
+    }
+  }
+  return `${base}${Date.now().toString().slice(-6)}`.slice(0, USERNAME_MAX);
+}
+
 /**
  * Sign in / up with Apple. Ties the account to the user's Apple ID — no email
  * confirmation, no password to forget, and it restores on any device with the
- * same Apple ID. A DB trigger creates the profile ("Crew Member" default); on
- * the FIRST authorization Apple gives us the person's name, which we use as a
- * nicer callsign (they can change it in Settings). Apple omits the name on later
- * sign-ins, so that upgrade only runs once and never overwrites a custom name.
+ * same Apple ID. A DB trigger creates the profile ("Crew Member", no username);
+ * on the FIRST sign-in we assign a unique username (the block/report system
+ * looks people up by username) and, if Apple gave us a name, a nicer callsign.
+ * This only runs while the profile has no username, so it never clobbers a
+ * customized account on later sign-ins.
  */
 export async function signInWithApple(): Promise<User> {
   const credential = await AppleAuthentication.signInAsync({
@@ -139,14 +166,26 @@ export async function signInWithApple(): Promise<User> {
   const user = data.user;
   if (!user) throw new Error('Apple sign-in failed — no user returned.');
 
-  const given = credential.fullName?.givenName?.trim();
-  if (given) {
-    const callsign = censorProfanity(given).slice(0, 24);
-    await supabase
-      .from('profiles')
-      .update({ display_name: callsign })
-      .eq('id', user.id)
-      .eq('display_name', 'Crew Member');
+  const existing = await getProfile(user.id);
+  if (!existing?.username) {
+    const given = credential.fullName?.givenName?.trim();
+    const displayName = given
+      ? censorProfanity(given).slice(0, 24)
+      : existing?.displayName || 'Crew Member';
+    const avatarColor = existing?.avatarColor ?? pickAvatarColor(Math.floor(Math.random() * 10));
+
+    // Retry on the rare username unique-collision.
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const username = await generateUniqueUsername(usernameBaseFromName(given));
+      const { error: upsertError } = await supabase.from('profiles').upsert({
+        id: user.id,
+        display_name: displayName,
+        username,
+        avatar_color: avatarColor,
+      });
+      if (!upsertError) break;
+      if (upsertError.code !== '23505') throw upsertError;
+    }
   }
 
   return user;

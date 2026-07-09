@@ -19,6 +19,8 @@ interface PremiumContextValue {
   subscriptionActive: boolean;
   ownedPacks: ContentPackId[];
   devUnlock: boolean;
+  /** Manual comp grant from the database. */
+  grant: boolean;
   mockMode: boolean;
   hasPremiumAccess: boolean;
   hasPack: (packId: ContentPackId) => boolean;
@@ -36,7 +38,7 @@ interface PremiumContextValue {
 const PremiumContext = createContext<PremiumContextValue | null>(null);
 
 export function PremiumProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [state, setState] = useState<PremiumState>(() => premiumService.getState());
 
   useEffect(() => premiumService.subscribe(setState), []);
@@ -45,6 +47,11 @@ export function PremiumProvider({ children }: { children: React.ReactNode }) {
     premiumService.initialize(user?.id).catch(() => {});
   }, [user?.id]);
 
+  // Mirror the database comp grant into the premium state.
+  useEffect(() => {
+    premiumService.setGrant(Boolean(profile?.premiumGrant));
+  }, [profile?.premiumGrant]);
+
   const value = useMemo<PremiumContextValue>(
     () => ({
       initialized: state.initialized,
@@ -52,6 +59,7 @@ export function PremiumProvider({ children }: { children: React.ReactNode }) {
       subscriptionActive: state.subscriptionActive,
       ownedPacks: state.ownedPacks,
       devUnlock: state.devUnlock,
+      grant: state.grant,
       mockMode: state.mockMode,
       hasPremiumAccess: premiumService.hasPremiumAccess(),
       hasPack: (packId) => premiumService.hasPack(packId),
