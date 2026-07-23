@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { MissionLogEntry } from '@/components/game/MissionLogEntry';
 import { PlayerModerationSheet, ModerationPlayer } from '@/components/moderation/PlayerModerationSheet';
 import { Avatar } from '@/components/ui';
@@ -18,6 +19,7 @@ interface MissionLogModalProps {
 }
 
 export function MissionLogModal({ visible, game, me, onClose }: MissionLogModalProps) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const intel = me.role === 'alien' ? getAlienHackIntel(game) : null;
   const [moderatePlayer, setModeratePlayer] = useState<ModerationPlayer | null>(null);
@@ -30,18 +32,18 @@ export function MissionLogModal({ visible, game, me, onClose }: MissionLogModalP
         <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
           <View style={styles.header}>
             <View>
-              <Text style={styles.title}>Mission log</Text>
-              <Text style={styles.subtitle}>Every answer from every task</Text>
+              <Text style={styles.title}>{t('log.title')}</Text>
+              <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
             </View>
             <Pressable onPress={onClose} style={styles.closeBtn} hitSlop={12}>
-              <Text style={[styles.closeText, { color: accentSoft }]}>Done</Text>
+              <Text style={[styles.closeText, { color: accentSoft }]}>{t('common.done')}</Text>
             </Pressable>
           </View>
 
           <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
             {crewmates.length > 0 ? (
               <View style={styles.crewSection}>
-                <Text style={styles.crewTitle}>Crew</Text>
+                <Text style={styles.crewTitle}>{t('log.crew')}</Text>
                 {crewmates.map((p) => (
                   <View key={p.uid} style={styles.crewRow}>
                     <Avatar name={p.displayName} color={p.avatarColor} size={32} />
@@ -63,31 +65,35 @@ export function MissionLogModal({ visible, game, me, onClose }: MissionLogModalP
             {intel ? (
               <View style={styles.intelBox}>
                 <View style={styles.intelHeader}>
-                  <Text style={styles.intelTitle}>Infiltrator intel</Text>
+                  <Text style={styles.intelTitle}>{t('log.infiltratorIntel')}</Text>
                   <Text style={styles.intelCount}>
-                    {intel.remaining}/{intel.total} hacks left
+                    {t('log.hacksLeft', { remaining: intel.remaining, total: intel.total })}
                   </Text>
                 </View>
                 {intel.activeNow.length > 0 ? (
                   <Text style={styles.intelLine}>
-                    Active: {intel.activeNow.map((r) => r.targetName).join(', ')}
+                    {t('log.active', { names: intel.activeNow.map((r) => r.targetName).join(', ') })}
                   </Text>
                 ) : null}
                 {intel.queued.length > 0 ? (
                   <Text style={styles.intelLine}>
-                    Queued: {intel.queued.map((r) => `${r.targetName} (M${r.applyAtRound})`).join(', ')}
+                    {t('log.queued', {
+                      list: intel.queued
+                        .map((r) => t('log.queuedItem', { name: r.targetName, round: r.applyAtRound }))
+                        .join(', '),
+                    })}
                   </Text>
                 ) : null}
                 {intel.history.length === 0 && intel.queued.length === 0 && intel.activeNow.length === 0 ? (
-                  <Text style={styles.intelLine}>No hacks used yet — tap Hack in the HUD.</Text>
+                  <Text style={styles.intelLine}>{t('log.noHacksYet')}</Text>
                 ) : null}
               </View>
             ) : null}
 
             {game.history.length === 0 ? (
               <View style={styles.empty}>
-                <Text style={styles.emptyTitle}>Nothing logged yet</Text>
-                <Text style={styles.emptyDesc}>Completed tasks and crew answers will show up here.</Text>
+                <Text style={styles.emptyTitle}>{t('log.nothingLogged')}</Text>
+                <Text style={styles.emptyDesc}>{t('log.nothingLoggedDesc')}</Text>
               </View>
             ) : (
               [...game.history].reverse().map((entry) => (

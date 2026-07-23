@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SectionLabel } from '@/components/ui';
 import { getPackListing } from '@/content/catalog';
 import {
@@ -49,6 +50,7 @@ function SourceRow({
   onToggle,
   onRequestUpgrade,
 }: SourceRowProps) {
+  const { t } = useTranslation();
   return (
     <View style={styles.packRow}>
       <Text style={styles.packEmoji}>{emoji}</Text>
@@ -70,7 +72,7 @@ function SourceRow({
         />
       ) : (
         <Pressable onPress={onRequestUpgrade} disabled={disabled} hitSlop={8}>
-          <Text style={styles.unlockLink}>Unlock</Text>
+          <Text style={styles.unlockLink}>{t('hostSettings.unlock')}</Text>
         </Pressable>
       )}
     </View>
@@ -86,6 +88,7 @@ export function HostSettingsPanel({
   onRequestUpgrade,
   onEditCustomDeck,
 }: HostSettingsPanelProps) {
+  const { t } = useTranslation();
   const [local, setLocal] = useState(settings);
 
   useEffect(() => {
@@ -112,9 +115,9 @@ export function HostSettingsPanel({
   // Validate a proposed set of sources; returns an error string or null.
   const sourcesError = (core: boolean, betrayal: boolean, custom: boolean): string | null => {
     const anyPack = core || betrayal;
-    if (!anyPack && !custom) return 'Keep at least one prompt source turned on.';
+    if (!anyPack && !custom) return t('hostSettings.keepOneSource');
     if (!anyPack && custom && customCount < CUSTOM_ONLY_MIN) {
-      return `Add at least ${CUSTOM_ONLY_MIN} custom prompts to play a custom-only game (you have ${customCount}).`;
+      return t('hostSettings.customOnlyMin', { min: CUSTOM_ONLY_MIN, count: customCount });
     }
     return null;
   };
@@ -122,7 +125,7 @@ export function HostSettingsPanel({
   const applySources = (core: boolean, betrayal: boolean, custom: boolean) => {
     const err = sourcesError(core, betrayal, custom);
     if (err) {
-      Alert.alert('Heads up', err);
+      Alert.alert(t('hostSettings.headsUp'), err);
       return;
     }
     const contentPacks: ContentPackId[] = [];
@@ -141,9 +144,9 @@ export function HostSettingsPanel({
 
   return (
     <View style={styles.wrap}>
-      <SectionLabel>Host Settings</SectionLabel>
+      <SectionLabel>{t('hostSettings.title')}</SectionLabel>
 
-      <Text style={styles.fieldLabel}>Mission length</Text>
+      <Text style={styles.fieldLabel}>{t('hostSettings.missionLength')}</Text>
       <View style={styles.segmentRow}>
         {MISSION_OPTIONS.map((count) => {
           const active = local.missionCount === count;
@@ -168,14 +171,14 @@ export function HostSettingsPanel({
         })}
       </View>
 
-      <Text style={[styles.fieldLabel, styles.packHeading]}>Prompt sources</Text>
+      <Text style={[styles.fieldLabel, styles.packHeading]}>{t('hostSettings.promptSources')}</Text>
 
       {hasPremium ? (
         <>
           <SourceRow
             emoji="🛸"
-            name="Base Prompts"
-            tagline="The full core question library."
+            name={t('hostSettings.basePrompts')}
+            tagline={t('hostSettings.basePromptsTagline')}
             on={coreOn}
             hasPremium
             disabled={disabled}
@@ -183,8 +186,8 @@ export function HostSettingsPanel({
           />
           <SourceRow
             emoji={BETRAYAL.emoji}
-            name={BETRAYAL.name}
-            tagline={BETRAYAL.tagline}
+            name={t('packs.betrayalName')}
+            tagline={t('packs.betrayalTagline')}
             on={betrayalOn}
             hasPremium
             disabled={disabled}
@@ -193,11 +196,11 @@ export function HostSettingsPanel({
           <View style={styles.packRow}>
             <Text style={styles.packEmoji}>🗂️</Text>
             <View style={styles.packCopy}>
-              <Text style={styles.packName}>My Custom Deck</Text>
+              <Text style={styles.packName}>{t('hostSettings.myCustomDeck')}</Text>
               <Pressable onPress={onEditCustomDeck} hitSlop={6} disabled={disabled}>
                 <Text style={styles.packTagline} numberOfLines={2}>
-                  Your own questions ({customCount}) ·{' '}
-                  <Text style={styles.editLink}>Edit →</Text>
+                  {t('hostSettings.yourOwnQuestions', { count: customCount })}
+                  <Text style={styles.editLink}>{t('hostSettings.edit')}</Text>
                 </Text>
               </Pressable>
             </View>
@@ -208,17 +211,14 @@ export function HostSettingsPanel({
               trackColor={{ false: colors.border, true: colors.accent }}
             />
           </View>
-          <Text style={styles.hint}>
-            All the sources you turn on are mixed together. Turn off Base Prompts to play mostly
-            your own or the Betrayal Pack.
-          </Text>
+          <Text style={styles.hint}>{t('hostSettings.mixHint')}</Text>
         </>
       ) : (
         <>
           <SourceRow
             emoji={BETRAYAL.emoji}
-            name={BETRAYAL.name}
-            tagline={BETRAYAL.tagline}
+            name={t('packs.betrayalName')}
+            tagline={t('packs.betrayalTagline')}
             on={false}
             hasPremium={false}
             disabled={disabled}
@@ -227,8 +227,8 @@ export function HostSettingsPanel({
           />
           <SourceRow
             emoji="🗂️"
-            name="My Custom Deck"
-            tagline="Write and mix in your own questions."
+            name={t('hostSettings.myCustomDeck')}
+            tagline={t('hostSettings.customDeckFreeTagline')}
             on={false}
             hasPremium={false}
             disabled={disabled}
@@ -237,8 +237,7 @@ export function HostSettingsPanel({
           />
           <Pressable onPress={onRequestUpgrade} disabled={disabled} hitSlop={6}>
             <Text style={styles.upgradeHint}>
-              The Expansion Pass unlocks 3 &amp; 7-stage games, the Betrayal Pack, and custom decks
-              for your whole table. <Text style={styles.upgradeLink}>Unlock →</Text>
+              {t('hostSettings.upgradeHint')} <Text style={styles.upgradeLink}>{t('hostSettings.unlockArrow')}</Text>
             </Text>
           </Pressable>
         </>

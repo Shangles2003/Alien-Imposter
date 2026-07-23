@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui';
 import { ReportUserModal } from '@/components/moderation/ReportUserModal';
 import { useBlockList } from '@/context/BlockListContext';
@@ -27,6 +28,7 @@ export function PlayerModerationSheet({
   onClose,
   onBlocked,
 }: PlayerModerationSheetProps) {
+  const { t } = useTranslation();
   const { isBlocked, refreshBlocks } = useBlockList();
   const [reportOpen, setReportOpen] = useState(false);
 
@@ -36,12 +38,12 @@ export function PlayerModerationSheet({
 
   const handleBlock = () => {
     Alert.alert(
-      `Block ${player.displayName}?`,
-      'They will not be able to join lobbies with you. You can unblock them in Settings.',
+      t('moderation.blockTitle', { name: player.displayName }),
+      t('moderation.blockBody'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Block',
+          text: t('moderation.block'),
           style: 'destructive',
           onPress: async () => {
             try {
@@ -49,9 +51,9 @@ export function PlayerModerationSheet({
               await refreshBlocks();
               onClose();
               onBlocked?.();
-              Alert.alert('Blocked', `${player.displayName} has been blocked.`);
+              Alert.alert(t('moderation.blockedTitle'), t('moderation.blockedBody', { name: player.displayName }));
             } catch (e) {
-              Alert.alert('Block failed', errorMessage(e));
+              Alert.alert(t('moderation.blockFailed'), errorMessage(e));
             }
           },
         },
@@ -64,9 +66,9 @@ export function PlayerModerationSheet({
       await unblockUser(player.uid);
       await refreshBlocks();
       onClose();
-      Alert.alert('Unblocked', `${player.displayName} has been unblocked.`);
+      Alert.alert(t('moderation.unblockedTitle'), t('moderation.unblockedBody', { name: player.displayName }));
     } catch (e) {
-      Alert.alert('Unblock failed', errorMessage(e));
+      Alert.alert(t('moderation.unblockFailed'), errorMessage(e));
     }
   };
 
@@ -76,16 +78,16 @@ export function PlayerModerationSheet({
         <Pressable style={styles.backdrop} onPress={onClose}>
           <Pressable style={styles.card} onPress={(e) => e.stopPropagation()}>
             <Text style={styles.title}>{player.displayName}</Text>
-            <Text style={styles.subtitle}>Safety options</Text>
+            <Text style={styles.subtitle}>{t('moderation.safetyOptions')}</Text>
 
             <View style={styles.actions}>
               {blocked ? (
-                <Button title="Unblock" variant="ghost" fullWidth onPress={handleUnblock} />
+                <Button title={t('moderation.unblock')} variant="ghost" fullWidth onPress={handleUnblock} />
               ) : (
-                <Button title="Block" variant="ghost" fullWidth onPress={handleBlock} />
+                <Button title={t('moderation.block')} variant="ghost" fullWidth onPress={handleBlock} />
               )}
-              <Button title="Report" variant="ghost" fullWidth onPress={() => setReportOpen(true)} />
-              <Button title="Cancel" variant="ghost" fullWidth onPress={onClose} />
+              <Button title={t('moderation.report')} variant="ghost" fullWidth onPress={() => setReportOpen(true)} />
+              <Button title={t('common.cancel')} variant="ghost" fullWidth onPress={onClose} />
             </View>
           </Pressable>
         </Pressable>

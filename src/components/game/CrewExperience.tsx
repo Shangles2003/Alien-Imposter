@@ -2,14 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { CrewSyncBar, PhaseSyncGate } from '@/components/game/CrewSyncBar';
 import { getTaskProgress } from '@/game/engine';
-import {
-  CHAMBER_DESCRIPTIONS,
-  CHAMBER_LABELS,
-  CHAMBER_TAGLINES,
-  GameState,
-} from '@/types/game';
+import { GameState } from '@/types/game';
 import {
   chamberAccents,
   chamberCodes,
@@ -36,6 +32,7 @@ export function CrewDots({
 
 /** Full-bleed chamber door — gradient hero shown while the crew boards. */
 export function ChamberBoarding({ game }: { game: GameState }) {
+  const { t } = useTranslation();
   const chamber = game.selectedChamber!;
   const gradient = chamberGradients[chamber] ?? chamberGradients.opinion_hold!;
 
@@ -54,10 +51,10 @@ export function ChamberBoarding({ game }: { game: GameState }) {
             </Text>
           </View>
           <Text style={styles.chamberIcon}>{chamberIcons[chamber]}</Text>
-          <Text style={styles.chamberName}>{CHAMBER_LABELS[chamber]}</Text>
-          <Text style={styles.chamberAction}>{CHAMBER_TAGLINES[chamber]}</Text>
-          <Text style={styles.chamberDesc}>{CHAMBER_DESCRIPTIONS[chamber]}</Text>
-          <Text style={styles.boardingNote}>WHOLE CREW ENTERS TOGETHER</Text>
+          <Text style={styles.chamberName}>{t(`chambers.${chamber}.label`)}</Text>
+          <Text style={styles.chamberAction}>{t(`chambers.${chamber}.tagline`)}</Text>
+          <Text style={styles.chamberDesc}>{t(`chambers.${chamber}.description`)}</Text>
+          <Text style={styles.boardingNote}>{t('game.crewEntersTogether')}</Text>
         </LinearGradient>
       </Animated.View>
       <Animated.View entering={FadeInUp.delay(120).duration(400)} style={styles.footer}>
@@ -80,6 +77,7 @@ export function ActiveTaskFrame({
   children: React.ReactNode;
   layout?: 'default' | 'canvas';
 }) {
+  const { t } = useTranslation();
   const chamber = game.selectedChamber!;
   const isCanvas = layout === 'canvas';
   const accent = chamberAccents[chamber] ?? colors.accent;
@@ -95,9 +93,9 @@ export function ActiveTaskFrame({
       >
         <View style={styles.promptHeader}>
           <Text style={[styles.chamberNameSmall, { color: accent }]}>
-            {CHAMBER_LABELS[chamber]}
+            {t(`chambers.${chamber}.label`)}
           </Text>
-          <Text style={styles.chamberTagline}>{CHAMBER_TAGLINES[chamber]}</Text>
+          <Text style={styles.chamberTagline}>{t(`chambers.${chamber}.tagline`)}</Text>
         </View>
         <Text style={[styles.promptText, isCanvas && styles.promptTextCompact]}>{prompt}</Text>
       </View>
@@ -112,6 +110,7 @@ export function ActiveTaskFrame({
 }
 
 export function WaitingForCrew({ game }: { game: GameState }) {
+  const { t } = useTranslation();
   const progress = getTaskProgress(game);
   const remaining = progress.total - progress.done;
   return (
@@ -119,9 +118,9 @@ export function WaitingForCrew({ game }: { game: GameState }) {
       <Animated.View entering={FadeInDown.duration(300)} style={styles.lockedBadge}>
         <Text style={styles.lockedCheck}>✓</Text>
       </Animated.View>
-      <Text style={styles.waitingTitle}>Answer locked</Text>
+      <Text style={styles.waitingTitle}>{t('game.answerLocked')}</Text>
       <Text style={styles.waitingCopy}>
-        {remaining === 0 ? 'Everyone is in' : `${remaining} crew still responding`}
+        {remaining === 0 ? t('game.everyoneIn') : t('game.crewResponding', { count: remaining })}
       </Text>
       <CrewDots game={game} mode="task" />
     </View>

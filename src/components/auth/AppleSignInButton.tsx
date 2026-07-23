@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Platform, StyleSheet, Text, View } from 'react-native';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { signInWithApple } from '@/services/auth';
 import { errorMessage } from '@/utils/errors';
@@ -18,6 +19,7 @@ export function AppleSignInButton({
   mode?: 'signIn' | 'signUp';
 }) {
   const { refreshProfile } = useAuth();
+  const { t } = useTranslation();
   const [available, setAvailable] = useState(false);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export function AppleSignInButton({
     } catch (e) {
       // The user backing out of the native sheet isn't an error.
       if ((e as { code?: string })?.code === 'ERR_REQUEST_CANCELED') return;
-      Alert.alert('Apple sign-in failed', errorMessage(e));
+      Alert.alert(t('auth.appleFailed'), errorMessage(e));
     }
   };
 
@@ -50,7 +52,7 @@ export function AppleSignInButton({
     <View style={styles.wrap}>
       <View style={styles.dividerRow}>
         <View style={styles.line} />
-        <Text style={styles.orText}>or</Text>
+        <Text style={styles.orText}>{t('auth.or')}</Text>
         <View style={styles.line} />
       </View>
       <AppleAuthentication.AppleAuthenticationButton

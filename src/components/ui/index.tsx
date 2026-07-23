@@ -16,6 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Clipboard from 'expo-clipboard';
+import { useTranslation } from 'react-i18next';
 import { colors, fonts, gradients, radius, shadows, spacing, typography } from '@/theme';
 import { AlienIcon, HelmetIcon } from './AlienIcon';
 
@@ -231,7 +232,10 @@ export function Badge({
           : { backgroundColor: `${color}22`, borderColor: `${color}55` },
       ]}
     >
-      <Text style={[badgeStyles.text, { color: variant === 'solid' ? '#04050d' : color }]}>
+      <Text
+        style={[badgeStyles.text, { color: variant === 'solid' ? '#04050d' : color }]}
+        numberOfLines={1}
+      >
         {label}
       </Text>
     </View>
@@ -394,6 +398,7 @@ export function ActionTile({
 
 /** Party code — terminal-style character cells, tap to copy. */
 export function LobbyCodeDisplay({ code }: { code: string }) {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -408,7 +413,7 @@ export function LobbyCodeDisplay({ code }: { code: string }) {
 
   return (
     <GlowCard accent="cyan">
-      <Text style={codeStyles.label}>PARTY CODE</Text>
+      <Text style={codeStyles.label}>{t('lobby.partyCode')}</Text>
       <PressableScale onPress={copy} scaleTo={0.97}>
         <View style={codeStyles.cellRow}>
           {code.split('').map((ch, i) => (
@@ -419,7 +424,7 @@ export function LobbyCodeDisplay({ code }: { code: string }) {
         </View>
       </PressableScale>
       <Text style={[codeStyles.hint, copied && codeStyles.hintCopied]}>
-        {copied ? '✓ Copied — paste it to your crew' : 'Tap the code to copy · friends join from the main menu'}
+        {copied ? t('lobby.codeCopied') : t('lobby.codeHint')}
       </Text>
     </GlowCard>
   );
@@ -440,6 +445,7 @@ export function CrewRow({
   isMe?: boolean;
   onModerate?: () => void;
 }) {
+  const { t } = useTranslation();
   const glow = useSharedValue(isReady ? 1 : 0);
 
   React.useEffect(() => {
@@ -457,12 +463,14 @@ export function CrewRow({
         <Text style={crewStyles.name} numberOfLines={1}>
           {name}
           {isHost ? '  ★' : ''}
-          {isMe ? '  (You)' : ''}
+          {isMe ? `  (${t('lobby.you')})` : ''}
         </Text>
-        <Text style={crewStyles.status}>{isReady ? 'Locked in' : 'Waiting...'}</Text>
+        <Text style={crewStyles.status} numberOfLines={1}>
+          {isReady ? t('lobby.lockedIn') : t('lobby.waiting')}
+        </Text>
       </View>
       <Badge
-        label={isReady ? 'READY' : 'HOLD'}
+        label={isReady ? `✓ ${t('lobby.playerReady')}` : t('lobby.playerHold')}
         color={isReady ? colors.success : colors.textDim}
       />
       {onModerate ? (

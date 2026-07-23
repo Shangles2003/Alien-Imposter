@@ -27,7 +27,27 @@ export function subscribeToGame(
     .on(
       'postgres_changes',
       { event: '*', schema: 'public', table: 'games', filter: `id=eq.${gameId}` },
-      load
+      (payload) => {
+        // Use the realtime payload directly instead of re-fetching — this cuts a
+        // full network round-trip off every update, so other players see each
+        // action a beat sooner and with less re-render churn. Fall back to a
+        // fetch only if the row didn't come through (e.g. oversized payload).
+        const row = payload.new as
+          | { id?: string; lobby_id?: string; host_id?: string; state?: GameState }
+          | undefined;
+        if (row?.id && row.lobby_id && row.host_id && row.state) {
+          callback(
+            rowToGameState({
+              id: row.id,
+              lobby_id: row.lobby_id,
+              host_id: row.host_id,
+              state: row.state,
+            })
+          );
+        } else {
+          load();
+        }
+      }
     )
     .subscribe();
 

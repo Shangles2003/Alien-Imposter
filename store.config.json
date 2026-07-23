@@ -1,0 +1,91 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "version": "2.0",
+    "copyright": "2026 JoeTornari",
+    "release": {
+      "automaticRelease": false
+    },
+    "info": {
+      "en-US": {
+        "description": "Someone in your crew isn't human.\n\nAlien Imposter is a social deduction party game for 4–10 friends, each on their own iPhone. Everyone answers the same fun prompts — except the imposters, who secretly see slightly different ones. Their answers almost fit. Almost.\nHOW IT WORKS\nOne player hosts a party and shares a 6-character code. Everyone joins, readies up, and gets a secret role: crew or infiltrator. Then the whole crew plays five missions together, comparing answers after each one. Talk it out, catch the contradictions, and when the missions end, vote on who to eject into space.\n\nFIVE MISSION STATIONS\n• Opinion Bay — take a stand on spicy takes like \"pineapple belongs on pizza\"\n• Decision Deck — what would you do? Pick your move in awkward scenarios\n• Sketch Bay — draw a prompt… but imposters are drawing something slightly different\n• Fill-in-the-Blank Pod — complete the sentence and compare with the crew\n• Likely Locker — vote who's most likely to survive a zombie apocalypse\n\nFIND THE INFILTRATORS\nImposters see each other and share a pool of neural hacks that can flip an innocent player's prompts to make them look suspicious. The crew has the mission log — every answer from every round — to hunt for the lies.\n\nTHE FINAL VOTE\nAfter the last mission, everyone secretly ballots for the players they suspect. The most-accused go on trial, and a majority vote sends them out the airlock. Eject every infiltrator and the crew wins. Eject one innocent crewmate and the aliens take the ship.\n\nMADE FOR GAME NIGHT\n• 4–10 players, everyone plays every round — no one sits out\n• Games take about 15 minutes\n• Base Game free. No ads. No tracking.\n\nGather your crew. Trust no one.\n\n",
+        "keywords": [
+          "party",
+          "imposter",
+          "social deduction",
+          "friends",
+          "group",
+          "deception",
+          "trivia",
+          "drawing",
+          "game night",
+          "vote"
+        ],
+        "promoText": "Round up 4–10 friends, share a party code, and find the aliens hiding in your crew. Same questions… almost. Spot the answers that don't add up. Completely free, no ads.",
+        "supportUrl": "https://docs.google.com/document/d/1KmFywDNPlQgLIPMbpuGjSHEn-DGbZ5QtN92Juy80bWA/edit?usp=sharing",
+        "title": "Alien Imposter",
+        "privacyPolicyUrl": "https://docs.google.com/document/d/1Jc29lGtCwFmHUJcG4x4JSgcVEkmH2_JVVdeQZmMsnuU/edit?usp=sharing",
+        "screenshots": {
+          "APP_IPHONE_65": [
+            "store\\apple\\screenshot\\en-US\\APP_IPHONE_65\\menuimg.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPHONE_65\\crewimg.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPHONE_65\\promptimg.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPHONE_65\\drawimg.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPHONE_65\\revealimg.png"
+          ],
+          "APP_IPAD_PRO_3GEN_129": [
+            "store\\apple\\screenshot\\en-US\\APP_IPAD_PRO_3GEN_129\\ipadimg3.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPAD_PRO_3GEN_129\\ipadimg2.png",
+            "store\\apple\\screenshot\\en-US\\APP_IPAD_PRO_3GEN_129\\ipadimg1.png"
+          ]
+        }
+      }
+    },
+    "categories": [
+      [
+        "GAMES",
+        "GAMES_STRATEGY",
+        "GAMES_FAMILY"
+      ]
+    ],
+    "advisory": {
+      "ageRatingOverride": "NONE",
+      "alcoholTobaccoOrDrugUseOrReferences": "NONE",
+      "contests": "NONE",
+      "gambling": false,
+      "gamblingSimulated": "NONE",
+      "horrorOrFearThemes": "NONE",
+      "kidsAgeBand": null,
+      "koreaAgeRatingOverride": "NONE",
+      "lootBox": false,
+      "matureOrSuggestiveThemes": "NONE",
+      "medicalOrTreatmentInformation": "NONE",
+      "profanityOrCrudeHumor": "NONE",
+      "sexualContentGraphicAndNudity": "NONE",
+      "sexualContentOrNudity": "NONE",
+      "unrestrictedWebAccess": false,
+      "violenceCartoonOrFantasy": "NONE",
+      "violenceRealistic": "NONE",
+      "violenceRealisticProlongedGraphicOrSadistic": "NONE",
+      "advertising": false,
+      "ageAssurance": false,
+      "ageRatingOverrideV2": "NONE",
+      "developerAgeRatingInfoUrl": null,
+      "gunsOrOtherWeapons": "NONE",
+      "healthOrWellnessTopics": false,
+      "messagingAndChat": false,
+      "parentalControls": false,
+      "userGeneratedContent": true
+    },
+    "review": {
+      "firstName": "Joseph",
+      "lastName": "Tornari",
+      "email": "tornari25@hotmail.com",
+      "phone": "+17249149595",
+      "demoUsername": "tornari25@hotmail.com",
+      "demoPassword": "86Aspenway!",
+      "demoRequired": true,
+      "notes": "Alien Imposter is a multiplayer social deduction game requiring 4-10 players. To allow you to fully test the core gameplay mechanics (answering prompts, drawing, voting) on a single device, I have included a testing bypass. \n\n1. Log in with the provided demo account.\n2. Navigate to the 'Settings' menu.\n3. Type the code 'BOT-TEST-MODE' into the access code field at the bottom.\n4. This will unlock a 'Start Bot Match' option on the main menu, allowing you to play through a complete game loop with simulated players."
+    }
+  }
+}

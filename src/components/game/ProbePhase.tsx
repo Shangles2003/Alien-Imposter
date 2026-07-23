@@ -1,11 +1,12 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@/components/ui';
 import { PhaseSyncGate } from '@/components/game/CrewExperience';
 import { formatChamberAnswer } from '@/components/game/chamberFormat';
 import { DrawingPreview } from '@/components/game/DrawingPreview';
 import * as engine from '@/game/engine';
-import { CHAMBER_LABELS, GamePlayer, GameState } from '@/types/game';
+import { GamePlayer, GameState } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
 
 interface ProbePhaseProps {
@@ -17,6 +18,7 @@ interface ProbePhaseProps {
 }
 
 export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbePhaseProps) {
+  const { t } = useTranslation();
   const last = game.history[game.history.length - 1];
   const isLastTask = game.round >= game.totalTasks;
   const alerts = engine.getPartnerHackAlerts(game, me.uid);
@@ -29,9 +31,9 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
       <View style={styles.main}>
         {alerts.length > 0 && (
           <View style={styles.partnerAlert}>
-            <Text style={styles.partnerAlertLabel}>Partner signal</Text>
+            <Text style={styles.partnerAlertLabel}>{t('probe.partnerSignal')}</Text>
             <Text style={styles.partnerAlertText}>
-              {alerts[0]!.hackerName} hacked {alerts[0]!.targetName}
+              {t('probe.partnerHacked', { hacker: alerts[0]!.hackerName, target: alerts[0]!.targetName })}
             </Text>
           </View>
         )}
@@ -39,7 +41,7 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
         {last ? (
           <View style={[styles.intelCard, canHack && styles.intelCardCompact]}>
             <Text style={styles.intelTitle}>
-              Mission {last.round} · {CHAMBER_LABELS[last.chamber]}
+              {t('log.missionNum', { round: last.round })} · {t(`chambers.${last.chamber}.label`)}
             </Text>
             <View style={[styles.intelRows, isDrawingRound && styles.intelRowsGrid]}>
               {last.responses.map((r) => (
@@ -63,14 +65,11 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
         {canHack ? (
           <View style={styles.hackPanel}>
             <View style={styles.hackHeader}>
-              <Text style={styles.hackTitle}>Neural Hack</Text>
-              <Text style={styles.hackDesc}>
-                Scramble a crew member's prompts so they see alien tasks instead. Watch the debrief
-                for mistakes. Your partner gets notified.
-              </Text>
+              <Text style={styles.hackTitle}>{t('hack.title')}</Text>
+              <Text style={styles.hackDesc}>{t('probe.scrambleDesc')}</Text>
               <View style={styles.hackCountPill}>
                 <Text style={styles.hackCount}>
-                  {game.hacksRemaining} of {game.hacksTotal} remaining
+                  {t('probe.remaining', { remaining: game.hacksRemaining, total: game.hacksTotal })}
                 </Text>
               </View>
             </View>
@@ -95,10 +94,10 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
                       </Text>
                       <Text style={styles.hackTargetMeta} numberOfLines={1}>
                         {p.isHacked
-                          ? 'Prompts scrambled'
+                          ? t('probe.promptsScrambled')
                           : isSelf
-                            ? 'Scramble your own prompts'
-                            : 'Tap to scramble prompts'}
+                            ? t('probe.scrambleYourOwn')
+                            : t('probe.tapToScramble')}
                       </Text>
                     </View>
                   </Pressable>
@@ -107,14 +106,18 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
             </View>
           </View>
         ) : showAlienIntel && game.hacksRemaining === 0 ? (
-          <Text style={styles.noHacks}>No hacks left this mission.</Text>
+          <Text style={styles.noHacks}>{t('hack.noHacksRemaining')}</Text>
         ) : null}
       </View>
 
       <PhaseSyncGate
         game={game}
         me={me}
-        actionLabel={isLastTask ? 'Final vote' : `Next mission (${game.round + 1}/${game.totalTasks})`}
+        actionLabel={
+          isLastTask
+            ? t('game.finalVote')
+            : t('game.nextMission', { round: game.round + 1, total: game.totalTasks })
+        }
         onReady={onReady}
       />
     </View>

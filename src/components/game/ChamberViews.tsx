@@ -2,11 +2,13 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Avatar, Button } from '@/components/ui';
 import { formatChamberAnswer } from '@/components/game/chamberFormat';
 import { DrawingPreview } from '@/components/game/DrawingPreview';
 import { ActiveTaskFrame } from '@/components/game/CrewExperience';
-import { GLYPH_SYMBOLS, getPromptForPlayer } from '@/game/prompts';
+import { GLYPH_SYMBOLS } from '@/game/prompts';
+import { localizedPromptForPlayer, localizedPromptOptions } from '@/i18n/prompts';
 import { AgreementLevel, GamePlayer, GameState } from '@/types/game';
 import { colors, gradients, radius, spacing, typography } from '@/theme';
 import { WritingPodInput } from '@/components/game/WritingPodInput';
@@ -15,14 +17,14 @@ import { DrawingPad } from './DrawingPad';
 
 const AGREEMENT: {
   value: AgreementLevel;
-  label: string;
-  sub: string;
+  labelKey: string;
+  subKey: string;
   color: string;
 }[] = [
-  { value: 'strongly_disagree', label: 'Strong no', sub: 'Disagree', color: '#f43f5e' },
-  { value: 'slightly_disagree', label: 'No', sub: 'Lean no', color: '#fb923c' },
-  { value: 'slightly_agree', label: 'Yes', sub: 'Lean yes', color: '#4ade80' },
-  { value: 'strongly_agree', label: 'Strong yes', sub: 'Agree', color: '#10b981' },
+  { value: 'strongly_disagree', labelKey: 'game.agreeStrongNo', subKey: 'game.agreeStrongNoSub', color: '#f43f5e' },
+  { value: 'slightly_disagree', labelKey: 'game.agreeNo', subKey: 'game.agreeNoSub', color: '#fb923c' },
+  { value: 'slightly_agree', labelKey: 'game.agreeYes', subKey: 'game.agreeYesSub', color: '#4ade80' },
+  { value: 'strongly_agree', labelKey: 'game.agreeStrongYes', subKey: 'game.agreeStrongYesSub', color: '#10b981' },
 ];
 
 interface ChamberInputProps {
@@ -33,11 +35,12 @@ interface ChamberInputProps {
 }
 
 export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInputProps) {
+  const { t } = useTranslation();
   const { accent, accentSoft, glow } = useGameAccent();
   const accentOn = { borderColor: accent, backgroundColor: glow };
   const chamber = game.selectedChamber!;
   const prompt = game.activePrompt!;
-  const promptText = getPromptForPlayer(prompt, player.role, player.isHacked);
+  const promptText = localizedPromptForPlayer(prompt, player.role, player.isHacked);
   const [selectedPlayer, setSelectedPlayer] = React.useState<string | null>(null);
   const [selectedGlyphs, setSelectedGlyphs] = React.useState<number[]>([]);
   const [drawing, setDrawing] = React.useState('');
@@ -62,8 +65,8 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
                 ]}
                 onPress={() => onSubmit(opt.value, {})}
               >
-                <Text style={[styles.opinionMain, { color: opt.color }]}>{opt.label}</Text>
-                <Text style={styles.opinionSub}>{opt.sub}</Text>
+                <Text style={[styles.opinionMain, { color: opt.color }]}>{t(opt.labelKey)}</Text>
+                <Text style={styles.opinionSub}>{t(opt.subKey)}</Text>
               </Pressable>
             </Animated.View>
           ))}
@@ -73,7 +76,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
   }
 
   if (chamber === 'deliberation_deck') {
-    const options = prompt.options ?? [];
+    const options = localizedPromptOptions(prompt);
 
     return (
       <ActiveTaskFrame game={game} prompt={promptText}>
@@ -116,7 +119,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
         layout="canvas"
         footer={
           <Button
-            title="Submit drawing"
+            title={t('game.submitDrawing')}
             fullWidth
             size="md"
             disabled={!drawing}
@@ -137,7 +140,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
         prompt={promptText}
         footer={
           <Button
-            title={selectedPlayer ? 'Lock in vote' : 'Pick someone first'}
+            title={selectedPlayer ? t('game.lockInVote') : t('game.pickSomeone')}
             fullWidth
             size="md"
             disabled={!selectedPlayer}
@@ -176,7 +179,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
 
     if (isCaptain) {
       return (
-        <ActiveTaskFrame game={game} prompt="Read these symbols aloud to your operators">
+        <ActiveTaskFrame game={game} prompt={t('game.captainReadSymbols')}>
           <LinearGradient colors={[...gradients.timer]} style={styles.glyphPanel}>
             {game.bioscanner.captainGlyphs.map((g) => (
               <Text key={g} style={styles.glyph}>{GLYPH_SYMBOLS[g]}</Text>
@@ -193,10 +196,10 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
       return (
         <ActiveTaskFrame
           game={game}
-          prompt="Tap symbols that match the captain"
+          prompt={t('game.tapMatchingSymbols')}
           footer={
             <Button
-              title={`Confirm match (${selectedGlyphs.length}/${game.bioscanner.captainGlyphs.length})`}
+              title={t('game.confirmMatch', { count: selectedGlyphs.length, total: game.bioscanner.captainGlyphs.length })}
               fullWidth
               size="md"
               disabled={selectedGlyphs.length !== game.bioscanner.captainGlyphs.length}
@@ -224,8 +227,8 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
     }
 
     return (
-      <ActiveTaskFrame game={game} prompt="Operators are syncing">
-        <Text style={styles.hint}>Stand by</Text>
+      <ActiveTaskFrame game={game} prompt={t('game.operatorsSyncing')}>
+        <Text style={styles.hint}>{t('game.standBy')}</Text>
       </ActiveTaskFrame>
     );
   }
@@ -234,6 +237,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
 }
 
 export function ChamberResults({ game }: { game: GameState }) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const lastRound = game.history[game.history.length - 1];
   if (!lastRound) return null;
@@ -243,7 +247,7 @@ export function ChamberResults({ game }: { game: GameState }) {
   return (
     <View style={styles.results}>
       <Text style={styles.resultsTitle}>
-        {isDrawing ? 'Compare drawings' : 'Compare answers'}
+        {isDrawing ? t('game.compareDrawings') : t('game.compareAnswers')}
       </Text>
       <View style={[styles.resultsGrid, isDrawing && styles.resultsGridDraw]}>
         {lastRound.responses.map((r) => (

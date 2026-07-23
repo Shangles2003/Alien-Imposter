@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Animated, { FadeIn, FadeInDown, FadeInUp, ZoomIn } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import {
   AlienIcon,
   Avatar,
@@ -48,6 +49,7 @@ import { colors, radius, shadows, spacing, typography } from '@/theme';
 export default function GameScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { user, profile } = useAuth();
+  const { t } = useTranslation();
   const router = useRouter();
   const [game, setGame] = useState<GameState | null>(null);
   const [logOpen, setLogOpen] = useState(false);
@@ -97,12 +99,12 @@ export default function GameScreen() {
 
   const handleLeaveMission = () => {
     Alert.alert(
-      'Leave mission?',
-      'You can rejoin anytime using the same lobby code.',
+      t('game.leaveMission'),
+      t('game.leaveMissionBody'),
       [
-        { text: 'Stay', style: 'cancel' },
+        { text: t('game.stay'), style: 'cancel' },
         {
-          text: 'Leave',
+          text: t('game.leave'),
           style: 'destructive',
           onPress: () => router.replace(HOME_ROUTE),
         },
@@ -111,22 +113,20 @@ export default function GameScreen() {
   };
 
   if (!game || !user) {
-    return <LoadingState message="Loading mission..." />;
+    return <LoadingState message={t('game.loadingMission')} />;
   }
 
   if (!profile) {
-    return <LoadingState message="Loading mission..." />;
+    return <LoadingState message={t('game.loadingMission')} />;
   }
 
   if (!me) {
     return (
       <ScreenShell contentStyle={styles.shell}>
         <View style={styles.notOnMission}>
-          <Text style={styles.notOnMissionTitle}>Not on this mission</Text>
-          <Text style={styles.notOnMissionBody}>
-            Enter your crew&apos;s lobby code on the home screen to rejoin a game in progress.
-          </Text>
-          <Button title="Back to home" fullWidth onPress={() => router.replace(HOME_ROUTE)} />
+          <Text style={styles.notOnMissionTitle}>{t('game.notOnMission')}</Text>
+          <Text style={styles.notOnMissionBody}>{t('game.notOnMissionBody')}</Text>
+          <Button title={t('game.backToHome')} fullWidth onPress={() => router.replace(HOME_ROUTE)} />
         </View>
       </ScreenShell>
     );
@@ -182,7 +182,7 @@ export default function GameScreen() {
               game={game}
               me={me}
               loading={syncPending}
-              actionLabel={isLastTask ? 'Final vote' : `Next mission (${game.round + 1}/${game.totalTasks})`}
+              actionLabel={isLastTask ? t('game.finalVote') : t('game.nextMission', { round: game.round + 1, total: game.totalTasks })}
               onReady={handleSync}
             />
           </View>
@@ -191,7 +191,7 @@ export default function GameScreen() {
       case 'captain_select':
         return (
           <View style={styles.fillCenter}>
-            <Text style={styles.waitText}>Advancing…</Text>
+            <Text style={styles.waitText}>{t('game.advancing')}</Text>
           </View>
         );
       case 'extraction_nominate':
@@ -326,6 +326,7 @@ function RoleRevealPhase({
   onReady: () => void;
   syncPending: boolean;
 }) {
+  const { t } = useTranslation();
   const [revealed, setRevealed] = useState(false);
   const isAlien = me.role === 'alien';
 
@@ -342,22 +343,20 @@ function RoleRevealPhase({
           >
             {isAlien ? <AlienIcon size={72} mood="sus" /> : <HelmetIcon size={72} />}
             <Badge
-              label={isAlien ? 'INFILTRATOR' : 'CREW'}
+              label={isAlien ? t('game.roleInfiltrator') : t('game.roleCrew')}
               color={isAlien ? colors.alien : colors.human}
               variant="solid"
             />
             <Text style={styles.roleDesc}>
-              {isAlien
-                ? 'You see different prompts than the crew. Blend in. Tap HACK anytime — the pool is shared with your partner.'
-                : 'Answer honestly and watch the mission log for answers that do not add up.'}
+              {isAlien ? t('game.roleDescAlien') : t('game.roleDescHuman')}
             </Text>
             {isAlien && aliens.length > 0 && (
               <Text style={styles.roleAlly} numberOfLines={1}>
-                Partner: {aliens.map((a) => a.displayName).join(', ')}
+                {t('game.partner', { names: aliens.map((a) => a.displayName).join(', ') })}
               </Text>
             )}
             <Pressable onPress={() => setRevealed(false)} hitSlop={8}>
-              <Text style={styles.hideLink}>Hide identity</Text>
+              <Text style={styles.hideLink}>{t('game.hideIdentity')}</Text>
             </Pressable>
           </View>
         </Animated.View>
@@ -367,13 +366,11 @@ function RoleRevealPhase({
             <Animated.Text entering={FadeIn.duration(600)} style={styles.classifiedIcon}>
               🔒
             </Animated.Text>
-            <Text style={styles.classifiedTitle}>CLASSIFIED DOSSIER</Text>
+            <Text style={styles.classifiedTitle}>{t('game.classifiedDossier')}</Text>
             <Text style={styles.classifiedName}>{me.displayName}</Text>
-            <Text style={styles.classifiedHint}>
-              Make sure nobody is looking at your screen,{'\n'}then tap to reveal your identity
-            </Text>
+            <Text style={styles.classifiedHint}>{t('game.revealHint')}</Text>
             <View style={styles.tapChip}>
-              <Text style={styles.tapChipText}>TAP TO REVEAL</Text>
+              <Text style={styles.tapChipText}>{t('game.tapToReveal')}</Text>
             </View>
           </View>
         </PressableScale>
@@ -381,7 +378,7 @@ function RoleRevealPhase({
       <PhaseSyncGate
         game={game}
         me={me}
-        actionLabel={revealed ? 'Ready up' : 'Reveal your role first'}
+        actionLabel={revealed ? t('game.readyUp') : t('game.revealFirst')}
         loading={syncPending}
         onReady={() => {
           if (revealed) onReady();
@@ -404,6 +401,7 @@ function ChamberActivePhase({
   onBioscannerUpdate: (fn: (s: GameState) => GameState) => void;
   onScanTarget: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   const submitted = Boolean(game.chamberResponses[me.uid]);
   const bioscannerMatched = engine.allOperatorsMatched(game);
   const isCaptain = game.captainId === me.uid;
@@ -414,7 +412,7 @@ function ChamberActivePhase({
     const alive = game.players.filter((p) => p.isAlive);
     return (
       <View style={styles.fill}>
-        <Text style={styles.waitText}>SELECT SCAN TARGET</Text>
+        <Text style={styles.waitText}>{t('game.selectScanTarget')}</Text>
         <View style={styles.scanGrid}>
           {alive.map((p) => (
             <Pressable key={p.uid} style={styles.scanTile} onPress={() => onScanTarget(p.uid)}>
@@ -471,6 +469,7 @@ function GameOverPhase({
   me: GamePlayer;
   onExit: () => void;
 }) {
+  const { t } = useTranslation();
   const won =
     (game.winner === 'humans' && me.role === 'human') ||
     (game.winner === 'aliens' && me.role === 'alien');
@@ -486,18 +485,22 @@ function GameOverPhase({
         <Animated.View entering={ZoomIn.duration(450)} style={styles.overHero}>
           {crewWon ? <HelmetIcon size={72} /> : <AlienIcon size={72} mood={won ? 'happy' : 'sus'} />}
           <Text style={[styles.overTitle, { color: won ? colors.success : colors.danger }]}>
-            {won ? 'MISSION SUCCESS' : 'MISSION FAILED'}
+            {won ? t('game.missionSuccess') : t('game.missionFailed')}
           </Text>
           <Badge
-            label={crewWon ? 'CREW WINS' : 'INFILTRATORS WIN'}
+            label={crewWon ? t('game.crewWins') : t('game.infiltratorsWin')}
             color={crewWon ? colors.human : colors.alien}
             variant="solid"
           />
-          <Text style={styles.overReason}>{game.winReason}</Text>
+          <Text style={styles.overReason}>
+            {game.winReasonKey
+              ? t(`game.${game.winReasonKey}`, { defaultValue: game.winReason ?? '' })
+              : game.winReason}
+          </Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(350).duration(400)}>
-          <Text style={styles.castLabel}>IDENTITY REVEAL</Text>
+          <Text style={styles.castLabel}>{t('game.identityReveal')}</Text>
         </Animated.View>
         <View style={styles.castList}>
           {[...game.players]
@@ -513,18 +516,18 @@ function GameOverPhase({
                   <Avatar name={p.displayName} color={p.avatarColor} size={36} />
                   <Text style={styles.castName} numberOfLines={1}>
                     {p.displayName}
-                    {p.uid === me.uid ? '  (You)' : ''}
+                    {p.uid === me.uid ? t('game.youCap') : ''}
                   </Text>
                   {alien ? <AlienIcon size={24} mood="sus" /> : <HelmetIcon size={24} />}
                   <Text style={[styles.castRole, { color: alien ? colors.alien : colors.human }]}>
-                    {alien ? 'INFILTRATOR' : 'CREW'}
+                    {alien ? t('game.roleInfiltrator') : t('game.roleCrew')}
                   </Text>
                 </Animated.View>
               );
             })}
         </View>
       </ScrollView>
-      <Button title="Return to base" fullWidth onPress={onExit} />
+      <Button title={t('game.returnToBase')} fullWidth onPress={onExit} />
     </View>
   );
 }

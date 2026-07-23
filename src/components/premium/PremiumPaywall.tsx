@@ -3,20 +3,21 @@ import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Badge, Button, PressableScale } from '@/components/ui';
 import { usePremium } from '@/context/PremiumContext';
-import { PREMIUM_COPY } from '@/premium/products';
 import { colors, gradients, radius, shadows, spacing, typography } from '@/theme';
 
-const FEATURES: { icon: string; title: string; body: string }[] = [
-  { icon: '🗂️', title: 'Every prompt', body: 'The full question library instead of a small repeating sample.' },
-  { icon: '🔪', title: 'Betrayal Pack', body: 'A whole expansion of juicy, funny friend-group prompts.' },
-  { icon: '🎚️', title: '3, 5 & 7-stage games', body: 'Pick the mission length — quick rounds or long, evidence-rich games.' },
-  { icon: '🛸', title: 'Covers your whole crew', body: 'Only the host needs it — everyone in your lobby plays the expanded game.' },
+const FEATURES: { icon: string; titleKey: string; bodyKey: string }[] = [
+  { icon: '🗂️', titleKey: 'paywall.featuresEveryPromptTitle', bodyKey: 'paywall.featuresEveryPromptBody' },
+  { icon: '🔪', titleKey: 'paywall.featuresBetrayalTitle', bodyKey: 'paywall.featuresBetrayalBody' },
+  { icon: '🎚️', titleKey: 'paywall.featuresStagesTitle', bodyKey: 'paywall.featuresStagesBody' },
+  { icon: '🛸', titleKey: 'paywall.featuresCrewTitle', bodyKey: 'paywall.featuresCrewBody' },
 ];
 
 export function PremiumPaywall({ onClose }: { onClose: () => void }) {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     hasPremiumAccess,
     subscriptionActive,
@@ -28,16 +29,16 @@ export function PremiumPaywall({ onClose }: { onClose: () => void }) {
   } = usePremium();
   const [busy, setBusy] = useState<null | 'monthly' | 'lifetime' | 'restore'>(null);
 
-  const monthly = monthlyPrice ?? PREMIUM_COPY.monthlyPriceHint;
-  const lifetime = lifetimePrice ?? PREMIUM_COPY.lifetimePriceHint;
+  const monthly = monthlyPrice ?? t('paywall.monthlyPriceHint');
+  const lifetime = lifetimePrice ?? t('paywall.lifetimePriceHint');
 
   const run = async (kind: 'monthly' | 'lifetime' | 'restore', fn: () => Promise<void>) => {
     setBusy(kind);
     try {
       await fn();
-      if (kind === 'restore') Alert.alert('Restored', 'Your purchases have been restored.');
+      if (kind === 'restore') Alert.alert(t('paywall.restored'), t('paywall.restoredBody'));
     } catch (e) {
-      Alert.alert('Purchase unavailable', e instanceof Error ? e.message : 'Something went wrong.');
+      Alert.alert(t('paywall.purchaseUnavailable'), e instanceof Error ? e.message : t('paywall.somethingWrong'));
     } finally {
       setBusy(null);
     }
@@ -54,33 +55,31 @@ export function PremiumPaywall({ onClose }: { onClose: () => void }) {
           <LinearGradient colors={[...gradients.hero]} style={styles.crest}>
             <Text style={styles.crestIcon}>⭐</Text>
           </LinearGradient>
-          <Text style={styles.title}>{PREMIUM_COPY.title}</Text>
-          <Text style={styles.tagline}>{PREMIUM_COPY.tagline}</Text>
+          <Text style={styles.title}>{t('paywall.title')}</Text>
+          <Text style={styles.tagline}>{t('paywall.tagline')}</Text>
         </Animated.View>
 
         {hasPremiumAccess ? (
           <Animated.View entering={FadeInUp.duration(400)} style={styles.activeCard}>
             <Text style={styles.activeIcon}>✓</Text>
             <Text style={styles.activeTitle}>
-              {subscriptionActive ? 'Expansion Pass active' : 'Unlocked'}
+              {subscriptionActive ? t('paywall.activeTitle') : t('paywall.unlockedTitle')}
             </Text>
-            <Text style={styles.activeBody}>
-              Your whole crew is covered when you host. Thanks for supporting the game!
-            </Text>
+            <Text style={styles.activeBody}>{t('paywall.activeBody')}</Text>
           </Animated.View>
         ) : (
           <>
             <View style={styles.features}>
               {FEATURES.map((f, i) => (
                 <Animated.View
-                  key={f.title}
+                  key={f.titleKey}
                   entering={FadeInUp.delay(80 * i).duration(360)}
                   style={styles.featureRow}
                 >
                   <Text style={styles.featureIcon}>{f.icon}</Text>
                   <View style={styles.featureCopy}>
-                    <Text style={styles.featureTitle}>{f.title}</Text>
-                    <Text style={styles.featureBody}>{f.body}</Text>
+                    <Text style={styles.featureTitle}>{t(f.titleKey)}</Text>
+                    <Text style={styles.featureBody}>{t(f.bodyKey)}</Text>
                   </View>
                 </Animated.View>
               ))}
@@ -95,14 +94,14 @@ export function PremiumPaywall({ onClose }: { onClose: () => void }) {
             >
               <LinearGradient colors={[...gradients.primary]} style={[styles.plan, styles.planPrimary]}>
                 <View style={styles.planTop}>
-                  <Text style={styles.planName}>{PREMIUM_COPY.lifetimeTitle}</Text>
-                  <Badge label="BEST VALUE" color={colors.lime} variant="solid" />
+                  <Text style={styles.planName}>{t('paywall.lifetime')}</Text>
+                  <Badge label={t('paywall.bestValue')} color={colors.lime} variant="solid" />
                 </View>
                 <Text style={styles.planPrice}>{lifetime}</Text>
-                <Text style={styles.planSub}>One-time — yours forever, nothing to cancel.</Text>
+                <Text style={styles.planSub}>{t('paywall.lifetimeSub')}</Text>
                 <View style={styles.planCta}>
                   <Text style={styles.planCtaText}>
-                    {busy === 'lifetime' ? 'Processing…' : 'Unlock forever'}
+                    {busy === 'lifetime' ? t('paywall.processing') : t('paywall.unlockForever')}
                   </Text>
                 </View>
               </LinearGradient>
@@ -116,19 +115,19 @@ export function PremiumPaywall({ onClose }: { onClose: () => void }) {
               style={styles.planWrap}
             >
               <View style={[styles.plan, styles.planSecondary]}>
-                <Text style={styles.planName}>{PREMIUM_COPY.monthlyTitle}</Text>
+                <Text style={styles.planName}>{t('paywall.monthly')}</Text>
                 <Text style={[styles.planPrice, styles.planPriceAlt]}>{monthly}</Text>
-                <Text style={styles.planSub}>Auto-renews monthly — cancel anytime in Settings.</Text>
+                <Text style={styles.planSub}>{t('paywall.monthlySub')}</Text>
                 <View style={[styles.planCta, styles.planCtaAlt]}>
                   <Text style={[styles.planCtaText, styles.planCtaTextAlt]}>
-                    {busy === 'monthly' ? 'Processing…' : 'Subscribe'}
+                    {busy === 'monthly' ? t('paywall.processing') : t('paywall.subscribe')}
                   </Text>
                 </View>
               </View>
             </PressableScale>
 
             <Button
-              title={busy === 'restore' ? 'Restoring…' : 'Restore purchases'}
+              title={busy === 'restore' ? t('paywall.restoring') : t('paywall.restore')}
               variant="ghost"
               size="sm"
               disabled={busy !== null}
@@ -138,24 +137,21 @@ export function PremiumPaywall({ onClose }: { onClose: () => void }) {
         )}
 
         <Text style={styles.legal}>
-          {PREMIUM_COPY.freeSummary}
+          {t('paywall.freeSummary')}
           {'\n\n'}
-          Payment is charged to your Apple ID at purchase. The monthly plan automatically renews at
-          {` ${monthly}`} unless canceled at least 24 hours before the period ends; manage or cancel
-          anytime in your Apple account settings. The lifetime option is a one-time, non-subscription
-          purchase.{' '}
+          {t('paywall.legal', { price: monthly })}{' '}
           <Text style={styles.link} onPress={() => router.push('/legal/terms')}>
-            Terms
+            {t('paywall.terms')}
           </Text>{' '}
           ·{' '}
           <Text style={styles.link} onPress={() => router.push('/legal/privacy')}>
-            Privacy Policy
+            {t('paywall.privacy')}
           </Text>
         </Text>
       </ScrollView>
 
       {hasPremiumAccess ? (
-        <Button title="Done" fullWidth onPress={onClose} style={styles.doneBtn} />
+        <Button title={t('common.done')} fullWidth onPress={onClose} style={styles.doneBtn} />
       ) : null}
     </View>
   );

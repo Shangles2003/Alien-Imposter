@@ -1,12 +1,14 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { MissionLogEntry } from '@/components/game/MissionLogEntry';
-import { CHAMBER_LABELS, GameState } from '@/types/game';
+import { GameState } from '@/types/game';
 import { chamberAccents, colors, spacing, typography } from '@/theme';
 
 /** Main-screen reveal right after a task — shows only the latest round. */
 export function TaskAnswerReveal({ game }: { game: GameState }) {
+  const { t } = useTranslation();
   const entry = game.history[game.history.length - 1];
   if (!entry) return null;
 
@@ -15,10 +17,10 @@ export function TaskAnswerReveal({ game }: { game: GameState }) {
   return (
     <View style={styles.wrap}>
       <Animated.View entering={FadeInDown.duration(350)} style={styles.hero}>
-        <Text style={styles.heroKicker}>ANSWERS IN</Text>
-        <Text style={styles.heroTitle}>Compare the crew</Text>
+        <Text style={styles.heroKicker}>{t('probe.answersIn')}</Text>
+        <Text style={styles.heroTitle}>{t('probe.compareCrew')}</Text>
         <Text style={[styles.heroSub, { color: accent }]}>
-          Mission {entry.round} · {CHAMBER_LABELS[entry.chamber]}
+          {t('log.missionNum', { round: entry.round })} · {t(`chambers.${entry.chamber}.label`)}
         </Text>
       </Animated.View>
       <Animated.View entering={FadeInUp.delay(150).duration(400)} style={styles.scrollWrap}>

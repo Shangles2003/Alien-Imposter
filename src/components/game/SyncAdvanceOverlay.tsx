@@ -8,11 +8,13 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { colors, radius, spacing, typography } from '@/theme';
 
 export function SyncAdvanceOverlay({ visible }: { visible: boolean }) {
   const { accent, glow } = useGameAccent();
+  const { t } = useTranslation();
   const pulse = useSharedValue(0.25);
 
   useEffect(() => {
@@ -38,8 +40,8 @@ export function SyncAdvanceOverlay({ visible }: { visible: boolean }) {
       <View style={styles.card}>
         <Animated.View style={[styles.glow, { backgroundColor: glow }, glowStyle]} />
         <ActivityIndicator color={accent} size="small" />
-        <Text style={styles.title}>Syncing crew</Text>
-        <Text style={styles.sub}>Hold tight — advancing together</Text>
+        <Text style={styles.title}>{t('game.syncingCrew')}</Text>
+        <Text style={styles.sub}>{t('game.syncingSub')}</Text>
       </View>
     </Animated.View>
   );

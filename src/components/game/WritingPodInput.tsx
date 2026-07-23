@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui';
 import { ActiveTaskFrame } from '@/components/game/CrewExperience';
 import { useGameAccent } from '@/context/GameAccentContext';
@@ -23,6 +24,7 @@ interface WritingPodInputProps {
 }
 
 export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const [text, setText] = React.useState('');
   const inputRef = useRef<TextInput>(null);
@@ -51,11 +53,11 @@ export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps
         footer={
           <View style={styles.footerRow}>
             <Pressable style={styles.dismissBtn} onPress={dismissKeyboard}>
-              <Text style={styles.dismissText}>Hide keyboard</Text>
+              <Text style={styles.dismissText}>{t('game.hideKeyboard')}</Text>
             </Pressable>
             <View style={styles.submitWrap}>
               <Button
-                title="Submit answer"
+                title={t('game.submitAnswer')}
                 fullWidth
                 size="md"
                 disabled={!text.trim()}
@@ -66,12 +68,12 @@ export function WritingPodInput({ game, prompt, onSubmit }: WritingPodInputProps
         }
       >
         <Pressable style={styles.inputWrap} onPress={() => inputRef.current?.focus()}>
-          <Text style={[styles.inputLabel, { color: accentSoft }]}>Your answer</Text>
+          <Text style={[styles.inputLabel, { color: accentSoft }]}>{t('game.yourAnswer')}</Text>
           <TextInput
             ref={inputRef}
             value={text}
             onChangeText={setText}
-            placeholder="Tap here and type…"
+            placeholder={t('game.tapAndType')}
             placeholderTextColor={colors.textDim}
             style={styles.textInput}
             returnKeyType="done"

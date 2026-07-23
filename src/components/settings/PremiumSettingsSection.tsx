@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Alert, Linking, StyleSheet, Switch, Text, View } from 'react-native';
 import { Href, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import {
   SettingsGroup,
   SettingsRow,
   SettingsSectionTitle,
 } from '@/components/settings/SettingsList';
-import { PREMIUM_COPY } from '@/premium/products';
 import { usePremium } from '@/context/PremiumContext';
 import { colors, spacing, typography } from '@/theme';
 
 export function PremiumSettingsSection() {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     hasPremiumAccess,
     subscriptionActive,
@@ -29,9 +30,12 @@ export function PremiumSettingsSection() {
     setBusy(true);
     try {
       await fn();
-      Alert.alert('Success', `${label} completed.`);
+      Alert.alert(t('premium.success'), t('premium.completed', { label }));
     } catch (e) {
-      Alert.alert('Purchase unavailable', e instanceof Error ? e.message : 'Something went wrong.');
+      Alert.alert(
+        t('premium.purchaseUnavailable'),
+        e instanceof Error ? e.message : t('premium.somethingWrong')
+      );
     } finally {
       setBusy(false);
     }
@@ -42,30 +46,27 @@ export function PremiumSettingsSection() {
     if (url) {
       Linking.openURL(url).catch(() => {});
     } else {
-      Alert.alert(
-        'Manage subscription',
-        'Open the Settings app → your Apple ID → Subscriptions to change or cancel.'
-      );
+      Alert.alert(t('premium.manageSubscription'), t('premium.manageSubBody'));
     }
   };
 
   const statusDetail = hasPremiumAccess
     ? subscriptionActive
-      ? 'Expansion Pass — monthly subscription'
+      ? t('premium.detailMonthly')
       : grant
-        ? 'Granted (comp account)'
+        ? t('premium.detailGranted')
         : devUnlock
-          ? 'Dev unlock (testing only)'
-          : 'Expansion Pass unlocked'
-    : 'Unlock every prompt, pack, and setting';
+          ? t('premium.detailDev')
+          : t('premium.detailUnlocked')
+    : t('premium.detailFree');
 
   return (
     <>
-      <SettingsSectionTitle>{PREMIUM_COPY.title}</SettingsSectionTitle>
+      <SettingsSectionTitle>{t('premium.title')}</SettingsSectionTitle>
 
       <View style={[styles.statusBanner, hasPremiumAccess ? styles.statusPremium : styles.statusFree]}>
         <Text style={[styles.statusText, { color: hasPremiumAccess ? colors.success : colors.textMuted }]}>
-          {hasPremiumAccess ? '✓ PREMIUM' : 'FREE ACCOUNT'}
+          {hasPremiumAccess ? t('premium.premiumBadge') : t('premium.freeBadge')}
         </Text>
         <Text style={styles.statusSub}>{statusDetail}</Text>
       </View>
@@ -75,8 +76,8 @@ export function PremiumSettingsSection() {
         {!hasPremiumAccess && (
           <SettingsRow
             icon="✨"
-            label={`Unlock ${PREMIUM_COPY.title}`}
-            value="Upgrade"
+            label={t('premium.unlockRow')}
+            value={t('premium.upgrade')}
             showChevron
             onPress={() => router.push('/paywall' as Href)}
           />
@@ -85,7 +86,7 @@ export function PremiumSettingsSection() {
         {subscriptionActive && (
           <SettingsRow
             icon="⚙️"
-            label="Manage subscription"
+            label={t('premium.manageSubscription')}
             showChevron
             onPress={manageSubscription}
           />
@@ -93,18 +94,18 @@ export function PremiumSettingsSection() {
 
         <SettingsRow
           icon="↩️"
-          label="Restore purchases"
+          label={t('premium.restore')}
           showChevron
           isLast={!__DEV__}
-          onPress={() => run('Restore', restorePurchases)}
+          onPress={() => run(t('premium.restoreLabel'), restorePurchases)}
         />
 
         {__DEV__ && (
           <View style={styles.devRow}>
             <View style={styles.devCopy}>
-              <Text style={styles.devLabel}>Dev: simulate premium</Text>
+              <Text style={styles.devLabel}>{t('premium.devSimulate')}</Text>
               <Text style={styles.devHint}>
-                {mockMode ? 'Expo Go — toggles the Expansion for testing.' : 'Development build'}
+                {mockMode ? t('premium.devExpoGo') : t('premium.devBuild')}
               </Text>
             </View>
             <Switch
@@ -116,11 +117,7 @@ export function PremiumSettingsSection() {
           </View>
         )}
       </SettingsGroup>
-      <Text style={styles.footer}>
-        {PREMIUM_COPY.freeSummary} {PREMIUM_COPY.tagline} Only the host needs the Expansion — it
-        covers everyone in their game. Subscriptions renew monthly until canceled in your Apple
-        account settings; the one-time unlock is permanent.
-      </Text>
+      <Text style={styles.footer}>{t('premium.footer')}</Text>
     </>
   );
 }

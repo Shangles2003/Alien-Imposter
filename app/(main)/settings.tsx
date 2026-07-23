@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import * as Clipboard from 'expo-clipboard';
-import { useRouter } from 'expo-router';
-import { Button, Input, ScreenShell, Avatar } from '@/components/ui';
+import { useRouter, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { AVAILABLE_LANGUAGES, LANGUAGES, setLanguage } from '@/i18n';
+import { Button, Input, ScreenShell, Avatar, PressableScale } from '@/components/ui';
 import {
   SettingsGroup,
   SettingsHeader,
@@ -31,16 +33,6 @@ import { colors, radius, spacing, typography } from '@/theme';
 const APP_VERSION = Constants.expoConfig?.version ?? '1.0.0';
 const BUILD = Constants.expoConfig?.ios?.buildNumber ?? Constants.expoConfig?.android?.versionCode;
 const VERSION_LABEL = BUILD ? `${APP_VERSION} (${BUILD})` : APP_VERSION;
-
-const HOW_TO_PLAY = [
-  'Gather 4–10 friends in a party lobby using a shared code.',
-  'Complete the crew missions together — everyone plays every task.',
-  'Watch the mission log for answers that do not add up.',
-  'Infiltrators must blend in; crew must spot the lies.',
-  'After all missions, everyone secretly ballots for the suspects they think are infiltrators. The most-accused go on trial.',
-  'Majority vote ejects the accused — a tie or majority keep triggers a fresh ballot, as many times as it takes.',
-  'Eject all infiltrators and the crew wins. Eject an innocent and the infiltrators win.',
-].join('\n\n');
 
 function truncateId(id: string): string {
   if (id.length <= 16) return id;
@@ -63,7 +55,10 @@ async function copyToClipboard(text: string): Promise<boolean> {
 export default function SettingsScreen() {
   const { user, profile, refreshProfile } = useAuth();
   const { blocks, refreshBlocks } = useBlockList();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
+  const [langOpen, setLangOpen] = useState(false);
+  const currentLang = LANGUAGES.find((l) => l.code === i18n.language);
   const [name, setName] = useState(profile?.displayName ?? '');
   const [editOpen, setEditOpen] = useState(false);
   const [editName, setEditName] = useState('');
@@ -93,27 +88,30 @@ export default function SettingsScreen() {
       setName(censored);
       setEditOpen(false);
     } catch (e) {
-      Alert.alert('Error', e instanceof Error ? e.message : 'Could not save callsign');
+      Alert.alert(t('settings.error'), e instanceof Error ? e.message : t('settings.couldNotSaveCallsign'));
     } finally {
       setSaving(false);
     }
   };
 
   const showHowToPlay = () => {
-    Alert.alert('How to Play', HOW_TO_PLAY);
+    router.push('/how-to-play' as Href);
   };
 
   const copyPlayerId = async () => {
     if (!user?.id) return;
     const ok = await copyToClipboard(user.id);
-    Alert.alert(ok ? 'Copied' : 'Copy failed', ok ? 'Player ID copied to clipboard.' : 'Could not copy ID.');
+    Alert.alert(
+      ok ? t('settings.copied') : t('settings.copyFailed'),
+      ok ? t('settings.playerIdCopied') : t('settings.playerIdCopyFailed')
+    );
   };
 
   const handleLogout = () => {
-    Alert.alert('Sign out?', 'You will need to log in again to join a party.', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('settings.signOutTitle'), t('settings.signOutBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
       {
-        text: 'Sign Out',
+        text: t('settings.signOut'),
         style: 'destructive',
         onPress: async () => {
           await logOut();
@@ -124,45 +122,41 @@ export default function SettingsScreen() {
   };
 
   const handleDeleteAccount = () => {
-    Alert.alert(
-      'Delete account?',
-      'This permanently deletes your account, callsign, and game history. This cannot be undone.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete forever',
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert('Are you absolutely sure?', 'Your account will be gone for good.', [
-              { text: 'Keep my account', style: 'cancel' },
-              {
-                text: 'Yes, delete it',
-                style: 'destructive',
-                onPress: async () => {
-                  try {
-                    await deleteAccount();
-                    router.replace('/(auth)/login');
-                  } catch (e) {
-                    Alert.alert('Deletion failed', errorMessage(e));
-                  }
-                },
+    Alert.alert(t('settings.deleteTitle'), t('settings.deleteBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('settings.deleteForever'),
+        style: 'destructive',
+        onPress: () => {
+          Alert.alert(t('settings.deleteSureTitle'), t('settings.deleteSureBody'), [
+            { text: t('settings.keepAccount'), style: 'cancel' },
+            {
+              text: t('settings.deleteYes'),
+              style: 'destructive',
+              onPress: async () => {
+                try {
+                  await deleteAccount();
+                  router.replace('/(auth)/login');
+                } catch (e) {
+                  Alert.alert(t('settings.deletionFailed'), errorMessage(e));
+                }
               },
-            ]);
-          },
+            },
+          ]);
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleBlockByUsername = async () => {
     const normalized = normalizeUsername(blockUsername);
     const validationError = validateUsername(normalized);
     if (validationError) {
-      Alert.alert('Invalid username', validationError);
+      Alert.alert(t('auth.invalidUsername'), validationError);
       return;
     }
     if (normalized === profile?.username) {
-      Alert.alert('Cannot block', 'You cannot block yourself.');
+      Alert.alert(t('settings.cannotBlock'), t('settings.cannotBlockSelf'));
       return;
     }
     setBlocking(true);
@@ -171,9 +165,9 @@ export default function SettingsScreen() {
       await refreshBlocks();
       setBlockUsername('');
       setBlockOpen(false);
-      Alert.alert('Blocked', `@${normalized} has been blocked.`);
+      Alert.alert(t('settings.blockedTitle'), t('settings.blockedBody', { name: normalized }));
     } catch (e) {
-      Alert.alert('Block failed', errorMessage(e));
+      Alert.alert(t('settings.blockFailed'), errorMessage(e));
     } finally {
       setBlocking(false);
     }
@@ -184,9 +178,9 @@ export default function SettingsScreen() {
     try {
       await unblockUser(blockedId);
       await refreshBlocks();
-      Alert.alert('Unblocked', `${label} has been unblocked.`);
+      Alert.alert(t('settings.unblockedTitle'), t('settings.unblockedBody', { name: label }));
     } catch (e) {
-      Alert.alert('Unblock failed', errorMessage(e));
+      Alert.alert(t('settings.unblockFailed'), errorMessage(e));
     } finally {
       setUnblockingId(null);
     }
@@ -194,35 +188,43 @@ export default function SettingsScreen() {
 
   return (
     <ScreenShell scroll contentStyle={styles.shell}>
-      <SettingsHeader title="Settings" onBack={() => router.back()} />
+      <SettingsHeader title={t('settings.title')} onBack={() => router.back()} />
 
       <SettingsGroup delay={0}>
         <SettingsRow
           icon="👤"
-          label="Username"
+          label={t('settings.username')}
           value={profile?.username ?? '—'}
         />
         <SettingsRow
           icon="✏️"
-          label="Callsign"
-          value={name || 'Crew'}
+          label={t('settings.callsign')}
+          value={name || t('settings.crew')}
           showChevron
           onPress={openEditCallsign}
         />
-        <SettingsRow icon="❓" label="How to Play" showChevron isLast onPress={showHowToPlay} />
+        <SettingsRow icon="❓" label={t('settings.howToPlay')} showChevron onPress={showHowToPlay} />
+        <SettingsRow
+          icon="🌐"
+          label={t('settings.language')}
+          value={currentLang?.native ?? i18n.language}
+          showChevron
+          isLast
+          onPress={() => setLangOpen(true)}
+        />
       </SettingsGroup>
 
-      <SettingsSectionTitle>Safety</SettingsSectionTitle>
+      <SettingsSectionTitle>{t('settings.safety')}</SettingsSectionTitle>
       <SettingsGroup delay={40}>
         <SettingsRow
           icon="🚫"
-          label="Block by Username"
+          label={t('settings.blockByUsername')}
           showChevron
           onPress={() => setBlockOpen(true)}
         />
         <SettingsRow
           icon="📋"
-          label="Blocked Users"
+          label={t('settings.blockedUsers')}
           value={blocks.length > 0 ? String(blocks.length) : undefined}
           showChevron
           isLast
@@ -230,29 +232,29 @@ export default function SettingsScreen() {
         />
       </SettingsGroup>
 
-      <SettingsSectionTitle>Legal</SettingsSectionTitle>
+      <SettingsSectionTitle>{t('settings.legal')}</SettingsSectionTitle>
       <SettingsGroup delay={60}>
         <SettingsRow
           icon="📜"
-          label="Terms of Service"
+          label={t('settings.terms')}
           showChevron
           onPress={() => router.push('/legal/terms')}
         />
         <SettingsRow
           icon="🔒"
-          label="Privacy Policy"
+          label={t('settings.privacy')}
           showChevron
           isLast
           onPress={() => router.push('/legal/privacy')}
         />
       </SettingsGroup>
 
-      <SettingsSectionTitle>App Information</SettingsSectionTitle>
+      <SettingsSectionTitle>{t('settings.appInfo')}</SettingsSectionTitle>
       <SettingsGroup delay={90}>
-        <SettingsRow icon="ℹ️" label="App Version" value={VERSION_LABEL} />
+        <SettingsRow icon="ℹ️" label={t('settings.appVersion')} value={VERSION_LABEL} />
         <SettingsRow
           icon="👤"
-          label="Player ID"
+          label={t('settings.playerId')}
           value={user?.id ? truncateId(user.id) : '—'}
           showCopy
           isLast
@@ -261,31 +263,62 @@ export default function SettingsScreen() {
       </SettingsGroup>
 
       <SettingsGroup delay={120}>
-        <SettingsRow icon="🚪" label="Sign Out" destructive onPress={handleLogout} />
+        <SettingsRow icon="🚪" label={t('settings.signOut')} destructive onPress={handleLogout} />
         <SettingsRow
           icon="🗑️"
-          label="Delete Account"
+          label={t('settings.deleteAccount')}
           destructive
           isLast
           onPress={handleDeleteAccount}
         />
       </SettingsGroup>
 
+      <Modal visible={langOpen} transparent animationType="fade" onRequestClose={() => setLangOpen(false)}>
+        <Pressable style={styles.modalBackdrop} onPress={() => setLangOpen(false)}>
+          <Pressable style={[styles.modalCard, styles.blockedCard]} onPress={(e) => e.stopPropagation()}>
+            <Text style={styles.modalTitle}>{t('settings.chooseLanguage')}</Text>
+            <ScrollView style={styles.langList}>
+              {AVAILABLE_LANGUAGES.map((l) => {
+                const active = l.code === i18n.language;
+                return (
+                  <PressableScale
+                    key={l.code}
+                    scaleTo={0.98}
+                    onPress={async () => {
+                      await setLanguage(l.code);
+                      setLangOpen(false);
+                    }}
+                    style={[styles.langRow, active && styles.langRowActive]}
+                  >
+                    <View style={styles.langCopy}>
+                      <Text style={styles.langNative}>{l.native}</Text>
+                      <Text style={styles.langEnglish}>{l.english}</Text>
+                    </View>
+                    {active ? <Text style={styles.langCheck}>✓</Text> : null}
+                  </PressableScale>
+                );
+              })}
+            </ScrollView>
+            <Button title={t('common.done')} fullWidth onPress={() => setLangOpen(false)} />
+          </Pressable>
+        </Pressable>
+      </Modal>
+
       <Modal visible={editOpen} transparent animationType="fade" onRequestClose={() => setEditOpen(false)}>
         <Pressable style={styles.modalBackdrop} onPress={() => setEditOpen(false)}>
           <Pressable style={styles.modalCard} onPress={(e) => e.stopPropagation()}>
-            <Text style={styles.modalTitle}>Edit Callsign</Text>
+            <Text style={styles.modalTitle}>{t('settings.editCallsign')}</Text>
             <Input
-              label="Display name"
+              label={t('settings.displayName')}
               value={editName}
               onChangeText={setEditName}
-              placeholder="Your crew name"
+              placeholder={t('settings.crewNamePlaceholder')}
               autoCapitalize="words"
             />
             <View style={styles.modalActions}>
-              <Button title="Cancel" variant="ghost" onPress={() => setEditOpen(false)} style={styles.modalBtn} />
+              <Button title={t('common.cancel')} variant="ghost" onPress={() => setEditOpen(false)} style={styles.modalBtn} />
               <Button
-                title="Save"
+                title={t('common.save')}
                 loading={saving}
                 disabled={!editName.trim()}
                 onPress={saveCallsign}
@@ -299,19 +332,19 @@ export default function SettingsScreen() {
       <Modal visible={blockOpen} transparent animationType="fade" onRequestClose={() => setBlockOpen(false)}>
         <Pressable style={styles.modalBackdrop} onPress={() => setBlockOpen(false)}>
           <Pressable style={styles.modalCard} onPress={(e) => e.stopPropagation()}>
-            <Text style={styles.modalTitle}>Block by Username</Text>
+            <Text style={styles.modalTitle}>{t('settings.blockByUsername')}</Text>
             <Input
-              label="Username"
+              label={t('settings.username')}
               value={blockUsername}
               onChangeText={setBlockUsername}
-              placeholder="their_username"
+              placeholder={t('settings.usernamePlaceholder')}
               autoCapitalize="none"
               autoCorrect={false}
             />
             <View style={styles.modalActions}>
-              <Button title="Cancel" variant="ghost" onPress={() => setBlockOpen(false)} style={styles.modalBtn} />
+              <Button title={t('common.cancel')} variant="ghost" onPress={() => setBlockOpen(false)} style={styles.modalBtn} />
               <Button
-                title="Block"
+                title={t('common.block')}
                 loading={blocking}
                 disabled={!blockUsername.trim()}
                 onPress={handleBlockByUsername}
@@ -325,9 +358,9 @@ export default function SettingsScreen() {
       <Modal visible={blockedOpen} transparent animationType="fade" onRequestClose={() => setBlockedOpen(false)}>
         <Pressable style={styles.modalBackdrop} onPress={() => setBlockedOpen(false)}>
           <Pressable style={[styles.modalCard, styles.blockedCard]} onPress={(e) => e.stopPropagation()}>
-            <Text style={styles.modalTitle}>Blocked Users</Text>
+            <Text style={styles.modalTitle}>{t('settings.blockedUsers')}</Text>
             {blocks.length === 0 ? (
-              <Text style={styles.emptyBlocked}>No blocked users.</Text>
+              <Text style={styles.emptyBlocked}>{t('settings.noBlockedUsers')}</Text>
             ) : (
               <ScrollView style={styles.blockedList}>
                 {blocks.map((b) => {
@@ -342,7 +375,7 @@ export default function SettingsScreen() {
                         ) : null}
                       </View>
                       <Button
-                        title="Unblock"
+                        title={t('settings.unblock')}
                         variant="ghost"
                         loading={unblockingId === b.blockedId}
                         onPress={() => handleUnblock(b.blockedId, label)}
@@ -352,7 +385,7 @@ export default function SettingsScreen() {
                 })}
               </ScrollView>
             )}
-            <Button title="Done" fullWidth onPress={() => setBlockedOpen(false)} />
+            <Button title={t('common.done')} fullWidth onPress={() => setBlockedOpen(false)} />
           </Pressable>
         </Pressable>
       </Modal>
@@ -407,4 +440,20 @@ const styles = StyleSheet.create({
   blockedInfo: { flex: 1, minWidth: 0 },
   blockedName: { ...typography.body, color: colors.text, fontWeight: '600' },
   blockedSub: { ...typography.small, color: colors.textMuted },
+  langList: { maxHeight: 360 },
+  langRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  langRowActive: { backgroundColor: colors.glowCyan },
+  langCopy: { flex: 1, minWidth: 0 },
+  langNative: { ...typography.body, color: colors.text, fontWeight: '600' },
+  langEnglish: { ...typography.small, color: colors.textMuted },
+  langCheck: { ...typography.heading, color: colors.accent },
 });

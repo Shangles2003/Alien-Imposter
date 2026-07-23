@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@/components/ui';
 import { formatChamberAnswer } from '@/components/game/chamberFormat';
 import { DrawingPreview } from '@/components/game/DrawingPreview';
 import { useGameAccent } from '@/context/GameAccentContext';
-import { CHAMBER_LABELS, GameState, RoundHistoryEntry } from '@/types/game';
+import { GameState, RoundHistoryEntry } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
 
 export function MissionLogEntry({
@@ -16,14 +17,17 @@ export function MissionLogEntry({
   game: GameState;
   compact?: boolean;
 }) {
+  const { t } = useTranslation();
   const { accent, accentSoft } = useGameAccent();
   const isDrawing = entry.chamber === 'drawing_quarters';
 
   return (
     <View style={[styles.block, compact && styles.blockCompact]}>
       <View style={styles.blockHeader}>
-        <Text style={[styles.missionNum, { color: accent }]}>Mission {entry.round}</Text>
-        <Text style={styles.chamberName}>{CHAMBER_LABELS[entry.chamber]}</Text>
+        <Text style={[styles.missionNum, { color: accent }]}>
+          {t('log.missionNum', { round: entry.round })}
+        </Text>
+        <Text style={styles.chamberName}>{t(`chambers.${entry.chamber}.label`)}</Text>
       </View>
       <View style={[styles.grid, isDrawing && styles.gridDraw]}>
         {entry.responses.map((r) => (

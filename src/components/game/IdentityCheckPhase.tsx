@@ -12,12 +12,12 @@ import Animated, {
   ZoomIn,
 } from 'react-native-reanimated';
 import { AlienIcon, Avatar, Badge, Button, HelmetIcon, PressableScale } from '@/components/ui';
+import { useTranslation } from 'react-i18next';
 import { AlienGlyph } from '@/components/game/AlienGlyph';
 import { PhaseSyncGate } from '@/components/game/CrewExperience';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { getIdentityNominationProgress, getRepairProgress } from '@/game/engine';
 import {
-  CONDUIT_RULES,
   ConduitColor,
   GLYPH_COLUMNS,
   GLYPH_LEGEND,
@@ -60,6 +60,7 @@ export function IdentityNominatePhase({
   me: GamePlayer;
   onSubmit: (targetId: string) => void;
 }) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const [selected, setSelected] = useState<string | null>(null);
   const alive = game.players.filter((p) => p.isAlive);
@@ -79,9 +80,9 @@ export function IdentityNominatePhase({
         <Animated.View entering={FadeInDown.duration(300)} style={styles.lockedBadge}>
           <Text style={styles.lockedCheck}>✓</Text>
         </Animated.View>
-        <Text style={styles.waitTitle}>Ballot cast</Text>
+        <Text style={styles.waitTitle}>{t('identity.ballotCast')}</Text>
         <Text style={styles.waitCopy}>
-          {progress.done}/{progress.total} ballots in — plurality picks the scan target
+          {t('identity.ballotsInScan', { done: progress.done, total: progress.total })}
         </Text>
       </View>
     );
@@ -90,16 +91,14 @@ export function IdentityNominatePhase({
   return (
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)}>
-        <MissionStrip label={revote ? 'REVOTE — BREAK THE TIE' : 'SCANNER ONLINE'} />
+        <MissionStrip label={revote ? t('identity.revoteTie') : t('identity.scannerOnline')} />
         <View style={styles.hero}>
-          <Text style={styles.heroTitle}>Who gets scanned?</Text>
+          <Text style={styles.heroTitle}>{t('identity.whoScanned')}</Text>
           <Text style={styles.heroDesc}>
-            {revote
-              ? 'The vote split. Pick again — another tie aborts the scan.'
-              : 'Reactor stable, scanner armed. Vote in secret — most votes gets scanned.'}
+            {revote ? t('identity.revoteDesc') : t('identity.nominateDesc')}
           </Text>
           <Text style={[styles.heroHint, { color: accentSoft }]}>
-            BALLOTS IN {progress.done}/{progress.total}
+            {t('identity.ballotsIn', { done: progress.done, total: progress.total })}
           </Text>
         </View>
       </Animated.View>
@@ -122,10 +121,10 @@ export function IdentityNominatePhase({
                 <Avatar name={p.displayName} color={p.avatarColor} size={52} ring={picked} />
                 <Text style={styles.targetName} numberOfLines={2}>
                   {p.displayName}
-                  {isMe ? ' (you)' : ''}
+                  {isMe ? t('game.youLower') : ''}
                 </Text>
                 <Text style={[styles.targetMeta, picked && styles.targetMetaOn]}>
-                  {isMe ? "Can't vote yourself" : picked ? 'NOMINATED' : 'Tap to nominate'}
+                  {isMe ? t('identity.cantVoteYourself') : picked ? t('identity.nominated') : t('identity.tapToNominate')}
                 </Text>
               </Pressable>
             </Animated.View>
@@ -134,7 +133,7 @@ export function IdentityNominatePhase({
       </View>
 
       <Button
-        title={selected ? 'Cast secret ballot' : 'Pick a scan target'}
+        title={selected ? t('identity.castSecretBallot') : t('identity.pickScanTarget')}
         variant="primary"
         fullWidth
         size="md"
@@ -153,14 +152,6 @@ const CONDUIT_HEX: Record<ConduitColor, string> = {
   white: '#f4f4f8',
 };
 
-const CONDUIT_LABEL: Record<ConduitColor, string> = {
-  red: 'RED',
-  blue: 'BLUE',
-  yellow: 'YELLOW',
-  green: 'GREEN',
-  white: 'WHITE',
-};
-
 function useCountdown(endsAt: number) {
   const [ms, setMs] = useState(() => Math.max(0, endsAt - Date.now()));
   useEffect(() => {
@@ -173,6 +164,7 @@ function useCountdown(endsAt: number) {
 
 /** Meltdown clock — mono readout that flares red and pulses under 20s. */
 function MeltdownTimer({ ms }: { ms: number }) {
+  const { t } = useTranslation();
   const urgent = ms < 20_000;
   const pulse = useSharedValue(0);
   useEffect(() => {
@@ -190,7 +182,7 @@ function MeltdownTimer({ ms }: { ms: number }) {
   const label = `${Math.floor(totalSec / 60)}:${(totalSec % 60).toString().padStart(2, '0')}`;
   return (
     <Animated.View style={[rp.timerChip, urgent && rp.timerChipUrgent, animStyle]}>
-      <Text style={rp.timerLabel}>MELTDOWN</Text>
+      <Text style={rp.timerLabel}>{t('repair.meltdown')}</Text>
       <Text style={[rp.timerValue, urgent && { color: colors.danger }]}>{label}</Text>
     </Animated.View>
   );
@@ -198,9 +190,10 @@ function MeltdownTimer({ ms }: { ms: number }) {
 
 /** Hull integrity pips — one breaks per strike. */
 function StrikePips({ strikes, max }: { strikes: number; max: number }) {
+  const { t } = useTranslation();
   return (
     <View style={rp.hullChip}>
-      <Text style={rp.timerLabel}>HULL</Text>
+      <Text style={rp.timerLabel}>{t('repair.hull')}</Text>
       <View style={rp.pipRow}>
         {Array.from({ length: max }).map((_, i) => {
           const broken = i < strikes;
@@ -220,6 +213,7 @@ function StrikePips({ strikes, max }: { strikes: number; max: number }) {
 
 /** Shared status bar seen by both operator and engineer. */
 function RepairStatusBar({ repair, ms }: { repair: RepairRunState; ms: number }) {
+  const { t } = useTranslation();
   const moduleNum = Math.min(repair.modulesCompleted + 1, REPAIR_MODULE_COUNT);
   return (
     <View style={rp.statusBar}>
@@ -236,7 +230,7 @@ function RepairStatusBar({ repair, ms }: { repair: RepairRunState; ms: number })
           />
         ))}
         <Text style={rp.moduleDotLabel}>
-          SYS {moduleNum}/{REPAIR_MODULE_COUNT}
+          {t('repair.sys', { num: moduleNum, total: REPAIR_MODULE_COUNT })}
         </Text>
       </View>
       <MeltdownTimer ms={ms} />
@@ -253,6 +247,7 @@ function ConduitOperator({
   module: Extract<ReturnType<typeof getCurrentModule>, { type: 'conduit' }>;
   onCut: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   const [armed, setArmed] = useState<string | null>(null);
   useEffect(() => setArmed(null), [module.id]);
   const armedNum = module.conduits.findIndex((c) => c.id === armed) + 1;
@@ -260,7 +255,7 @@ function ConduitOperator({
   return (
     <View style={rp.panelBody}>
       <View style={rp.reactorIdChip}>
-        <Text style={rp.reactorIdLabel}>REACTOR ID</Text>
+        <Text style={rp.reactorIdLabel}>{t('repair.reactorId')}</Text>
         <Text style={rp.reactorIdValue}>{module.reactorId}</Text>
       </View>
       <ScrollView
@@ -280,14 +275,14 @@ function ConduitOperator({
             >
               <Text style={rp.conduitNum}>{i + 1}</Text>
               <View style={[rp.conduitBar, { backgroundColor: hex, shadowColor: hex }]} />
-              <Text style={[rp.conduitColor, { color: hex }]}>{CONDUIT_LABEL[c.color]}</Text>
-              <Text style={[rp.conduitState, on && { color: hex }]}>{on ? 'ARMED' : ''}</Text>
+              <Text style={[rp.conduitColor, { color: hex }]}>{t(`repair.color_${c.color}`)}</Text>
+              <Text style={[rp.conduitState, on && { color: hex }]}>{on ? t('repair.armed') : ''}</Text>
             </PressableScale>
           );
         })}
       </ScrollView>
       <Button
-        title={armed ? `✂  SEVER CONDUIT ${armedNum}` : 'Arm a conduit to sever'}
+        title={armed ? t('repair.severConduit', { n: armedNum }) : t('repair.armToSever')}
         variant="danger"
         fullWidth
         disabled={!armed}
@@ -304,6 +299,7 @@ function GlyphOperator({
   module: Extract<ReturnType<typeof getCurrentModule>, { type: 'glyph_lock' }>;
   onLock: (order: number[]) => void;
 }) {
+  const { t } = useTranslation();
   const [order, setOrder] = useState<number[]>([]);
   useEffect(() => setOrder([]), [module.id]);
 
@@ -336,7 +332,7 @@ function GlyphOperator({
       </View>
       <View style={rp.rowBtns}>
         <Button
-          title="Reset"
+          title={t('repair.reset')}
           variant="ghost"
           size="md"
           onPress={() => setOrder([])}
@@ -344,7 +340,7 @@ function GlyphOperator({
         />
         <View style={rp.lockBtnWrap}>
           <Button
-            title={order.length === 4 ? '🔒  LOCK SEQUENCE' : `Press all four (${order.length}/4)`}
+            title={order.length === 4 ? t('repair.lockSequence') : t('repair.pressAllFour', { n: order.length })}
             variant="success"
             fullWidth
             disabled={order.length !== 4}
@@ -363,6 +359,7 @@ function FrequencyOperator({
   module: Extract<ReturnType<typeof getCurrentModule>, { type: 'frequency' }>;
   onLock: (code: number[]) => void;
 }) {
+  const { t } = useTranslation();
   const [code, setCode] = useState<number[]>([]);
   useEffect(() => setCode([]), [module.id]);
 
@@ -374,12 +371,12 @@ function FrequencyOperator({
       <View style={rp.gaugeRow}>
         {module.gauges.map((g, i) => (
           <View key={i} style={rp.gaugeCard}>
-            <Text style={rp.gaugeLabel}>GAUGE {i + 1}</Text>
+            <Text style={rp.gaugeLabel}>{t('repair.gauge', { n: i + 1 })}</Text>
             <AlienGlyph id={g} size={48} color={colors.accentSoft} />
           </View>
         ))}
         <View style={[rp.gaugeCard, rp.offsetCard]}>
-          <Text style={rp.gaugeLabel}>OFFSET</Text>
+          <Text style={rp.gaugeLabel}>{t('repair.offset')}</Text>
           <Text style={rp.offsetValue}>+{module.offset}</Text>
         </View>
       </View>
@@ -405,7 +402,7 @@ function FrequencyOperator({
         <View style={[rp.key, rp.keyGhost]} />
       </View>
       <Button
-        title={code.length === 3 ? '🔒  LOCK CODE' : `Enter 3 digits (${code.length}/3)`}
+        title={code.length === 3 ? t('repair.lockCode') : t('repair.enter3Digits', { n: code.length })}
         variant="success"
         fullWidth
         disabled={code.length !== 3}
@@ -418,16 +415,24 @@ function FrequencyOperator({
 // ─── Engineer manual ─────────────────────────────────────────────────────────
 
 function EngineerManual({ module }: { module: NonNullable<ReturnType<typeof getCurrentModule>> }) {
+  const { t } = useTranslation();
+  const titleKey =
+    module.type === 'conduit'
+      ? 'repair.moduleConduit'
+      : module.type === 'glyph_lock'
+        ? 'repair.moduleGlyph'
+        : 'repair.moduleFrequency';
+  const conduitRules = t('repair.conduitRules', { returnObjects: true }) as string[];
   return (
     <ScrollView style={rp.manualScroll} contentContainerStyle={rp.manualContent}>
       <View style={rp.manualCard}>
-        <Text style={rp.manualBadge}>ENGINEERING SCHEMATIC · KEEP HIDDEN</Text>
-        <Text style={rp.manualTitle}>{module.title}</Text>
+        <Text style={rp.manualBadge}>{t('repair.schematic')}</Text>
+        <Text style={rp.manualTitle}>{t(titleKey)}</Text>
 
         {module.type === 'conduit' ? (
           <>
-            <Text style={rp.manualLead}>First rule that matches wins.</Text>
-            {CONDUIT_RULES.map((rule, i) => (
+            <Text style={rp.manualLead}>{t('repair.conduitLead')}</Text>
+            {conduitRules.map((rule, i) => (
               <View key={i} style={rp.ruleRow}>
                 <Text style={rp.ruleNum}>{i + 1}</Text>
                 <Text style={rp.ruleText}>{rule}</Text>
@@ -438,11 +443,11 @@ function EngineerManual({ module }: { module: NonNullable<ReturnType<typeof getC
 
         {module.type === 'glyph_lock' ? (
           <>
-            <Text style={rp.manualLead}>Find the one column with all four glyphs. Read it top-down.</Text>
+            <Text style={rp.manualLead}>{t('repair.glyphLead')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={rp.columnsRow}>
               {GLYPH_COLUMNS.map((col, ci) => (
                 <View key={ci} style={rp.glyphColumn}>
-                  <Text style={rp.columnLabel}>COL {ci + 1}</Text>
+                  <Text style={rp.columnLabel}>{t('repair.col', { n: ci + 1 })}</Text>
                   {col.map((g, gi) => (
                     <View key={gi} style={rp.columnGlyph}>
                       <AlienGlyph id={g} size={30} color={colors.text} />
@@ -456,7 +461,7 @@ function EngineerManual({ module }: { module: NonNullable<ReturnType<typeof getC
 
         {module.type === 'frequency' ? (
           <>
-            <Text style={rp.manualLead}>Each glyph&apos;s number + the offset (9 wraps to 0).</Text>
+            <Text style={rp.manualLead}>{t('repair.frequencyLead')}</Text>
             <View style={rp.legendGrid}>
               {Object.entries(GLYPH_LEGEND).map(([gid, digit]) => (
                 <View key={gid} style={rp.legendCell}>
@@ -483,6 +488,7 @@ function RepairSpectator({
   engineer?: GamePlayer;
   operator?: GamePlayer;
 }) {
+  const { t } = useTranslation();
   const spin = useSharedValue(0);
   const pulse = useSharedValue(0);
   useEffect(() => {
@@ -505,23 +511,25 @@ function RepairSpectator({
         <Animated.View style={[rp.coreRing, { borderColor: `${coreColor}55` }, ringStyle]} />
         <Animated.View style={[rp.core, { backgroundColor: `${coreColor}22`, borderColor: coreColor }, coreStyle]}>
           <Text style={[rp.coreText, { color: coreColor }]}>{repair.modulesCompleted}/{REPAIR_MODULE_COUNT}</Text>
-          <Text style={rp.coreSub}>SYSTEMS</Text>
+          <Text style={rp.coreSub}>{t('repair.systems')}</Text>
         </Animated.View>
       </View>
-      <Text style={rp.spectatorTitle}>Reactor bay sealed</Text>
+      <Text style={rp.spectatorTitle}>{t('repair.spectatorTitle')}</Text>
       <Text style={rp.spectatorCopy}>
-        {operator?.displayName ?? 'A crewmate'} is on the panel; {engineer?.displayName ?? 'a crewmate'}{' '}
-        is reading the schematic. Watch the hull hold.
+        {t('repair.spectatorCopy', {
+          operator: operator?.displayName ?? t('repair.aCrewmate'),
+          engineer: engineer?.displayName ?? t('repair.aCrewmateLower'),
+        })}
       </Text>
       <View style={rp.operatorRow}>
         <View style={rp.operatorCard}>
           <Avatar name={engineer?.displayName ?? 'E'} color={engineer?.avatarColor ?? colors.primary} size={44} />
-          <Text style={rp.operatorRole}>ENGINEER</Text>
+          <Text style={rp.operatorRole}>{t('repair.engineer')}</Text>
           <Text style={rp.operatorName} numberOfLines={1}>{engineer?.displayName ?? '—'}</Text>
         </View>
         <View style={rp.operatorCard}>
           <Avatar name={operator?.displayName ?? 'O'} color={operator?.avatarColor ?? colors.accent} size={44} />
-          <Text style={rp.operatorRole}>OPERATOR</Text>
+          <Text style={rp.operatorRole}>{t('repair.operator')}</Text>
           <Text style={rp.operatorName} numberOfLines={1}>{operator?.displayName ?? '—'}</Text>
         </View>
       </View>
@@ -537,13 +545,14 @@ function RepairRoleHeader({
   role: 'operator' | 'engineer';
   partner?: GamePlayer;
 }) {
+  const { t } = useTranslation();
   const isOp = role === 'operator';
   return (
     <View style={rp.roleHeader}>
       <View style={[rp.roleChip, isOp ? rp.roleChipOp : rp.roleChipEng]}>
         <Text style={rp.roleChipIcon}>{isOp ? '🔧' : '📋'}</Text>
         <Text style={[rp.roleChipText, { color: isOp ? colors.accent : colors.primaryLight }]}>
-          {isOp ? 'OPERATOR' : 'ENGINEER'}
+          {isOp ? t('repair.operator') : t('repair.engineer')}
         </Text>
       </View>
       <Text style={rp.roleLink}>⇄</Text>
@@ -656,6 +665,7 @@ export function RepairProtocolPhase({
 
 /** Dramatic 3-2-1 bioscan animation shown to every player. */
 function ScanningSequence({ nominee, seconds }: { nominee?: GamePlayer; seconds: number }) {
+  const { t } = useTranslation();
   const ring = useSharedValue(0);
   const sweep = useSharedValue(0);
   useEffect(() => {
@@ -670,7 +680,7 @@ function ScanningSequence({ nominee, seconds }: { nominee?: GamePlayer; seconds:
 
   return (
     <View style={styles.fillCenter}>
-      <Text style={rp.scanKicker}>◈ BIOSCAN IN PROGRESS ◈</Text>
+      <Text style={rp.scanKicker}>{t('identity.bioscanInProgress')}</Text>
       <View style={rp.scanAvatarWrap}>
         <Animated.View style={[rp.scanRing, ringStyle]} />
         <Avatar
@@ -680,8 +690,8 @@ function ScanningSequence({ nominee, seconds }: { nominee?: GamePlayer; seconds:
         />
         <Animated.View style={[rp.scanSweep, sweepStyle]} />
       </View>
-      <Text style={rp.scanName}>{nominee?.displayName ?? 'Target'}</Text>
-      <Text style={rp.scanSub}>ANALYZING BIOSIGNATURE…</Text>
+      <Text style={rp.scanName}>{nominee?.displayName ?? t('identity.target')}</Text>
+      <Text style={rp.scanSub}>{t('identity.analyzingBio')}</Text>
       <Animated.Text key={seconds} entering={ZoomIn.duration(300)} style={rp.scanCount}>
         {seconds}
       </Animated.Text>
@@ -701,6 +711,7 @@ export function CaptainScanReveal({
   onAcknowledge: () => void;
   syncPending: boolean;
 }) {
+  const { t } = useTranslation();
   const ic = game.identityCheck!;
   const nominee = game.players.find((p) => p.uid === ic.nomineeId);
   const captain = game.players.find((p) => p.uid === game.captainId);
@@ -727,16 +738,19 @@ export function CaptainScanReveal({
           <Animated.Text entering={FadeInDown.duration(400)} style={rp.classifiedLock}>
             🔒
           </Animated.Text>
-          <Text style={rp.classifiedHead}>RESULT CLASSIFIED</Text>
-          <Text style={rp.classifiedTarget}>{nominee?.displayName ?? 'Target'}</Text>
+          <Text style={rp.classifiedHead}>{t('identity.resultClassified')}</Text>
+          <Text style={rp.classifiedTarget}>{nominee?.displayName ?? t('identity.target')}</Text>
           <Text style={rp.classifiedBody}>
-            Only {captain?.displayName ?? 'the captain'} sees whether {nominee?.displayName ?? 'the target'}{' '}
-            is <Text style={{ color: colors.human }}>CREW</Text> or{' '}
-            <Text style={{ color: colors.alien }}>INFILTRATOR</Text>.
+            {t('identity.classifiedBody', {
+              captain: captain?.displayName ?? t('identity.theCaptain'),
+              nominee: nominee?.displayName ?? t('identity.theTarget'),
+            })}
           </Text>
-          <Text style={rp.classifiedWatch}>Watch their face.</Text>
+          <Text style={rp.classifiedWatch}>{t('identity.watchFace')}</Text>
         </View>
-        <Text style={rp.awaitCaptain}>Awaiting {captain?.displayName ?? 'the captain'}…</Text>
+        <Text style={rp.awaitCaptain}>
+          {t('identity.awaitingCaptain', { captain: captain?.displayName ?? t('identity.theCaptain') })}
+        </Text>
       </View>
     );
   }
@@ -753,19 +767,17 @@ export function CaptainScanReveal({
             ]}
           >
             {isInfiltrator ? <AlienIcon size={72} mood="sus" /> : <HelmetIcon size={72} />}
-            <Text style={styles.scanTargetName}>{nominee?.displayName ?? 'Unknown'}</Text>
+            <Text style={styles.scanTargetName}>{nominee?.displayName ?? t('identity.unknown')}</Text>
             <Badge
-              label={isInfiltrator ? 'INFILTRATOR' : 'CREW'}
+              label={isInfiltrator ? t('game.roleInfiltrator') : t('game.roleCrew')}
               color={isInfiltrator ? colors.alien : colors.human}
               variant="solid"
             />
             <Text style={styles.roleDesc}>
-              {isInfiltrator
-                ? 'Scan confirms an infiltrator. This intel is captain-only — not logged.'
-                : 'Scan confirms crew clearance. This intel is captain-only — not logged.'}
+              {isInfiltrator ? t('identity.scanConfirmInfiltrator') : t('identity.scanConfirmCrew')}
             </Text>
             <Pressable onPress={() => setRevealed(false)} hitSlop={8}>
-              <Text style={styles.hideLink}>Hide result</Text>
+              <Text style={styles.hideLink}>{t('identity.hideResult')}</Text>
             </Pressable>
           </View>
         </Animated.View>
@@ -775,20 +787,18 @@ export function CaptainScanReveal({
             <Animated.Text entering={FadeInDown.duration(600)} style={styles.classifiedIcon}>
               🔒
             </Animated.Text>
-            <Text style={styles.classifiedTitle}>SCAN RESULT — CAPTAIN ONLY</Text>
-            <Text style={styles.classifiedName}>{nominee?.displayName ?? 'Target'}</Text>
-            <Text style={styles.classifiedHint}>
-              Make sure nobody is looking,{'\n'}then tap to reveal the scan
-            </Text>
+            <Text style={styles.classifiedTitle}>{t('identity.scanResultCaptainOnly')}</Text>
+            <Text style={styles.classifiedName}>{nominee?.displayName ?? t('identity.target')}</Text>
+            <Text style={styles.classifiedHint}>{t('identity.scanRevealHint')}</Text>
             <View style={styles.tapChip}>
-              <Text style={styles.tapChipText}>TAP TO REVEAL</Text>
+              <Text style={styles.tapChipText}>{t('game.tapToReveal')}</Text>
             </View>
           </View>
         </PressableScale>
       )}
 
       <Button
-        title={revealed ? 'Acknowledge & continue' : 'Reveal scan first'}
+        title={revealed ? t('identity.acknowledgeContinue') : t('identity.revealScanFirst')}
         fullWidth
         disabled={!revealed || syncPending}
         onPress={() => revealed && onAcknowledge()}
@@ -809,33 +819,34 @@ export function IdentityDebrief({
   onReady: () => void;
   syncPending: boolean;
 }) {
+  const { t } = useTranslation();
   const ic = game.identityCheck!;
   const nominee = game.players.find((p) => p.uid === ic.nomineeId);
 
-  let headline = 'Scan complete';
-  let copy = 'Repairs held. The captain ran the scan — details stay classified.';
+  let headline = t('identity.scanComplete');
+  let copy = t('identity.debriefDefault');
 
   if (ic.abortedNoConsensus) {
-    headline = 'Scan aborted';
-    copy = 'No consensus on a scan target. The identity check is skipped.';
+    headline = t('identity.scanAborted');
+    copy = t('identity.debriefNoConsensus');
   } else if (ic.coopPassed === false) {
-    headline = 'Scan aborted';
-    copy = 'Repair failed — scan aborted. No role data was recovered.';
+    headline = t('identity.scanAborted');
+    copy = t('identity.debriefRepairFailed');
   } else if (ic.coopPassed && nominee) {
-    copy = `Scan on ${nominee.displayName} is complete. Only the captain knows the result.`;
+    copy = t('identity.debriefScanDone', { name: nominee.displayName });
   }
 
   return (
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)} style={styles.debriefHero}>
-        <MissionStrip label="IDENTITY DEBRIEF" />
+        <MissionStrip label={t('identity.identityDebrief')} />
         <Text style={styles.heroTitle}>{headline}</Text>
         <Text style={styles.heroDesc}>{copy}</Text>
       </Animated.View>
       <PhaseSyncGate
         game={game}
         me={me}
-        actionLabel="Continue mission"
+        actionLabel={t('identity.continueMission')}
         loading={syncPending}
         onReady={onReady}
       />

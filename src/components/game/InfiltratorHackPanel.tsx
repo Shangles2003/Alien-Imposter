@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { Avatar } from '@/components/ui';
 import { getAlienHackIntel } from '@/game/engine';
 import { useGameAccent } from '@/context/GameAccentContext';
@@ -27,6 +28,7 @@ export function InfiltratorHackPanel({
   onClose,
   onHack,
 }: InfiltratorHackPanelProps) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const intel = getAlienHackIntel(game);
   const canHack = game.hacksRemaining > 0;
@@ -39,34 +41,34 @@ export function InfiltratorHackPanel({
       <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
         <View style={styles.header}>
           <View style={styles.headerCopy}>
-            <Text style={styles.title}>Neural Hack</Text>
-            <Text style={styles.subtitle}>Shared pool · tap anytime</Text>
+            <Text style={styles.title}>{t('hack.title')}</Text>
+            <Text style={styles.subtitle}>{t('hack.subtitle')}</Text>
           </View>
           <View style={styles.countPill}>
             <Text style={styles.countValue}>{intel.remaining}</Text>
-            <Text style={styles.countLabel}>left</Text>
+            <Text style={styles.countLabel}>{t('hack.left')}</Text>
           </View>
           <Pressable onPress={onClose} style={styles.doneBtn} hitSlop={12}>
-            <Text style={[styles.doneText, { color: accentSoft }]}>Done</Text>
+            <Text style={[styles.doneText, { color: accentSoft }]}>{t('common.done')}</Text>
           </Pressable>
         </View>
 
         <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.help}>
-            Hack crew → they see infiltrator prompts. Hack yourself → you see crew prompts. Hacks
-            queued mid-task apply when the next task starts.
-          </Text>
+          <Text style={styles.help}>{t('hack.help')}</Text>
 
           {intel.activeNow.length > 0 ? (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Active this task</Text>
+              <Text style={styles.sectionTitle}>{t('hack.activeThisTask')}</Text>
               {intel.activeNow.map((row) => (
                 <View key={row.id} style={[styles.intelRow, styles.intelRowActive]}>
                   <Text style={styles.intelMain}>
-                    {row.targetName} · {row.effectLabel}
+                    {row.targetName} · {t(`hack.${row.effectKey}`)}
                   </Text>
                   <Text style={styles.intelMeta}>
-                    by {row.hackerName} · mission {String(row.applyAtRound).padStart(2, '0')}
+                    {t('hack.byMission', {
+                      hacker: row.hackerName,
+                      mission: String(row.applyAtRound).padStart(2, '0'),
+                    })}
                   </Text>
                 </View>
               ))}
@@ -75,15 +77,18 @@ export function InfiltratorHackPanel({
 
           {intel.queued.length > 0 ? (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Queued for next task</Text>
+              <Text style={styles.sectionTitle}>{t('hack.queuedForNext')}</Text>
               {intel.queued.map((row) => (
                 <View key={row.id} style={[styles.intelRow, styles.intelRowQueued]}>
                   <Text style={styles.intelMain}>
-                    {row.targetName} · {row.effectLabel}
+                    {row.targetName} · {t(`hack.${row.effectKey}`)}
                   </Text>
                   <Text style={styles.intelMeta}>
-                    by {row.hackerName} · mission {String(row.applyAtRound).padStart(2, '0')} ·{' '}
-                    {formatTime(row.scheduledAt)}
+                    {t('hack.byMissionTime', {
+                      hacker: row.hackerName,
+                      mission: String(row.applyAtRound).padStart(2, '0'),
+                      time: formatTime(row.scheduledAt),
+                    })}
                   </Text>
                 </View>
               ))}
@@ -92,15 +97,19 @@ export function InfiltratorHackPanel({
 
           {intel.history.length > 0 ? (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Hack log</Text>
+              <Text style={styles.sectionTitle}>{t('hack.hackLog')}</Text>
               {[...intel.history].reverse().map((row) => (
                 <View key={row.id} style={styles.intelRow}>
                   <Text style={styles.intelMain}>
                     {row.hackerName} → {row.targetName}
                   </Text>
                   <Text style={styles.intelMeta}>
-                    mission {String(row.applyAtRound).padStart(2, '0')}
-                    {row.appliedAt ? ` · ${formatTime(row.appliedAt)}` : ''}
+                    {row.appliedAt
+                      ? t('hack.missionTime', {
+                          mission: String(row.applyAtRound).padStart(2, '0'),
+                          time: formatTime(row.appliedAt),
+                        })
+                      : t('hack.missionOnly', { mission: String(row.applyAtRound).padStart(2, '0') })}
                   </Text>
                 </View>
               ))}
@@ -109,8 +118,8 @@ export function InfiltratorHackPanel({
 
           {canHack ? (
             <>
-              <Text style={styles.sectionTitle}>Hack crew</Text>
-              <Text style={styles.sectionHint}>They will see infiltrator prompts</Text>
+              <Text style={styles.sectionTitle}>{t('hack.hackCrew')}</Text>
+              <Text style={styles.sectionHint}>{t('hack.hackCrewHint')}</Text>
               <View style={styles.targetList}>
                 {humans.map((p) => {
                   const queued = queuedTargetIds.has(p.uid);
@@ -129,7 +138,7 @@ export function InfiltratorHackPanel({
                       <View style={styles.targetCopy}>
                         <Text style={styles.targetName}>{p.displayName}</Text>
                         <Text style={styles.targetMeta}>
-                          {queued ? 'Hack queued' : 'Give infiltrator prompts'}
+                          {queued ? t('hack.hackQueued') : t('hack.giveInfiltratorPrompts')}
                         </Text>
                       </View>
                     </Pressable>
@@ -139,8 +148,8 @@ export function InfiltratorHackPanel({
 
               {self ? (
                 <>
-                  <Text style={[styles.sectionTitle, styles.sectionTitleSpaced]}>Hack yourself</Text>
-                  <Text style={styles.sectionHint}>You will see crew prompts</Text>
+                  <Text style={[styles.sectionTitle, styles.sectionTitleSpaced]}>{t('hack.hackYourself')}</Text>
+                  <Text style={styles.sectionHint}>{t('hack.hackYourselfHint')}</Text>
                   <Pressable
                     disabled={queuedTargetIds.has(self.uid)}
                     style={({ pressed }) => [
@@ -152,9 +161,12 @@ export function InfiltratorHackPanel({
                   >
                     <Avatar name={self.displayName} color={self.avatarColor} size={40} />
                     <View style={styles.targetCopy}>
-                      <Text style={styles.targetName}>{self.displayName} (you)</Text>
+                      <Text style={styles.targetName}>
+                        {self.displayName}
+                        {t('game.youLower')}
+                      </Text>
                       <Text style={styles.targetMeta}>
-                        {queuedTargetIds.has(self.uid) ? 'Hack queued' : 'See correct crew prompts'}
+                        {queuedTargetIds.has(self.uid) ? t('hack.hackQueued') : t('hack.seeCorrectCrew')}
                       </Text>
                     </View>
                   </Pressable>
@@ -162,7 +174,7 @@ export function InfiltratorHackPanel({
               ) : null}
             </>
           ) : (
-            <Text style={styles.noHacks}>No hacks remaining this mission.</Text>
+            <Text style={styles.noHacks}>{t('hack.noHacksRemaining')}</Text>
           )}
         </ScrollView>
       </SafeAreaView>

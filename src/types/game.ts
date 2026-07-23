@@ -106,6 +106,12 @@ export interface ChamberPrompt {
   scenario?: string;
   options?: string[];
   mostLikelyPrompt?: string;
+  /**
+   * Stable content id for catalog prompts (see game/promptId.ts). Used to look
+   * up a per-player localized version at render; undefined for custom-deck
+   * prompts and glyph chambers, which render their stored English text as-is.
+   */
+  promptId?: string;
 }
 
 export interface ChamberResponse {
@@ -207,7 +213,10 @@ export interface GameState {
   extraction: ExtractionState | null;
   history: RoundHistoryEntry[];
   winner: 'humans' | 'aliens' | null;
+  /** English win-reason text (fallback / logging). */
   winReason: string | null;
+  /** i18n key for the win reason (resolved per-player in the game-over screen). */
+  winReasonKey: string | null;
   maxTestees: number;
   updatedAt: number;
   hostId: string;

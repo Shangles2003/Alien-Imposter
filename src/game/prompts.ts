@@ -1,5 +1,6 @@
 import { getPoolForChamber } from '@/content/registry';
 import { ContentPackId, MostLikelyTemplate, PromptTemplate } from '@/content/types';
+import { promptContentId } from '@/game/promptId';
 import { ChamberPrompt, ChamberType, CustomPrompt, GamePlayer } from '@/types/game';
 
 export const GLYPH_SYMBOLS = [
@@ -1262,19 +1263,26 @@ export function getPromptForChamber(
     return merged.length ? merged : (getPoolForChamber(chamber, ['core']) as T[]);
   };
 
+  // Catalog picks get a stable content id (for per-player localization); a pick
+  // that came from the host's custom deck stays literal (no id → renders the
+  // author's own words in every language).
+  const pairPrompt = <T extends PromptTemplate>(): ChamberPrompt => {
+    const picked = pickRandom(pool<T>());
+    const promptId = custom.includes(picked)
+      ? undefined
+      : promptContentId(chamber, [picked.humanPrompt, picked.alienPrompt, picked.scenario]);
+    return { id, chamber, ...picked, promptId };
+  };
+
   switch (chamber) {
     case 'opinion_hold':
-      return { id, chamber, ...pickRandom(pool<(typeof OPINION_PROMPTS)[number]>()) };
+      return pairPrompt<(typeof OPINION_PROMPTS)[number]>();
     case 'deliberation_deck':
-      return {
-        id,
-        chamber,
-        ...pickRandom(pool<(typeof DELIBERATION_SCENARIOS)[number]>()),
-      };
+      return pairPrompt<(typeof DELIBERATION_SCENARIOS)[number]>();
     case 'drawing_quarters':
-      return { id, chamber, ...pickRandom(pool<(typeof DRAWING_PROMPTS)[number]>()) };
+      return pairPrompt<(typeof DRAWING_PROMPTS)[number]>();
     case 'writing_pod':
-      return { id, chamber, ...pickRandom(pool<(typeof WRITING_PROMPTS)[number]>()) };
+      return pairPrompt<(typeof WRITING_PROMPTS)[number]>();
     case 'most_likely_to': {
       const customML = customMostLikelyFor(customPrompts);
       const packML = packs.length
@@ -1286,12 +1294,18 @@ export function getPromptForChamber(
       }
       const template = pickRandom(templatePool);
       const humanPrompt = fillNames(template.humanTemplate, ctx.players);
+      // Hash the name-agnostic template (not the name-filled result) so the id
+      // is stable across games; these templates carry no {a}/{b}/{c} slots.
+      const promptId = customML.includes(template)
+        ? undefined
+        : promptContentId(chamber, [template.humanTemplate, template.alienTemplate]);
       return {
         id,
         chamber,
         humanPrompt,
         alienPrompt: fillNames(template.alienTemplate, ctx.players),
         mostLikelyPrompt: humanPrompt,
+        promptId,
       };
     }
     case 'bioscanner':
@@ -1306,27 +1320,43 @@ export function getPromptForChamber(
   }
 }
 
+/** Which localizable slot a player sees, given their (possibly hacked) role. */
+export type PromptVariant = 'human' | 'alien' | 'scenario';
+
+export function promptVariantForPlayer(
+  prompt: ChamberPrompt,
+  role: 'human' | 'alien',
+  isHacked: boolean
+): PromptVariant {
+  const effectiveRole = isHacked ? (role === 'human' ? 'alien' : 'human') : role;
+  if (effectiveRole === 'alien') return 'alien';
+  if (prompt.chamber === 'deliberation_deck') return 'scenario';
+  return 'human';
+}
+
 export function getPromptForPlayer(
   prompt: ChamberPrompt,
   role: 'human' | 'alien',
   isHacked: boolean
 ): string {
-  const effectiveRole = isHacked ? (role === 'human' ? 'alien' : 'human') : role;
+  const variant = promptVariantForPlayer(prompt, role, isHacked);
 
-  if (prompt.chamber === 'deliberation_deck') {
-    if (effectiveRole === 'alien') {
+  if (variant === 'alien') {
+    if (prompt.chamber === 'deliberation_deck') {
       return prompt.alienPrompt ?? prompt.scenario ?? prompt.humanPrompt;
     }
+    return prompt.alienPrompt ?? prompt.humanPrompt;
+  }
+
+  if (variant === 'scenario') {
     return prompt.scenario ?? prompt.humanPrompt;
   }
 
+  // human variant
   if (prompt.chamber === 'most_likely_to') {
-    return effectiveRole === 'alien'
-      ? (prompt.alienPrompt ?? prompt.humanPrompt)
-      : (prompt.mostLikelyPrompt ?? prompt.humanPrompt);
+    return prompt.mostLikelyPrompt ?? prompt.humanPrompt;
   }
-
-  return effectiveRole === 'alien' ? prompt.alienPrompt : prompt.humanPrompt;
+  return prompt.humanPrompt;
 }
 
 export function generateGlyphSet(count = 10): number[] {

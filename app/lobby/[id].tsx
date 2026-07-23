@@ -12,6 +12,7 @@ import {
   ScreenTopBar,
   SectionLabel,
 } from '@/components/ui';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import { usePremium } from '@/context/PremiumContext';
 import { HostSettingsPanel } from '@/components/settings/HostSettingsPanel';
@@ -35,6 +36,7 @@ import { colors, radius, spacing, typography } from '@/theme';
 export default function LobbyScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const { hasPremiumAccess, ownedContentPacks } = usePremium();
   const router = useRouter();
   const [lobby, setLobby] = useState<Lobby | null>(null);
@@ -69,7 +71,7 @@ export default function LobbyScreen() {
   }, [id, router]);
 
   if (!id || id === 'join') return null;
-  if (!lobby) return <LoadingState message="Docking at lobby..." />;
+  if (!lobby) return <LoadingState message={t('lobby.docking')} />;
 
   const me = lobby.players.find((p) => p.uid === user?.id);
   const isHost = lobby.hostId === user?.id;
@@ -90,7 +92,7 @@ export default function LobbyScreen() {
       const gameId = await startGame(lobby.id, user.id, hasPremiumAccess);
       router.replace(`/game/${gameId}`);
     } catch (e) {
-      Alert.alert('Launch failed', errorMessage(e));
+      Alert.alert(t('lobby.launchFailed'), errorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -101,11 +103,11 @@ export default function LobbyScreen() {
     router.back();
   };
 
-  const missionLabel = `${lobby.hostSettings.missionCount} missions`;
+  const missionLabel = t('lobby.missions', { count: lobby.hostSettings.missionCount });
   const packLabel =
     lobby.hostSettings.contentPacks.length > 1
-      ? `${lobby.hostSettings.contentPacks.length} packs`
-      : 'Core Crew';
+      ? t('lobby.packs', { count: lobby.hostSettings.contentPacks.length })
+      : t('lobby.corePack');
 
   const handleHostSettingsChange = async (next: typeof lobby.hostSettings) => {
     if (!lobby || !user || !isHost) return;
@@ -118,7 +120,7 @@ export default function LobbyScreen() {
         hasPremiumAccess
       );
     } catch (e) {
-      Alert.alert('Settings error', errorMessage(e));
+      Alert.alert(t('lobby.settingsError'), errorMessage(e));
     }
   };
 
@@ -127,9 +129,9 @@ export default function LobbyScreen() {
       <ScreenTopBar onBack={handleLeave} />
 
       <Animated.View entering={FadeInDown.duration(400)} style={styles.hero}>
-        <Text style={styles.kicker}>PRE-FLIGHT</Text>
-        <Text style={styles.title}>Mission Lobby</Text>
-        <Text style={styles.subtitle}>Get the crew aboard, then launch</Text>
+        <Text style={styles.kicker}>{t('lobby.kicker')}</Text>
+        <Text style={styles.title}>{t('lobby.title')}</Text>
+        <Text style={styles.subtitle}>{t('lobby.subtitle')}</Text>
       </Animated.View>
 
       <Animated.View entering={FadeInUp.delay(80).duration(400)}>
@@ -142,23 +144,23 @@ export default function LobbyScreen() {
             {lobby.players.length}
             <Text style={styles.statTotal}>/{lobby.maxPlayers}</Text>
           </Text>
-          <Text style={styles.statLabel}>ABOARD</Text>
+          <Text style={styles.statLabel}>{t('lobby.aboard')}</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>
             {readyCount}
             <Text style={styles.statTotal}>/{lobby.players.length}</Text>
           </Text>
-          <Text style={styles.statLabel}>READY</Text>
+          <Text style={styles.statLabel}>{t('lobby.ready')}</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>{MIN_PLAYERS}+</Text>
-          <Text style={styles.statLabel}>TO LAUNCH</Text>
+          <Text style={styles.statLabel}>{t('lobby.toLaunch')}</Text>
         </View>
       </View>
 
       <Text style={styles.rulesBrief}>
-        {missionLabel} · {packLabel} · 4–5 crew = 1 infiltrator · 6–10 = 2
+        {t('lobby.rulesBrief', { missions: missionLabel, packs: packLabel })}
       </Text>
 
       {isHost && (
@@ -181,7 +183,7 @@ export default function LobbyScreen() {
         </GlowCard>
       )}
 
-      <SectionLabel>Crew Roster</SectionLabel>
+      <SectionLabel>{t('lobby.crewRoster')}</SectionLabel>
       {lobby.players.map((p, i) => (
         <Animated.View key={p.uid} entering={FadeInUp.delay(60 * i).duration(320)}>
           <CrewRow
@@ -208,7 +210,7 @@ export default function LobbyScreen() {
 
       <View style={styles.actions}>
         <Button
-          title={me?.isReady ? '✓ Ready — Tap to Unready' : '🎯 Ready Up!'}
+          title={me?.isReady ? t('lobby.unready') : t('lobby.readyUp')}
           variant={me?.isReady ? 'success' : 'primary'}
           fullWidth
           onPress={handleReady}
@@ -217,10 +219,10 @@ export default function LobbyScreen() {
           <Button
             title={
               canStart
-                ? '🚀 Launch Mission'
+                ? t('lobby.launchMission')
                 : lobby.players.length < MIN_PLAYERS
-                  ? `Waiting for crew (${lobby.players.length}/${MIN_PLAYERS})`
-                  : `Waiting on ready (${readyCount}/${lobby.players.length})`
+                  ? t('lobby.waitingForCrew', { count: lobby.players.length, min: MIN_PLAYERS })
+                  : t('lobby.waitingOnReady', { ready: readyCount, total: lobby.players.length })
             }
             fullWidth
             loading={loading}

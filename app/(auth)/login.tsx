@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { AppleSignInButton } from '@/components/auth/AppleSignInButton';
 import { LegalConsentNotice } from '@/components/legal/LegalConsentNotice';
 import { Button, FloatingAlien, GlowCard, Input, ScreenShell } from '@/components/ui';
@@ -12,13 +13,14 @@ import { colors, spacing, typography } from '@/theme';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!username.trim()) {
-      Alert.alert('Username required', 'Enter your username to sign in.');
+      Alert.alert(t('auth.usernameRequired'), t('auth.enterUsername'));
       return;
     }
     setLoading(true);
@@ -26,7 +28,7 @@ export default function LoginScreen() {
       await signIn(username.trim(), password);
       router.replace(HOME_ROUTE);
     } catch (e) {
-      Alert.alert('Login failed', errorMessage(e));
+      Alert.alert(t('auth.loginFailed'), errorMessage(e));
     } finally {
       setLoading(false);
     }
@@ -37,15 +39,15 @@ export default function LoginScreen() {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
         <Animated.View entering={FadeInDown.duration(500)} style={styles.top}>
           <FloatingAlien size={84} />
-          <Text style={styles.title}>ALIEN IMPOSTER</Text>
-          <Text style={styles.subtitle}>Board the ship. Trust no one.</Text>
+          <Text style={styles.title}>{t('app.title')}</Text>
+          <Text style={styles.subtitle}>{t('auth.loginSubtitle')}</Text>
         </Animated.View>
 
         <Animated.View entering={FadeInUp.delay(120).duration(500)} style={styles.formWrap}>
           <GlowCard accent="purple">
             <View style={styles.form}>
               <Input
-                label="Username"
+                label={t('auth.username')}
                 value={username}
                 onChangeText={setUsername}
                 placeholder="commander_nova"
@@ -53,13 +55,13 @@ export default function LoginScreen() {
                 autoCorrect={false}
               />
               <Input
-                label="Password"
+                label={t('auth.password')}
                 value={password}
                 onChangeText={setPassword}
                 placeholder="••••••••"
                 secureTextEntry
               />
-              <Button title="Launch In" icon="🚀" fullWidth loading={loading} onPress={handleLogin} />
+              <Button title={t('auth.launchIn')} icon="🚀" fullWidth loading={loading} onPress={handleLogin} />
             </View>
           </GlowCard>
 
@@ -68,7 +70,7 @@ export default function LoginScreen() {
           <LegalConsentNotice />
 
           <Link href="/(auth)/signup" asChild>
-            <Button title="New crew member? Create account" variant="ghost" fullWidth />
+            <Button title={t('auth.createAccountLink')} variant="ghost" fullWidth />
           </Link>
         </Animated.View>
       </KeyboardAvoidingView>

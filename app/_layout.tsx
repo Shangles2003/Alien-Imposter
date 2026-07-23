@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
+import '@/i18n';
+import '@/i18n/promptPacks';
 import { AuthProvider } from '@/context/AuthContext';
 import { BlockListProvider } from '@/context/BlockListContext';
 import { PremiumProvider } from '@/context/PremiumContext';
@@ -61,6 +63,10 @@ export default function RootLayout() {
           options={{ headerShown: false, presentation: 'modal' }}
         />
         <Stack.Screen name="deck" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="how-to-play"
+          options={{ headerShown: false, presentation: 'modal' }}
+        />
       </Stack>
       </PremiumProvider>
       </BlockListProvider>

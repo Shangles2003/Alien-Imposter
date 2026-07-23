@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { colors, fonts, spacing, typography } from '@/theme';
 
@@ -44,11 +45,12 @@ export function MissionHud({
   logCount?: number;
 }) {
   const { accent, accentSoft } = useGameAccent();
+  const { t } = useTranslation();
 
   return (
     <View style={[styles.wrap, { borderLeftColor: accent }]}>
       <View style={styles.left}>
-        <Text style={styles.missionLabel}>MISSION</Text>
+        <Text style={styles.missionLabel}>{t('game.hudMission')}</Text>
         <Text style={[styles.missionCount, { color: accentSoft }]}>
           {String(Math.min(round, totalTasks)).padStart(2, '0')}
           <Text style={styles.missionTotal}>/{String(totalTasks).padStart(2, '0')}</Text>
@@ -61,7 +63,7 @@ export function MissionHud({
             onPress={onOpenHack}
             style={({ pressed }) => [styles.hackBtnWrap, pressed && styles.btnPressed]}
           >
-            <Text style={styles.hackBtn}>HACK</Text>
+            <Text style={styles.hackBtn}>{t('game.hudHack')}</Text>
             <Text style={styles.hackCount}>{hacksRemaining ?? 0}</Text>
           </Pressable>
         ) : null}
@@ -71,7 +73,7 @@ export function MissionHud({
             style={({ pressed }) => [styles.logBtnWrap, pressed && styles.btnPressed]}
           >
             <Text style={[styles.logBtn, { color: accentSoft }]}>
-              LOG{logCount > 0 ? ` ${logCount}` : ''}
+              {t('game.hudLog')}{logCount > 0 ? ` ${logCount}` : ''}
             </Text>
           </Pressable>
         ) : null}
@@ -81,7 +83,7 @@ export function MissionHud({
             style={({ pressed }) => [styles.leaveBtnWrap, pressed && styles.btnPressed]}
             hitSlop={4}
           >
-            <Text style={styles.leaveBtn}>LEAVE</Text>
+            <Text style={styles.leaveBtn}>{t('game.hudLeave')}</Text>
           </Pressable>
         ) : null}
       </View>

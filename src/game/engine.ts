@@ -101,6 +101,7 @@ export function createInitialGameState(
     history: [],
     winner: null,
     winReason: null,
+    winReasonKey: null,
     maxTestees: rules.maxTestees,
     updatedAt: now,
     hostId,
@@ -683,14 +684,14 @@ export function resolveFinalExtraction(state: GameState): GameState {
     return endGame(
       { ...state, extraction: { ...extraction, resolved: true, humansEjected: true } },
       'aliens',
-      'The crew ejected an innocent crew member. Infiltrators win.'
+      'winCrewEjectedInnocent'
     );
   }
 
   return endGame(
     { ...state, extraction: { ...extraction, resolved: true, humansEjected: false } },
     'humans',
-    'Every infiltrator was ejected into space. Crew wins!'
+    'winAllInfiltratorsEjected'
   );
 }
 
@@ -712,16 +713,23 @@ export function bioscannerSelectScanTarget(state: GameState, targetId: string): 
   return finalizeChamberRound(next);
 }
 
+/** English fallback text for each win-reason key (also used for logging). */
+const WIN_REASONS: Record<string, string> = {
+  winCrewEjectedInnocent: 'The crew ejected an innocent crew member. Infiltrators win.',
+  winAllInfiltratorsEjected: 'Every infiltrator was ejected into space. Crew wins!',
+};
+
 function endGame(
   state: GameState,
   winner: 'humans' | 'aliens',
-  winReason: string
+  winReasonKey: string
 ): GameState {
   return {
     ...state,
     phase: 'game_over',
     winner,
-    winReason,
+    winReasonKey,
+    winReason: WIN_REASONS[winReasonKey] ?? winReasonKey,
     timerPaused: true,
     updatedAt: Date.now(),
   };
@@ -753,7 +761,8 @@ export interface AlienHackIntelRow {
   scheduledAt: number;
   applied: boolean;
   appliedAt?: number;
-  effectLabel: string;
+  /** i18n key under `hack.*` describing the hack's effect. */
+  effectKey: string;
 }
 
 export interface AlienHackIntel {
@@ -764,11 +773,11 @@ export interface AlienHackIntel {
   history: AlienHackIntelRow[];
 }
 
-function hackEffectLabel(state: GameState, targetId: string): string {
+function hackEffectKey(state: GameState, targetId: string): string {
   const target = state.players.find((p) => p.uid === targetId);
-  if (!target) return 'Prompts flipped';
-  if (target.role === 'human') return 'Will see infiltrator prompts';
-  return 'Will see crew prompts';
+  if (!target) return 'promptsFlipped';
+  if (target.role === 'human') return 'willSeeInfiltrator';
+  return 'willSeeCrew';
 }
 
 function mapHackRow(state: GameState, entry: import('@/types/game').HackEntry): AlienHackIntelRow {
@@ -782,11 +791,11 @@ function mapHackRow(state: GameState, entry: import('@/types/game').HackEntry): 
     scheduledAt: entry.scheduledAt,
     applied: entry.applied,
     appliedAt: entry.appliedAt,
-    effectLabel: entry.applied
+    effectKey: entry.applied
       ? target?.role === 'human'
-        ? 'Seeing infiltrator prompts'
-        : 'Seeing crew prompts'
-      : hackEffectLabel(state, entry.targetId),
+        ? 'seeingInfiltrator'
+        : 'seeingCrew'
+      : hackEffectKey(state, entry.targetId),
   };
 }
 

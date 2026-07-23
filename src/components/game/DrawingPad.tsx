@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useTranslation } from 'react-i18next';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { colors, radius, spacing, typography } from '@/theme';
 
@@ -10,6 +11,7 @@ interface DrawingPadProps {
 }
 
 export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const [paths, setPaths] = useState<string[]>([]);
   const currentPath = useRef('');
@@ -48,7 +50,7 @@ export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
     <View style={[styles.wrap, expand && styles.wrapExpand]}>
       <View style={styles.canvas} {...panResponder.panHandlers}>
         {paths.length === 0 ? (
-          <Text style={styles.placeholder}>Draw here with your finger</Text>
+          <Text style={styles.placeholder}>{t('game.drawHere')}</Text>
         ) : null}
         <Svg style={StyleSheet.absoluteFillObject}>
           {paths.map((d, i) => (
@@ -68,7 +70,7 @@ export function DrawingPad({ onChange, expand = false }: DrawingPadProps) {
           handlers don't swallow the tap before onPress fires. */}
       {paths.length > 0 ? (
         <Pressable onPress={() => syncPaths([])} style={styles.clearOverlay} hitSlop={10}>
-          <Text style={styles.clearText}>Clear</Text>
+          <Text style={styles.clearText}>{t('game.clear')}</Text>
         </Pressable>
       ) : null}
     </View>

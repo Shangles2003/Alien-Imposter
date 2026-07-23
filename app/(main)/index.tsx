@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   FloatingAlien,
@@ -21,6 +22,7 @@ import { colors, radius, spacing, typography } from '@/theme';
 
 export default function HomeScreen() {
   const { profile } = useAuth();
+  const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [joinCode, setJoinCode] = useState('');
@@ -83,35 +85,33 @@ export default function HomeScreen() {
 
       <Animated.View entering={FadeInDown.duration(500)} style={styles.hero}>
         <FloatingAlien size={92} mood="sus" />
-        <Text style={styles.kicker}>SOCIAL DEDUCTION · 4–10 PLAYERS</Text>
-        <Text style={styles.title}>ALIEN IMPOSTER</Text>
-        <Text style={styles.tagline}>
-          Gather friends · share a code · find the infiltrators
-        </Text>
+        <Text style={styles.kicker}>{t('app.kicker')}</Text>
+        <Text style={styles.title}>{t('app.title')}</Text>
+        <Text style={styles.tagline}>{t('app.tagline')}</Text>
       </Animated.View>
 
       <Animated.View entering={FadeInUp.delay(150).duration(500)} style={styles.actions}>
         <Button
-          title="Host a Party"
+          title={t('menu.hostParty')}
           icon="🛸"
           fullWidth
           size="lg"
           loading={loading === 'host'}
           onPress={hostParty}
         />
-        <Text style={styles.hostHint}>You'll get a code to text your crew</Text>
+        <Text style={styles.hostHint}>{t('menu.hostHint')}</Text>
 
         <GlowCard accent="cyan">
           <Input
-            label="Party Code"
+            label={t('menu.partyCode')}
             value={joinCode}
-            onChangeText={(t) => setJoinCode(t.toUpperCase())}
+            onChangeText={(v) => setJoinCode(v.toUpperCase())}
             placeholder="ABC123"
             autoCapitalize="characters"
           />
           <View style={styles.joinSpacer} />
           <Button
-            title="Join Party"
+            title={t('menu.joinParty')}
             icon="🚀"
             fullWidth
             loading={loading === 'join'}

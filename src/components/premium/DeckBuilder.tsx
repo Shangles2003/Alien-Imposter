@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   GlowCard,
@@ -28,74 +29,18 @@ import {
 import { ChamberType, CustomPrompt } from '@/types/game';
 import { colors, radius, spacing, typography } from '@/theme';
 
-interface TypeMeta {
-  chamber: ChamberType;
-  label: string;
-  icon: string;
-  crewLabel: string;
-  crewPlaceholder: string;
-  imposterLabel: string;
-  imposterPlaceholder: string;
-  hint: string;
-  deliberation?: boolean;
-}
-
-const TYPES: TypeMeta[] = [
-  {
-    chamber: 'most_likely_to',
-    label: 'Most Likely',
-    icon: '👆',
-    crewLabel: 'Crew question',
-    crewPlaceholder: 'Who is most likely to no-show your birthday?',
-    imposterLabel: 'Imposter question',
-    imposterPlaceholder: 'Who is most likely to forget what day it is?',
-    hint: 'Two similar “who is most likely…” questions. The imposter’s should be answerable the same way — the tell builds over rounds.',
-  },
-  {
-    chamber: 'writing_pod',
-    label: 'Fill Blank',
-    icon: '✍️',
-    crewLabel: 'Crew fill-in-the-blank',
-    crewPlaceholder: 'A true friend would never ___.',
-    imposterLabel: 'Imposter fill-in-the-blank',
-    imposterPlaceholder: 'A good roommate would never ___.',
-    hint: 'Same sentence shape, swapped context. Keep the ___ blank in both.',
-  },
-  {
-    chamber: 'opinion_hold',
-    label: 'Opinion',
-    icon: '⚖️',
-    crewLabel: 'Crew statement',
-    crewPlaceholder: 'Leaving a friend on read all day is totally fine.',
-    imposterLabel: 'Imposter statement',
-    imposterPlaceholder: 'You never owe anyone a fast reply.',
-    hint: 'Two agree/disagree statements on the same topic. Both should be defensible out loud.',
-  },
-  {
-    chamber: 'drawing_quarters',
-    label: 'Drawing',
-    icon: '🎨',
-    crewLabel: 'Crew draws',
-    crewPlaceholder: 'Draw the best gift you’ve ever gotten.',
-    imposterLabel: 'Imposter draws',
-    imposterPlaceholder: 'Draw something you’d love to get.',
-    hint: 'Two prompts whose drawings look similar, so a single round never exposes the imposter.',
-  },
-  {
-    chamber: 'deliberation_deck',
-    label: 'Scenario',
-    icon: '🎲',
-    crewLabel: 'Scenario (crew sees the detail)',
-    crewPlaceholder: 'A friend asks you to cover for them with a big lie.',
-    imposterLabel: 'Imposter version (detail removed)',
-    imposterPlaceholder: 'A friend asks you for a favor you’re unsure about.',
-    hint: 'Crew see the specific scenario; the imposter sees a vaguer version. Add 2–3 shared answer options.',
-    deliberation: true,
-  },
+/** Text (labels/placeholders/hints) resolves from the `deck.types.<chamber>` namespace. */
+const TYPES: { chamber: ChamberType; icon: string; deliberation?: boolean }[] = [
+  { chamber: 'most_likely_to', icon: '👆' },
+  { chamber: 'writing_pod', icon: '✍️' },
+  { chamber: 'opinion_hold', icon: '⚖️' },
+  { chamber: 'drawing_quarters', icon: '🎨' },
+  { chamber: 'deliberation_deck', icon: '🎲', deliberation: true },
 ];
 
 export function DeckBuilder() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { hasPremiumAccess } = usePremium();
 
@@ -147,7 +92,7 @@ export function DeckBuilder() {
       setPrompts((prev) => [created, ...prev]);
       resetForm();
     } catch (e) {
-      Alert.alert('Could not save', e instanceof Error ? e.message : 'Something went wrong.');
+      Alert.alert(t('deck.couldNotSave'), e instanceof Error ? e.message : t('deck.somethingWrong'));
     } finally {
       setSaving(false);
     }
@@ -167,11 +112,9 @@ export function DeckBuilder() {
         <ScreenTopBar onBack={() => router.back()} />
         <View style={styles.locked}>
           <Text style={styles.lockedIcon}>🔒</Text>
-          <Text style={styles.lockedTitle}>Custom decks are a premium feature</Text>
-          <Text style={styles.lockedBody}>
-            The Expansion Pass lets you write your own prompts and mix them into every game you host.
-          </Text>
-          <Button title="Unlock the Expansion" fullWidth onPress={() => router.push('/paywall' as Href)} />
+          <Text style={styles.lockedTitle}>{t('deck.premiumTitle')}</Text>
+          <Text style={styles.lockedBody}>{t('deck.premiumBody')}</Text>
+          <Button title={t('deck.unlockExpansion')} fullWidth onPress={() => router.push('/paywall' as Href)} />
         </View>
       </ScreenShell>
     );
@@ -181,8 +124,8 @@ export function DeckBuilder() {
     <ScreenShell scroll contentStyle={styles.shell}>
       <ScreenTopBar onBack={() => router.back()} />
       <ScreenHeader
-        title="Custom Deck"
-        subtitle="Your own questions, mixed into games you host. Toggle it on in the lobby’s Host Settings."
+        title={t('deck.title')}
+        subtitle={t('deck.subtitle')}
         icon="🗂️"
       />
 
@@ -191,21 +134,23 @@ export function DeckBuilder() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.typeRow}
       >
-        {TYPES.map((t) => {
-          const active = t.chamber === selected;
-          const count = prompts.filter((p) => p.chamber === t.chamber).length;
+        {TYPES.map((type) => {
+          const active = type.chamber === selected;
+          const count = prompts.filter((p) => p.chamber === type.chamber).length;
           return (
             <PressableScale
-              key={t.chamber}
+              key={type.chamber}
               scaleTo={0.95}
               onPress={() => {
-                setSelected(t.chamber);
+                setSelected(type.chamber);
                 resetForm();
               }}
               style={[styles.typeChip, active && styles.typeChipActive]}
             >
-              <Text style={styles.typeIcon}>{t.icon}</Text>
-              <Text style={[styles.typeLabel, active && styles.typeLabelActive]}>{t.label}</Text>
+              <Text style={styles.typeIcon}>{type.icon}</Text>
+              <Text style={[styles.typeLabel, active && styles.typeLabelActive]}>
+                {t(`deck.types.${type.chamber}.label`)}
+              </Text>
               {count > 0 ? (
                 <View style={styles.typeBadge}>
                   <Text style={styles.typeBadgeText}>{count}</Text>
@@ -219,22 +164,22 @@ export function DeckBuilder() {
       <GlowCard accent="cyan">
         <View style={styles.form}>
           <Input
-            label={meta.crewLabel}
+            label={t(`deck.types.${meta.chamber}.crewLabel`)}
             value={crew}
             onChangeText={setCrew}
-            placeholder={meta.crewPlaceholder}
+            placeholder={t(`deck.types.${meta.chamber}.crewPlaceholder`)}
             autoCapitalize="sentences"
           />
           <Input
-            label={meta.imposterLabel}
+            label={t(`deck.types.${meta.chamber}.imposterLabel`)}
             value={imposter}
             onChangeText={setImposter}
-            placeholder={meta.imposterPlaceholder}
+            placeholder={t(`deck.types.${meta.chamber}.imposterPlaceholder`)}
             autoCapitalize="sentences"
           />
           {meta.deliberation ? (
             <View style={styles.optionsWrap}>
-              <Text style={styles.optionsLabel}>Answer options (add 2–3)</Text>
+              <Text style={styles.optionsLabel}>{t('deck.answerOptions')}</Text>
               {options.map((opt, i) => (
                 <Input
                   key={i}
@@ -243,15 +188,15 @@ export function DeckBuilder() {
                   onChangeText={(v) =>
                     setOptions((prev) => prev.map((o, idx) => (idx === i ? v : o)))
                   }
-                  placeholder={`Option ${i + 1}`}
+                  placeholder={t('deck.option', { n: i + 1 })}
                   autoCapitalize="sentences"
                 />
               ))}
             </View>
           ) : null}
-          <Text style={styles.hint}>{meta.hint}</Text>
+          <Text style={styles.hint}>{t(`deck.types.${meta.chamber}.hint`)}</Text>
           <Button
-            title={saving ? 'Saving…' : 'Add to deck'}
+            title={saving ? t('deck.saving') : t('deck.addToDeck')}
             fullWidth
             disabled={!valid || saving}
             onPress={handleAdd}
@@ -261,15 +206,15 @@ export function DeckBuilder() {
 
       <View style={styles.listHeader}>
         <Text style={styles.listTitle}>
-          {meta.label} · {forType.length}
+          {t('deck.listTitle', { label: t(`deck.types.${meta.chamber}.label`), count: forType.length })}
         </Text>
-        <Text style={styles.listTotal}>{prompts.length} total</Text>
+        <Text style={styles.listTotal}>{t('deck.total', { count: prompts.length })}</Text>
       </View>
 
       {loading ? (
         <ActivityIndicator color={colors.accent} style={{ marginTop: spacing.lg }} />
       ) : forType.length === 0 ? (
-        <Text style={styles.empty}>No {meta.label.toLowerCase()} prompts yet — add your first above.</Text>
+        <Text style={styles.empty}>{t('deck.empty')}</Text>
       ) : (
         forType.map((p) => (
           <View key={p.id} style={styles.promptRow}>

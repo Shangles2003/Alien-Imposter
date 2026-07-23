@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui';
 import { REPORT_REASONS, ReportReason } from '@/constants/reportReasons';
 import { reportUser } from '@/services/moderation';
@@ -33,6 +34,7 @@ export function ReportUserModal({
   onClose,
   onSubmitted,
 }: ReportUserModalProps) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState<ReportReason | null>(null);
   const [details, setDetails] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -58,12 +60,12 @@ export function ReportUserModal({
         details: censoredDetails || undefined,
         context,
       });
-      Alert.alert('Report submitted', 'Thanks — we will review this within 24 hours.');
+      Alert.alert(t('moderation.reportSubmitted'), t('moderation.reportSubmittedBody'));
       reset();
       onSubmitted?.();
       onClose();
     } catch (e) {
-      Alert.alert('Report failed', errorMessage(e));
+      Alert.alert(t('moderation.reportFailed'), errorMessage(e));
     } finally {
       setSubmitting(false);
     }
@@ -73,8 +75,8 @@ export function ReportUserModal({
     <Modal visible={visible} transparent animationType="fade" onRequestClose={handleClose}>
       <Pressable style={styles.backdrop} onPress={handleClose}>
         <Pressable style={styles.card} onPress={(e) => e.stopPropagation()}>
-          <Text style={styles.title}>Report {displayName}</Text>
-          <Text style={styles.subtitle}>Select a reason (required)</Text>
+          <Text style={styles.title}>{t('moderation.reportTitle', { name: displayName })}</Text>
+          <Text style={styles.subtitle}>{t('moderation.reportSubtitle')}</Text>
 
           <ScrollView style={styles.reasonList} keyboardShouldPersistTaps="handled">
             {REPORT_REASONS.map((r) => (
@@ -84,27 +86,27 @@ export function ReportUserModal({
                 onPress={() => setReason(r.value)}
               >
                 <Text style={[styles.reasonText, reason === r.value && styles.reasonTextActive]}>
-                  {r.label}
+                  {t(`moderation.reasons.${r.value}`)}
                 </Text>
               </Pressable>
             ))}
           </ScrollView>
 
-          <Text style={styles.label}>Additional details (optional)</Text>
+          <Text style={styles.label}>{t('moderation.detailsLabel')}</Text>
           <TextInput
             style={styles.input}
             value={details}
             onChangeText={setDetails}
-            placeholder="What happened?"
+            placeholder={t('moderation.detailsPlaceholder')}
             placeholderTextColor={colors.textDim}
             multiline
             maxLength={500}
           />
 
           <View style={styles.actions}>
-            <Button title="Cancel" variant="ghost" onPress={handleClose} style={styles.btn} />
+            <Button title={t('common.cancel')} variant="ghost" onPress={handleClose} style={styles.btn} />
             <Button
-              title="Submit"
+              title={t('moderation.submit')}
               loading={submitting}
               disabled={!reason}
               onPress={handleSubmit}

@@ -6,6 +6,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Avatar, Button } from '@/components/ui';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { CHAMBER_BOARDING_DURATION_MS, getCrewSyncProgress } from '@/game/engine';
@@ -19,6 +20,7 @@ export function CrewSyncBar({
   game: GameState;
   mode?: 'sync' | 'task' | 'countdown';
 }) {
+  const { t } = useTranslation();
   const { accent } = useGameAccent();
   const alive = game.players.filter((p) => p.isAlive);
   const { ready, total } = getCrewSyncProgress(game);
@@ -33,14 +35,14 @@ export function CrewSyncBar({
 
   let done = mode === 'task' ? taskDone : ready;
   let progress = total > 0 ? done / total : 0;
-  let label = mode === 'task' ? 'Locked in' : 'Crew ready';
+  let label = mode === 'task' ? t('sync.lockedIn') : t('sync.crewReady');
 
   if (mode === 'countdown') {
     const endsAt = game.timerEndsAt ?? now;
     const remaining = Math.max(0, endsAt - now);
     progress = 1 - remaining / CHAMBER_BOARDING_DURATION_MS;
     const seconds = Math.ceil(remaining / 1000);
-    label = seconds > 0 ? `Entering chamber · ${seconds}s` : 'Entering chamber';
+    label = seconds > 0 ? t('sync.enteringChamber', { seconds }) : t('sync.enteringChamberNoTime');
   }
 
   const width = useSharedValue(progress);
@@ -56,7 +58,7 @@ export function CrewSyncBar({
   return (
     <View style={styles.wrap}>
       <Text style={styles.label}>
-        {mode === 'countdown' ? label : `${label} · ${done}/${total}`}
+        {mode === 'countdown' ? label : t('sync.progress', { label, done, total })}
       </Text>
       <View style={styles.track}>
         <Animated.View style={[styles.fill, { backgroundColor: accent }, barStyle]} />
@@ -117,6 +119,7 @@ export function PhaseSyncGate({
   onReady: () => void | Promise<void>;
   loading?: boolean;
 }) {
+  const { t } = useTranslation();
   const synced = Boolean(game.phaseReady[me.uid]);
   const { ready, total } = getCrewSyncProgress(game);
   const allReady = ready >= total;
@@ -126,7 +129,7 @@ export function PhaseSyncGate({
       <CrewSyncBar game={game} mode="sync" />
       {synced ? (
         <Text style={styles.waitingCopy}>
-          {allReady ? 'Crew synced — advancing' : `Waiting on crew (${ready}/${total})`}
+          {allReady ? t('sync.crewSynced') : t('sync.waitingOnCrew', { ready, total })}
         </Text>
       ) : (
         <Button

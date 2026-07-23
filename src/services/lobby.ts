@@ -419,6 +419,7 @@ export function rowToGameState(row: {
     contentPacks: state.contentPacks ?? ['core'],
     fullLibrary: state.fullLibrary ?? true,
     customPrompts: state.customPrompts ?? [],
+    winReasonKey: state.winReasonKey ?? null,
     usedChambers: state.usedChambers ?? [],
     timerEndsAt: state.timerEndsAt ?? null,
     isDevMode: state.isDevMode ?? state.players?.some((p) => p.uid.startsWith('dev-bot-')),

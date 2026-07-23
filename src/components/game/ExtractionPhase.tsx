@@ -9,6 +9,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
+import { useTranslation } from 'react-i18next';
 import { Avatar, Button } from '@/components/ui';
 import { useGameAccent } from '@/context/GameAccentContext';
 import { getExtractionBallotProgress } from '@/game/engine';
@@ -51,6 +52,7 @@ export function ExtractionNominatePhase({
   me: GamePlayer;
   onSubmitBallot: (ids: string[]) => void;
 }) {
+  const { t } = useTranslation();
   const { accentSoft } = useGameAccent();
   const [selected, setSelected] = useState<string[]>([]);
   const alive = game.players.filter((p) => p.isAlive);
@@ -80,9 +82,9 @@ export function ExtractionNominatePhase({
         <Animated.View entering={FadeInDown.duration(300)} style={styles.lockedBadge}>
           <Text style={styles.lockedCheck}>✓</Text>
         </Animated.View>
-        <Text style={styles.waitTitle}>Ballot cast</Text>
+        <Text style={styles.waitTitle}>{t('extraction.ballotCast')}</Text>
         <Text style={styles.waitCopy}>
-          {progress.done}/{progress.total} ballots in — the most-accused go on trial
+          {t('extraction.ballotsInTrial', { done: progress.done, total: progress.total })}
         </Text>
       </View>
     );
@@ -92,19 +94,22 @@ export function ExtractionNominatePhase({
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)}>
         <AlertStrip
-          label={round > 1 ? `BALLOT ROUND ${round} — VOTE AGAIN` : 'FINAL EXTRACTION'}
+          label={round > 1 ? t('extraction.ballotRound', { round }) : t('extraction.finalExtraction')}
         />
         <View style={styles.hero}>
-          <Text style={styles.heroTitle}>Who are the infiltrators?</Text>
+          <Text style={styles.heroTitle}>{t('extraction.whoInfiltrators')}</Text>
           <Text style={styles.heroDesc}>
             {round > 1
-              ? 'The crew voted to keep the last group. Everyone votes again — pick '
-              : 'Everyone votes in secret — pick '}
-            {needed === 1 ? 'the 1 player' : `the ${needed} players`} you suspect. The most-accused
-            go on trial.
+              ? t('extraction.voteDescRevote', { count: needed })
+              : t('extraction.voteDescFirst', { count: needed })}
           </Text>
           <Text style={[styles.heroHint, { color: accentSoft }]}>
-            SELECTED {selected.length} OF {needed} · BALLOTS IN {progress.done}/{progress.total}
+            {t('extraction.selectedOf', {
+              selected: selected.length,
+              needed,
+              done: progress.done,
+              total: progress.total,
+            })}
           </Text>
         </View>
       </Animated.View>
@@ -127,10 +132,10 @@ export function ExtractionNominatePhase({
                 <Avatar name={p.displayName} color={p.avatarColor} size={52} ring={picked} />
                 <Text style={styles.targetName} numberOfLines={2}>
                   {p.displayName}
-                  {isMe ? ' (you)' : ''}
+                  {isMe ? t('game.youLower') : ''}
                 </Text>
                 <Text style={[styles.targetMeta, picked && styles.targetMetaOn]}>
-                  {isMe ? "Can't vote yourself" : picked ? 'ACCUSED' : 'Tap to accuse'}
+                  {isMe ? t('extraction.cantVoteYourself') : picked ? t('extraction.accused') : t('extraction.tapToAccuse')}
                 </Text>
               </Pressable>
             </Animated.View>
@@ -141,8 +146,8 @@ export function ExtractionNominatePhase({
       <Button
         title={
           selected.length === needed
-            ? 'Cast secret ballot'
-            : `Pick ${needed - selected.length} more suspect${needed - selected.length > 1 ? 's' : ''}`
+            ? t('extraction.castBallot')
+            : t('extraction.pickMore', { count: needed - selected.length })
         }
         variant="danger"
         fullWidth
@@ -167,6 +172,7 @@ export function ExtractionVotePhase({
   me: GamePlayer;
   onVote: (vote: 'eject' | 'keep') => void;
 }) {
+  const { t } = useTranslation();
   const nominated = game.extraction?.nominatedIds ?? [];
   const tally = game.extraction?.voteTally ?? {};
   const myVote = me.extractionVote;
@@ -181,16 +187,10 @@ export function ExtractionVotePhase({
   return (
     <View style={styles.fill}>
       <Animated.View entering={FadeInDown.duration(400)}>
-        <AlertStrip label="THE CREW HAS SPOKEN" />
+        <AlertStrip label={t('extraction.crewHasSpoken')} />
         <View style={styles.hero}>
-          <Text style={styles.heroTitle}>
-            {nominees.length === 1 ? 'Eject this suspect?' : 'Eject these suspects?'}
-          </Text>
-          <Text style={styles.heroDesc}>
-            The ballots singled {nominees.length === 1 ? 'out this player' : 'out these players'}.
-            Majority rules: more ejects than keeps and they go out the airlock. A tie keeps them
-            aboard and triggers a re-vote.
-          </Text>
+          <Text style={styles.heroTitle}>{t('extraction.ejectSuspect', { count: nominees.length })}</Text>
+          <Text style={styles.heroDesc}>{t('extraction.trialDesc', { count: nominees.length })}</Text>
         </View>
       </Animated.View>
 
@@ -205,26 +205,26 @@ export function ExtractionVotePhase({
             <View style={styles.nomineeCopy}>
               <Text style={styles.nomineeName}>
                 {p.displayName}
-                {p.uid === me.uid ? ' (you)' : ''}
+                {p.uid === me.uid ? t('game.youLower') : ''}
               </Text>
               <Text style={styles.nomineeMeta}>
-                ACCUSED BY {tally[p.uid] ?? 0} OF {ballotsTotal || alive.length}
+                {t('extraction.accusedBy', { count: tally[p.uid] ?? 0, total: ballotsTotal || alive.length })}
               </Text>
             </View>
           </Animated.View>
         ))}
         <Text style={styles.voteCount}>
-          {votesIn}/{alive.length} votes in · majority decides
+          {t('extraction.votesIn', { votesIn, total: alive.length })}
         </Text>
       </View>
 
       {myVote ? (
         <View style={styles.votedBox}>
-          <Text style={styles.votedLabel}>Your vote is locked</Text>
+          <Text style={styles.votedLabel}>{t('extraction.yourVoteLocked')}</Text>
           <Text style={[styles.votedValue, myVote === 'keep' && styles.votedKeep]}>
-            {myVote === 'eject' ? 'EJECT' : 'KEEP ABOARD'}
+            {myVote === 'eject' ? t('extraction.voteEject') : t('extraction.voteKeepAboard')}
           </Text>
-          <Text style={styles.votedWait}>Waiting for the rest of the crew...</Text>
+          <Text style={styles.votedWait}>{t('extraction.waitingRest')}</Text>
         </View>
       ) : (
         <View style={styles.voteActions}>
@@ -232,15 +232,15 @@ export function ExtractionVotePhase({
             style={({ pressed }) => [styles.ejectBtn, shadows.glowRed, pressed && styles.btnPressed]}
             onPress={() => onVote('eject')}
           >
-            <Text style={styles.ejectBtnText}>EJECT</Text>
-            <Text style={styles.ejectBtnSub}>Out the airlock</Text>
+            <Text style={styles.ejectBtnText}>{t('extraction.ejectBtn')}</Text>
+            <Text style={styles.ejectBtnSub}>{t('extraction.outAirlock')}</Text>
           </Pressable>
           <Pressable
             style={({ pressed }) => [styles.keepBtn, pressed && styles.btnPressed]}
             onPress={() => onVote('keep')}
           >
-            <Text style={styles.keepBtnText}>KEEP</Text>
-            <Text style={styles.keepBtnSub}>Re-vote suspects</Text>
+            <Text style={styles.keepBtnText}>{t('extraction.keepBtn')}</Text>
+            <Text style={styles.keepBtnSub}>{t('extraction.revoteSuspects')}</Text>
           </Pressable>
         </View>
       )}

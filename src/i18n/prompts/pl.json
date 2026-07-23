@@ -1,0 +1,1888 @@
+{
+  "op_1dtctts": {
+    "human": "Ananas pasuje do pizzy.",
+    "alien": "Słodko-słone to najlepsze połączenie smaków."
+  },
+  "op_1htt10j": {
+    "human": "Hot dog to kanapka.",
+    "alien": "Kategorie jedzenia są wymyślone i tak naprawdę nie mają znaczenia."
+  },
+  "op_yqa2g8": {
+    "human": "Odchylanie oparcia w samolocie jest całkowicie w porządku.",
+    "alien": "Jak za coś zapłaciłeś, korzystaj z każdej funkcji."
+  },
+  "op_16lwzuq": {
+    "human": "Natychmiastowe odpisywanie sprawia, że wyglądasz na zdesperowanego.",
+    "alien": "Zachowanie chłodu na początku związku jest sprytne."
+  },
+  "op_1aa6q6b": {
+    "human": "Oba podłokietniki środkowego fotela należą do pasażera w środku.",
+    "alien": "Latanie wydobywa z każdego to, co najgorsze."
+  },
+  "op_1f6j8gp": {
+    "human": "Koty są lepszymi współlokatorami niż psy.",
+    "alien": "Bezobsługowe zwierzaki to najlepsze zwierzaki."
+  },
+  "op_14sb1ka": {
+    "human": "Śniadaniowe jedzenie jest odpowiednie o każdej porze dnia.",
+    "alien": "Zasady dotyczące pór posiłków są bez sensu."
+  },
+  "op_iay8k6": {
+    "human": "Zawsze powinieneś powiedzieć nieznajomemu, że ma jedzenie między zębami.",
+    "alien": "Odrobina niezręczności to uczciwa cena za szczerość."
+  },
+  "op_rf6oqm": {
+    "human": "Kina są za drogie i przereklamowane.",
+    "alien": "Wieczór w domu bije wieczór na mieście."
+  },
+  "op_1p76c5y": {
+    "human": "W każdym projekcie grupowym jest dokładnie jedna osoba robiąca całą robotę.",
+    "alien": "Większość ludzi się obija, gdy tylko nikt nie patrzy."
+  },
+  "op_1ygzxlh": {
+    "human": "Noszenie tego samego stroju dwa dni z rzędu jest w porządku.",
+    "alien": "Ludzie zauważają w tobie o wiele mniej, niż myślisz."
+  },
+  "op_162eode": {
+    "human": "Papier toaletowy musi zwisać od góry, nie od dołu.",
+    "alien": "Prawie każda praca domowa ma właściwy sposób wykonania."
+  },
+  "op_fiaayk": {
+    "human": "Zima to najlepsza pora roku.",
+    "alien": "Zostać w domu jest lepiej niż wyjść."
+  },
+  "op_zmra1u": {
+    "human": "Zniknięcie bez słowa bywa czasem najżyczliwszą opcją.",
+    "alien": "Unikanie trudnej rozmowy zwykle kończy się dobrze."
+  },
+  "op_1jwd2ba": {
+    "human": "Recenzja na pięć gwiazdek powinna być rzadka i zasłużona.",
+    "alien": "Ludzie dziś rozdają pochwały o wiele za łatwo."
+  },
+  "op_1f0wahu": {
+    "human": "Płatki to technicznie zupa.",
+    "alien": "Technicznie poprawne argumenty to najlepsze argumenty."
+  },
+  "op_wjhkrh": {
+    "human": "Całą restaurację można ocenić po frytkach.",
+    "alien": "Drobne szczegóły zdradzają ogólną jakość."
+  },
+  "op_1gy4wni": {
+    "human": "Rozmawianie przez głośnik w miejscu publicznym powinno być przestępstwem.",
+    "alien": "Podstawowa kultura w miejscach publicznych zanika."
+  },
+  "op_1i9l206": {
+    "human": "Książka jest zawsze lepsza od filmu.",
+    "alien": "Oryginał za każdym razem bije remake."
+  },
+  "op_7vis2b": {
+    "human": "Miętowa czekolada smakuje jak pasta do zębów.",
+    "alien": "Niektóre szalenie popularne smaki są potajemnie okropne."
+  },
+  "op_1fm1qvc": {
+    "human": "Każdy powinien choć raz popracować w obsłudze klienta.",
+    "alien": "Trudne doświadczenia budują charakter."
+  },
+  "op_1lmpar2": {
+    "human": "Wyjście z imprezy bez pożegnania to umiejętność, nie zbrodnia.",
+    "alien": "Długie pożegnania są gorsze niż brak pożegnania."
+  },
+  "op_3t7az8": {
+    "human": "Skarpetki w sandałach to prawomocny wygląd.",
+    "alien": "Wygoda za każdym razem bije modę."
+  },
+  "op_1t8q3up": {
+    "human": "Twój znak zodiaku nie mówi o tobie absolutnie nic.",
+    "alien": "Ludzie wierzą w o wiele za dużo miłych małych mitów."
+  },
+  "op_tl7dex": {
+    "human": "Biwakowanie to wybór bycia bezdomnym na weekend.",
+    "alien": "Naturą najlepiej cieszyć się z wnętrza."
+  },
+  "op_1qrrrfr": {
+    "human": "W większości restauracji menu dziecięce ma potajemnie najlepsze jedzenie.",
+    "alien": "Proste jedzenie bije wykwintne."
+  },
+  "op_lhus3f": {
+    "human": "Podwójne maczanie jest w porządku wśród bliskich przyjaciół.",
+    "alien": "Zarazki od ludzi, których kochasz, się nie liczą."
+  },
+  "op_1hesa3e": {
+    "human": "Zimna pizza na śniadanie to najwyższa liga.",
+    "alien": "Resztki smakują lepiej niż oryginalny posiłek."
+  },
+  "op_vlb1bf": {
+    "human": "O kimś można wiedzieć wszystko po tym, jak traktuje kelnerów.",
+    "alien": "Pierwsze wrażenie zwykle jest trafne."
+  },
+  "op_8acctm": {
+    "human": "Publiczne okazywanie czułości jest żenujące.",
+    "alien": "Niektóre rzeczy lepiej zachować dla siebie."
+  },
+  "op_1wxwf5g": {
+    "human": "Miłość od pierwszego wejrzenia jest prawdziwa.",
+    "alien": "Przeczucie zwykle ma rację."
+  },
+  "op_92z1vx": {
+    "human": "Grupowy czat z ponad dziesięcioma osobami to kara.",
+    "alien": "Powiadomienia są wrogiem szczęścia."
+  },
+  "op_1b20tj4": {
+    "human": "Wysyłanie wiadomości głosowych zamiast pisania to lenistwo.",
+    "alien": "Mówienie jest łatwiejsze niż pisanie."
+  },
+  "op_1p4lidc": {
+    "human": "Przekąski ze stacji benzynowej walą mocniej niż wykwintne desery.",
+    "alien": "Tanie łakocie biją drogie."
+  },
+  "op_xad2ps": {
+    "human": "Keczup wkłada się do lodówki, nie do szafki.",
+    "alien": "Istnieje dobry i zły sposób przechowywania jedzenia."
+  },
+  "op_1sn9i91": {
+    "human": "Miejsce przy przejściu jest zawsze najlepsze w samolocie.",
+    "alien": "Wygoda za każdym razem bije widok."
+  },
+  "op_87cgga": {
+    "human": "Naczynia trzeba opłukać przed włożeniem do zmywarki.",
+    "alien": "Zrobić coś dwa razy jest lepiej niż raz źle."
+  },
+  "op_8vot88": {
+    "human": "Audiobooki całkowicie liczą się jako czytanie.",
+    "alien": "Jak się czegoś uczysz, ma mniejsze znaczenie niż to, że się nauczyłeś."
+  },
+  "op_184hb11": {
+    "human": "Rozmowa telefoniczna jest bardziej irytująca niż wiadomość.",
+    "alien": "Najlepsza wiadomość to ta, która najmniej ci przeszkadza."
+  },
+  "op_10dtp19": {
+    "human": "Kanapka zrobiona przez kogoś innego zawsze smakuje lepiej.",
+    "alien": "Wszystko jest lepsze, gdy nie musiałeś tego robić sam."
+  },
+  "op_kcsuqd": {
+    "human": "Środkowy kawałek z blachy brownie to najlepszy kawałek.",
+    "alien": "Najlepsza część niemal wszystkiego jest w środku."
+  },
+  "op_1v6229x": {
+    "human": "Wieczór gier planszowych ujawnia, kim są twoi prawdziwi przyjaciele.",
+    "alien": "Rywalizacja ujawnia, jacy ludzie są naprawdę."
+  },
+  "op_tqflui": {
+    "human": "Pójście do sklepu w piżamie jest całkowicie w porządku.",
+    "alien": "Czucie się komfortowo w miejscu publicznym nigdy nie powinno być krępujące."
+  },
+  "op_1xrbr7s": {
+    "human": "Noworoczne postanowienia są w zasadzie bezcelowe.",
+    "alien": "Prawdziwa zmiana nigdy nie czeka na specjalną datę."
+  },
+  "op_10io6wq": {
+    "human": "Woda gazowana to tylko pikantna woda i nie jest dobra.",
+    "alien": "Niektóre szalenie popularne napoje są kompletnie przereklamowane."
+  },
+  "op_z0ki7a": {
+    "human": "Zawsze powinieneś ustąpić miejsca komuś, kto go potrzebuje.",
+    "alien": "Drobne uprzejmości wobec obcych zawsze są tego warte."
+  },
+  "op_17ohdp0": {
+    "human": "Nalanie mleka przed płatkami to czysty chaos.",
+    "alien": "Kolejność, w jakiej robisz rzeczy, naprawdę ma znaczenie."
+  },
+  "op_yynou": {
+    "human": "Najlepszy dodatek do pizzy to po prostu więcej sera.",
+    "alien": "Proste jest niemal zawsze lepsze niż skomplikowane."
+  },
+  "op_1xgkp26": {
+    "human": "Bałagan na biurku to oznaka zajętego umysłu.",
+    "alien": "Bycie porządnym jest trochę przereklamowane."
+  },
+  "op_s8186k": {
+    "human": "Każdy serial, który zacząłeś, powinieneś dokończyć.",
+    "alien": "Porzucenie czegoś w połowie czuje się jak porażka."
+  },
+  "op_1nbndca": {
+    "human": "Świeżo wyprana czysta pościel to najlepsze uczucie na świecie.",
+    "alien": "Najprostsze przyjemności są najlepsze."
+  },
+  "op_slqoqw": {
+    "human": "Każdy powinien nauczyć się gotować jedno naprawdę imponujące danie.",
+    "alien": "Opłaca się być świetnym w jednym niż niezłym w wielu rzeczach."
+  },
+  "op_1xsr9uu": {
+    "human": "Odręczna kartka z podziękowaniem zawsze jest warta wysiłku.",
+    "alien": "Staromodny sposób często jest lepszym sposobem."
+  },
+  "op_82mzpp": {
+    "human": "Koców nigdy nie jest za dużo.",
+    "alien": "Więcej czegoś dobrego jest zawsze lepiej."
+  },
+  "op_1rvrqf8": {
+    "human": "Odgrzewana kawa to prawdziwa zbrodnia.",
+    "alien": "Niektóre rzeczy są dobre tylko za pierwszym razem."
+  },
+  "op_13rz9nk": {
+    "human": "Najlepszy urlop polega na nierobieniu absolutnie niczego.",
+    "alien": "Odpoczynek jest wart więcej niż przygoda."
+  },
+  "op_14bid68": {
+    "human": "Zawsze powinieneś kibicować słabszemu.",
+    "alien": "Historia liczy się bardziej niż to, kto wygrywa."
+  },
+  "op_1mkk80a": {
+    "human": "Pies witający cię w drzwiach naprawia każdy zły dzień.",
+    "alien": "Małe powitania liczą się bardziej niż wielkie gesty."
+  },
+  "op_qgwdc8": {
+    "human": "Drzemka po 16:00 rujnuje ci cały wieczór.",
+    "alien": "Wyczucie czasu liczy się bardziej, niż większość ludzi sądzi."
+  },
+  "op_1m3ijyz": {
+    "human": "Najlepszy prezent to taki, którego osoba nigdy by sobie sama nie kupiła.",
+    "alien": "W prezencie troska bije praktyczność."
+  },
+  "op_1i8pg15": {
+    "human": "Każdy ma jedną piosenkę, której miłości nigdy by nie przyznał.",
+    "alien": "Ludzie ukrywają swoje najszczersze gusta."
+  },
+  "op_itzezu": {
+    "human": "Długie prysznice to całkowicie uzasadnione wykorzystanie czasu.",
+    "alien": "Niektóre codzienne małe luksusy są nie do negocjacji."
+  },
+  "op_1vdruxt": {
+    "human": "Kto jest najbliżej włącznika światła, ten za niego odpowiada.",
+    "alien": "Kto jest najbliżej czegoś, ten o tym decyduje."
+  },
+  "op_1gcq8gc": {
+    "human": "Ostatni kawałek powinien trafić do tego, kto chce go najbardziej.",
+    "alien": "Sprawiedliwość nie zawsze polega na dzieleniu wszystkiego po równo."
+  },
+  "op_t7pl1g": {
+    "human": "Miejsce przy oknie daje pełną kontrolę nad roletką.",
+    "alien": "Odpowiadanie za coś wiąże się z odpowiedzialnością."
+  },
+  "op_1ur5bwa": {
+    "human": "Ludzie są potajemnie dumni ze swojego charakteru pisma.",
+    "alien": "Ludzie są dla siebie milsi, niż to okazują."
+  },
+  "op_tqgu42": {
+    "human": "Zostawienie przyjaciela na cały dzień bez odpowiedzi jest całkowicie w porządku.",
+    "alien": "Nikomu nigdy nie jesteś winien szybkiej odpowiedzi."
+  },
+  "op_1ct3sr8": {
+    "human": "Jeśli przyjaciel spóźnia się 20 minut bez uprzedzenia, zaczynasz bez niego.",
+    "alien": "Bycie na czas to podstawowy przejaw szacunku."
+  },
+  "op_j8jevw": {
+    "human": "Podział rachunku po równo jest sprawiedliwy, nawet jeśli wziąłeś tylko wodę.",
+    "alien": "Wykłócanie się o grupowy rachunek nie jest tego warte."
+  },
+  "op_1052bxc": {
+    "human": "Pożyczanie pieniędzy od przyjaciół zawsze kończy się źle.",
+    "alien": "Pieniądze i przyjaźń nie idą w parze."
+  },
+  "op_1nkavej": {
+    "human": "Zjedzenie podpisanych resztek przyjaciela to niewybaczalna zbrodnia.",
+    "alien": "Granice wokół jedzenia powinny być święte."
+  },
+  "op_1eg74pe": {
+    "human": "W porządku jest mieć potajemnie ulubionego przyjaciela.",
+    "alien": "Ludzie udają, że lubią wszystkich tak samo, ale to nieprawda."
+  },
+  "op_tw3zbt": {
+    "human": "Odwoływanie planów godzinę wcześniej powinno kosztować cię ostrzeżenie.",
+    "alien": "Niesolidni ludzie po cichu rujnują każdą grupę."
+  },
+  "op_39mzxa": {
+    "human": "Zawsze powinieneś stać po stronie przyjaciela, nawet gdy nie ma racji.",
+    "alien": "Lojalność liczy się bardziej niż bycie w porządku."
+  },
+  "op_wdwe9l": {
+    "human": "Czytanie czyichś wiadomości przez ramię to zdrada.",
+    "alien": "Niektóre małe nawyki po cichu doprowadzają do szału."
+  },
+  "op_etyi83": {
+    "human": "Zjawienie się na spotkaniu z pustymi rękami jest trochę niegrzeczne.",
+    "alien": "Małe gesty liczą się bardziej, niż ludzie przyznają."
+  },
+  "op_1j96jvx": {
+    "human": "Zdradzenie sekretu grupy powinno wyrzucić cię z grupowego czatu.",
+    "alien": "Zaufanie to najważniejsza rzecz w grupie przyjaciół."
+  },
+  "op_ttruar": {
+    "human": "Trzymanie pożyczonej bluzy dłużej niż rok czyni ją twoją.",
+    "alien": "Posiadanie to w zasadzie dziewięć dziesiątych prawa."
+  },
+  "op_1ryok5o": {
+    "human": "Ustawianie przyjaciół od najlepszego do najgorszego jest sprawiedliwe.",
+    "alien": "Każdy ma potajemnie ranking w głowie."
+  },
+  "op_onmp3m": {
+    "human": "Wydanie przyjaciela, by ratować siebie, bywa czasem usprawiedliwione.",
+    "alien": "Samozachowanie jest ważniejsze od lojalności."
+  },
+  "op_gatknn": {
+    "human": "Opuszczenie ważnego wydarzenia przyjaciela, bo jesteś zmęczony, jest w porządku.",
+    "alien": "Odpoczynek jest wart więcej niż bycie wszędzie."
+  },
+  "op_17bqfgx": {
+    "human": "Oddanie pożyczonej rzeczy w ciągu tygodnia to absolutne minimum.",
+    "alien": "Ludzie są o wiele zbyt niedbali, gdy chodzi o oddawanie rzeczy."
+  },
+  "dl_2um82i": {
+    "human": "Ślub twojego najlepszego przyjaciela wypada tego samego dnia co koncert, na który masz bilety w pierwszym rzędzie.",
+    "alien": "Dwie ważne dla ciebie rzeczy wypadają tego samego dnia.",
+    "scenario": "Ślub twojego najlepszego przyjaciela wypada tego samego dnia co koncert, na który masz bilety w pierwszym rzędzie.",
+    "options": [
+      "Odpuść koncert, bez dyskusji",
+      "Sprzedaj bilety i nigdy nie wspominaj",
+      "Najpierw ceremonia, potem pęd na koncert"
+    ]
+  },
+  "dl_r7m1pn": {
+    "human": "Znajdujesz 200 zł gotówką w kieszeni kurtki, którą właśnie kupiłeś w lumpeksie.",
+    "alien": "Niespodziewanie trafia ci się trochę pieniędzy.",
+    "scenario": "Znajdujesz 200 zł gotówką w kieszeni kurtki, którą właśnie kupiłeś w lumpeksie.",
+    "options": [
+      "Zatrzymaj — los przemówił",
+      "Oddaj do sklepu",
+      "Zatrzymaj połowę, połowę oddaj na cel"
+    ]
+  },
+  "dl_uy801w": {
+    "human": "Budzik twojego współlokatora dzwoni od 45 minut, a jego nie ma w domu.",
+    "alien": "Coś w twoim domu powoli doprowadza cię do szału.",
+    "scenario": "Budzik twojego współlokatora dzwoni od 45 minut, a jego nie ma w domu.",
+    "options": [
+      "Wejdź i wyłącz",
+      "Wyślij mu wiadomość ze skargą",
+      "Cierp w słuchawkach dla zasady"
+    ]
+  },
+  "dl_1x6jor9": {
+    "human": "Kelner przynosi ci nie to danie — ale wygląda lepiej niż to, co zamówiłeś.",
+    "alien": "Trafia ci się coś, o co nie prosiłeś.",
+    "scenario": "Kelner przynosi ci nie to danie — ale wygląda lepiej niż to, co zamówiłeś.",
+    "options": [
+      "Nic nie mów i zjedz",
+      "Zgłoś i poproś o swoje zamówienie",
+      "Zapytaj słodko, czy możesz zatrzymać oba"
+    ]
+  },
+  "dl_1w5p92z": {
+    "human": "Twój szef od trzech miesięcy z rzędu zwraca się do ciebie złym imieniem.",
+    "alien": "Ktoś wciąż popełnia ten sam mały błąd wobec ciebie.",
+    "scenario": "Twój szef od trzech miesięcy z rzędu zwraca się do ciebie złym imieniem.",
+    "options": [
+      "Popraw dzisiaj",
+      "Odpuść na zawsze",
+      "Zacznij odpowiadać tylko na złe imię"
+    ]
+  },
+  "dl_mn4v0u": {
+    "human": "Jesteś na pierwszej randce i dostrzegasz swoją byłą dwa stoliki dalej.",
+    "alien": "Ktoś z twojej przeszłości pojawia się w złym momencie.",
+    "scenario": "Jesteś na pierwszej randce i dostrzegasz swoją byłą dwa stoliki dalej.",
+    "options": [
+      "Udawaj, że nic nie widziałeś",
+      "Pomachaj po dorosłemu i jedź dalej",
+      "Zaproponuj przeniesienie się gdzie indziej"
+    ]
+  },
+  "dl_1bxiccn": {
+    "human": "Kolega z pracy codziennie odgrzewa rybę w firmowej kuchni.",
+    "alien": "Ktoś w pobliżu ma irytujący codzienny nawyk.",
+    "scenario": "Kolega z pracy codziennie odgrzewa rybę w firmowej kuchni.",
+    "options": [
+      "Porozmawiaj z nim wprost",
+      "Zostaw anonimową karteczkę",
+      "Eskaluj — odgrzej coś gorszego"
+    ]
+  },
+  "dl_1cxk51t": {
+    "human": "Docierasz na lotnisko i orientujesz się, że twój lot jest właściwie jutro.",
+    "alien": "Twoje plany rozpadają się w ostatniej chwili.",
+    "scenario": "Docierasz na lotnisko i orientujesz się, że twój lot jest właściwie jutro.",
+    "options": [
+      "Błagaj o miejsce na dziś z listy rezerwowej",
+      "Wróć do domu i udawaj, że nic się nie stało",
+      "Hotel przy lotnisku — zrób z tego miniwakacje"
+    ]
+  },
+  "dl_1as3it3": {
+    "human": "Grupowy czat planuje wyjazd, na który absolutnie cię nie stać.",
+    "alien": "Przyjaciele planują coś, co ci nie pasuje.",
+    "scenario": "Grupowy czat planuje wyjazd, na który absolutnie cię nie stać.",
+    "options": [
+      "Bądź szczery co do budżetu",
+      "Zaproponuj tańszą wersję",
+      "Jedź mimo to i jedz zupki przez miesiące"
+    ]
+  },
+  "dl_101i9cb": {
+    "human": "Nienawidzisz fryzury. Fryzjer stoi, uśmiecha się i czeka.",
+    "alien": "Wcale nie jesteś zadowolony z czegoś, za co właśnie zapłaciłeś.",
+    "scenario": "Nienawidzisz fryzury. Fryzjer stoi, uśmiecha się i czeka.",
+    "options": [
+      "Powiedz, że uwielbiasz, i tak zostaw napiwek",
+      "Poproś delikatnie o poprawkę",
+      "Bądź szczery — to twoja głowa"
+    ]
+  },
+  "dl_34du28": {
+    "human": "Paczka sąsiada ląduje pod twoimi drzwiami. To ewidentnie ogromny telewizor.",
+    "alien": "Coś, co nie jest twoje, trafia w twoje ręce.",
+    "scenario": "Paczka sąsiada ląduje pod twoimi drzwiami. To ewidentnie ogromny telewizor.",
+    "options": [
+      "Zanieś od razu",
+      "Napisz, żeby przyszedł odebrać",
+      "Przetrzymaj jak zakładnika, aż odda twoje rzeczy"
+    ]
+  },
+  "dl_4zt4go": {
+    "human": "Rodzice przyjadą za dwie godziny, a mieszkanie to katastrofa.",
+    "alien": "Goście przychodzą wcześniej, niż byś chciał.",
+    "scenario": "Rodzice przyjadą za dwie godziny, a mieszkanie to katastrofa.",
+    "options": [
+      "Sprzątaj błyskawicznie jak atleta",
+      "Wepchnij wszystko do jednego pokoju i zamknij drzwi",
+      "Przyznaj się do bałaganu — to prawdziwe życie"
+    ]
+  },
+  "dl_ppevdt": {
+    "human": "W trakcie prezentacji twój laptop pada na oczach całej sali.",
+    "alien": "Technologia zawodzi cię w ważnym momencie.",
+    "scenario": "W trakcie prezentacji twój laptop pada na oczach całej sali.",
+    "options": [
+      "Improwizuj z pamięci",
+      "Ogłoś pięciominutową przerwę",
+      "Przerzuć się na zadawanie pytań sali"
+    ]
+  },
+  "dl_oy33pr": {
+    "human": "Czyjś telefon dzwoni na cały regulator w kinie — a on pozwala mu dzwonić.",
+    "alien": "Obcy przeszkadza tuż obok.",
+    "scenario": "Czyjś telefon dzwoni na cały regulator w kinie — a on pozwala mu dzwonić.",
+    "options": [
+      "Głośne, dobitne „ciiii”",
+      "Powiedz coś wprost",
+      "Po cichu knuj jego upadek"
+    ]
+  },
+  "dl_3aa4ry": {
+    "human": "Przyjaciel prosi cię o pomoc w przeprowadzce. Czwarty raz w dwa lata.",
+    "alien": "Przyjaciel prosi o przysługę, którą robiłeś już wiele razy.",
+    "scenario": "Przyjaciel prosi cię o pomoc w przeprowadzce. Czwarty raz w dwa lata.",
+    "options": [
+      "Zjaw się — to przyjaźń",
+      "Pomóż, ale oznajmij, że to ostatni raz",
+      "Nagle nabaw się tajemniczych planów"
+    ]
+  },
+  "dl_1jav9no": {
+    "human": "Gryziesz kanapkę zrobioną przez przyjaciela. Jest okropna. On patrzy na twoją minę.",
+    "alien": "Musisz zareagować na coś, czego nie lubisz.",
+    "scenario": "Gryziesz kanapkę zrobioną przez przyjaciela. Jest okropna. On patrzy na twoją minę.",
+    "options": [
+      "Daj popis życia",
+      "Dyplomatyczne „to ciekawe!”",
+      "Powiedz delikatnie prawdę"
+    ]
+  },
+  "dl_1bwuoqq": {
+    "human": "Osoba przed tobą ma 40 produktów w kasie „10 sztuk lub mniej”.",
+    "alien": "Ktoś tuż przed tobą łamie małą publiczną zasadę.",
+    "scenario": "Osoba przed tobą ma 40 produktów w kasie „10 sztuk lub mniej”.",
+    "options": [
+      "Wskaż na tabliczkę",
+      "Rzuć zabójcze spojrzenie",
+      "Odpuść — życie jest długie"
+    ]
+  },
+  "dl_1ttogtk": {
+    "human": "Twoja dostawa przyjeżdża i to zamówienie kogoś innego — ale szczerze, lepsze.",
+    "alien": "Pomyłka wychodzi lekko na twoją korzyść.",
+    "scenario": "Twoja dostawa przyjeżdża i to zamówienie kogoś innego — ale szczerze, lepsze.",
+    "options": [
+      "Zgłoś i oddaj",
+      "Zatrzymaj — przeznaczenie",
+      "Zatrzymaj I poproś o zwrot pieniędzy"
+    ]
+  },
+  "dl_vu9wgc": {
+    "human": "Odmachujesz komuś, kto zdecydowanie machał do osoby za tobą.",
+    "alien": "Trochę się kompromitujesz publicznie.",
+    "scenario": "Odmachujesz komuś, kto zdecydowanie machał do osoby za tobą.",
+    "options": [
+      "Brnij dalej — zamień to w rozciąganie",
+      "Roześmiej się z siebie na głos",
+      "Natychmiast opuść kraj"
+    ]
+  },
+  "dl_156qplt": {
+    "human": "Przyjaciel wciąż zdradza spoilery serialu, w którym jesteś dwa sezony do tyłu.",
+    "alien": "Przyjaciel wciąż psuje ci coś małego.",
+    "scenario": "Przyjaciel wciąż zdradza spoilery serialu, w którym jesteś dwa sezony do tyłu.",
+    "options": [
+      "Błagaj o embargo na spoilery",
+      "Wycisz go, aż nadrobisz",
+      "Odwołaj weekend i obejrzyj wszystko naraz"
+    ]
+  },
+  "dl_1d2hqp4": {
+    "human": "To twoja urodzinowa kolacja, a stół decyduje, jak podzielić bardzo nierówny rachunek.",
+    "alien": "Grupa musi sprawiedliwie ogarnąć pieniądze.",
+    "scenario": "To twoja urodzinowa kolacja, a stół decyduje, jak podzielić bardzo nierówny rachunek.",
+    "options": [
+      "Podziel po równo, zachowaj spokój",
+      "Każdy płaci dokładnie za swoje",
+      "Solenizant oczywiście nie płaci nic"
+    ]
+  },
+  "dl_1ayr8wh": {
+    "human": "Zauważasz literówkę sekundę po wysłaniu wiadomości do sympatii.",
+    "alien": "Zauważasz mały błąd tuż po jego popełnieniu.",
+    "scenario": "Zauważasz literówkę sekundę po wysłaniu wiadomości do sympatii.",
+    "options": [
+      "Od razu wyślij poprawkę z gwiazdką",
+      "Brnij, jakby to było celowe",
+      "Nigdy więcej o tym nie wspominaj"
+    ]
+  },
+  "dl_1lip0gm": {
+    "human": "Znajdujesz swój pamiętnik z podstawówki i jest miażdżąco żenujący.",
+    "alien": "Natrafiasz na coś żenującego ze swojej przeszłości.",
+    "scenario": "Znajdujesz swój pamiętnik z podstawówki i jest miażdżąco żenujący.",
+    "options": [
+      "Poczytaj przyjaciołom najlepsze fragmenty",
+      "Zamknij na zawsze na klucz",
+      "Uroczyste ognisko"
+    ]
+  },
+  "dl_2em2rb": {
+    "human": "Zaczyna się twoja piosenka na karaoke i nagle zapominasz każde słowo.",
+    "alien": "Znajdujesz się w centrum uwagi, a w głowie masz zupełną pustkę.",
+    "scenario": "Zaczyna się twoja piosenka na karaoke i nagle zapominasz każde słowo.",
+    "options": [
+      "Brnij i jakoś przemamrocz",
+      "Zamień to we wspólne śpiewanie z publiką",
+      "Dramatycznie upuść mikrofon i zejdź"
+    ]
+  },
+  "dl_1alt0p5": {
+    "human": "Do samochodu wlatuje osa, gdy jedziesz po autostradzie.",
+    "alien": "Mały kryzys wybucha w najgorszym możliwym momencie.",
+    "scenario": "Do samochodu wlatuje osa, gdy jedziesz po autostradzie.",
+    "options": [
+      "Natychmiast zjedź na pobocze",
+      "Zachowaj spokój i uchyl okno",
+      "Pogódź się, że samochód należy teraz do osy"
+    ]
+  },
+  "dl_1tvpmcf": {
+    "human": "Jesteś w połowie strzyżenia, gdy orientujesz się, że fryzjer tnie o wiele krócej, niż prosiłeś.",
+    "alien": "Coś idzie inaczej, niż planowałeś, i teraz trudno to zatrzymać.",
+    "scenario": "Jesteś w połowie strzyżenia, gdy orientujesz się, że fryzjer tnie o wiele krócej, niż prosiłeś.",
+    "options": [
+      "Powiedz od razu",
+      "Poczekaj, jak to się skończy",
+      "Pogódź się, że czapki istnieją nie bez powodu"
+    ]
+  },
+  "dl_hjddph": {
+    "human": "Przypadkiem polubiłeś zdjęcie sprzed trzech lat na czyimś profilu.",
+    "alien": "Zostawiasz oczywisty ślad czegoś, co robiłeś po cichu.",
+    "scenario": "Przypadkiem polubiłeś zdjęcie sprzed trzech lat na czyimś profilu.",
+    "options": [
+      "Cofnij polubienie i módl się",
+      "Przyznaj się przyjaznym komentarzem",
+      "Usuń aplikację i przenieś się do lasu"
+    ]
+  },
+  "dl_lzcf5u": {
+    "human": "Cała restauracja milknie dokładnie wtedy, gdy śmiejesz się z własnego żartu.",
+    "alien": "Reagujesz na coś i natychmiast orientujesz się, że wszyscy to zauważyli.",
+    "scenario": "Cała restauracja milknie dokładnie wtedy, gdy śmiejesz się z własnego żartu.",
+    "options": [
+      "Przyznaj się do śmiechu z dumą",
+      "Zakaszlej, żeby zamaskować",
+      "Powoli zsuń się z krzesła"
+    ]
+  },
+  "dl_xz9rgz": {
+    "human": "Kolega powtarza twój pomysł na dużym zebraniu, a wszyscy zachwycają się nim jako jego.",
+    "alien": "Ktoś zbiera pochwały za coś, co ty zrobiłeś.",
+    "scenario": "Kolega powtarza twój pomysł na dużym zebraniu, a wszyscy zachwycają się nim jako jego.",
+    "options": [
+      "Powiedz od razu",
+      "Porozmawiaj z nim później na osobności",
+      "Odpuść i zapamiętaj na zawsze"
+    ]
+  },
+  "dl_bc5bdv": {
+    "human": "Zjawiasz się na imprezie w pełnym kostiumie i orientujesz się, że nikt inny się nie przebrał.",
+    "alien": "Docierasz gdzieś i natychmiast czujesz się nie na miejscu.",
+    "scenario": "Zjawiasz się na imprezie w pełnym kostiumie i orientujesz się, że nikt inny się nie przebrał.",
+    "options": [
+      "Przyznaj się — wyglądasz świetnie",
+      "Zostaw kostium w samochodzie",
+      "Wymknij się cicho i wcześnie"
+    ]
+  },
+  "dl_17du2cc": {
+    "human": "Przyniosłeś danie na imprezę składkową i po dwóch godzinach nikt go nie tknął.",
+    "alien": "Coś, co wniosłeś, jest przez wszystkich ignorowane.",
+    "scenario": "Przyniosłeś danie na imprezę składkową i po dwóch godzinach nikt go nie tknął.",
+    "options": [
+      "Głośno je zachwalaj",
+      "Nałóż sobie dużą porcję, żeby przełamać lody",
+      "Zabierz je cicho z powrotem do domu"
+    ]
+  },
+  "dl_1ki67yu": {
+    "human": "Orientujesz się, że od dwóch tygodni zwracasz się do nowego kolegi złym imieniem.",
+    "alien": "Dowiadujesz się, że od jakiegoś czasu robisz małą rzecz źle.",
+    "scenario": "Orientujesz się, że od dwóch tygodni zwracasz się do nowego kolegi złym imieniem.",
+    "options": [
+      "Przeproś od razu",
+      "Zacznij po cichu mówić poprawnie",
+      "Unikaj używania jego imienia na zawsze"
+    ]
+  },
+  "dl_1ef4pm8": {
+    "human": "Kasa samoobsługowa wciąż wrzeszczy „nieoczekiwany przedmiot w strefie pakowania”, a kolejka rośnie.",
+    "alien": "Proste zadanie rozpada się publicznie na twoich oczach.",
+    "scenario": "Kasa samoobsługowa wciąż wrzeszczy „nieoczekiwany przedmiot w strefie pakowania”, a kolejka rośnie.",
+    "options": [
+      "Przywołaj pracownika",
+      "Spokojnie zacznij wszystko od nowa",
+      "Opuść tonący statek i wyjdź ze sklepu"
+    ]
+  },
+  "dl_1eolmis": {
+    "human": "Cały dzień nosiłeś koszulkę na lewą stronę, a nikt nie powiedział do 17:00.",
+    "alien": "Orientujesz się, że przez cały dzień coś było z tobą wyraźnie nie tak.",
+    "scenario": "Cały dzień nosiłeś koszulkę na lewą stronę, a nikt nie powiedział do 17:00.",
+    "options": [
+      "Popraw na miejscu",
+      "Twierdź, że to było celowe",
+      "Zastanawiaj się, kto wiedział i milczał"
+    ]
+  },
+  "dl_10ykzxe": {
+    "human": "Przypadkiem robisz „odpowiedz wszystkim” w mailu do całej firmy.",
+    "alien": "Prywatna wiadomość trafia do o wiele więcej osób, niż zamierzałeś.",
+    "scenario": "Przypadkiem robisz „odpowiedz wszystkim” w mailu do całej firmy.",
+    "options": [
+      "Wyślij szybkie „proszę zignorować”",
+      "Nic nie mów i miej nadzieję",
+      "Przyznaj się żartem w odpowiedzi"
+    ]
+  },
+  "dl_1g3pshd": {
+    "human": "Opowiadasz świetną historię przy kolacji i w połowie orientujesz się, że wszyscy już ją słyszeli.",
+    "alien": "Jesteś w połowie czegoś i orientujesz się, że to nie chwyta.",
+    "scenario": "Opowiadasz świetną historię przy kolacji i w połowie orientujesz się, że wszyscy już ją słyszeli.",
+    "options": [
+      "Brnij do końca",
+      "Skróć ze śmiechem",
+      "Udawaj, że najlepsza część dopiero nadejdzie"
+    ]
+  },
+  "dl_1nubi5f": {
+    "human": "Jesteś wyznaczonym nawigatorem i właśnie kompletnie przegapiłeś zjazd.",
+    "alien": "Odpowiadasz za coś i właśnie dałeś ciała.",
+    "scenario": "Jesteś wyznaczonym nawigatorem i właśnie kompletnie przegapiłeś zjazd.",
+    "options": [
+      "Przyznaj się od razu",
+      "Wyznacz nową trasę i nic nie mów",
+      "Pewnie zwal winę na aplikację z mapami"
+    ]
+  },
+  "dl_r8okob": {
+    "human": "Kelner pyta, jak wszystko smakuje, dokładnie gdy masz pełne usta.",
+    "alien": "W najgorszej możliwej sekundzie znajdujesz się w centrum uwagi.",
+    "scenario": "Kelner pyta, jak wszystko smakuje, dokładnie gdy masz pełne usta.",
+    "options": [
+      "Kciuk w górę i szybko przeżuj",
+      "Podnieś palec i każ mu czekać",
+      "Wymamrocz „świetnie, dzięki!”"
+    ]
+  },
+  "dl_1qpg7nx": {
+    "human": "Dowiadujesz się, że impreza-niespodzianka, na którą wchodzisz, jest właściwie dla ciebie.",
+    "alien": "Orientujesz się, że dzieje się coś dużego i dotyczy ciebie.",
+    "scenario": "Dowiadujesz się, że impreza-niespodzianka, na którą wchodzisz, jest właściwie dla ciebie.",
+    "options": [
+      "Udawaj kompletne zaskoczenie",
+      "Przyznaj, że trochę się domyślałeś",
+      "Uroń łzę, bez wstydu"
+    ]
+  },
+  "dl_ckyktf": {
+    "human": "Przyjaciel prosi, żebyś go krył całkiem sporym kłamstwem.",
+    "alien": "Przyjaciel prosi cię o przysługę, co do której masz wątpliwości.",
+    "scenario": "Przyjaciel prosi, żebyś go krył całkiem sporym kłamstwem.",
+    "options": [
+      "Kryj go — tak robią przyjaciele",
+      "Odmów i powiedz prawdę",
+      "Skryj tym razem, ale nigdy więcej"
+    ]
+  },
+  "dl_13ouh8y": {
+    "human": "Przyłapujesz przyjaciela, jak po cichu kopiuje cały twój styl.",
+    "alien": "Ktoś bliski naśladuje cię trochę za bardzo.",
+    "scenario": "Przyłapujesz przyjaciela, jak po cichu kopiuje cały twój styl.",
+    "options": [
+      "Powiedz coś wprost",
+      "Potraktuj to jako komplement",
+      "Zmień wszystko, żeby go zmylić"
+    ]
+  },
+  "dl_1a7nvxs": {
+    "human": "Przyłapujesz przyjaciela, jak głosuje przeciwko tobie w grze, by wygrać.",
+    "alien": "Ktoś zdradza cię w grze dla zwycięstwa.",
+    "scenario": "Przyłapujesz przyjaciela, jak głosuje przeciwko tobie w grze, by wygrać.",
+    "options": [
+      "Doceń bezwzględne zagranie",
+      "Zaplanuj zemstę",
+      "Odmów ponownego tworzenia z nim drużyny"
+    ]
+  },
+  "dl_1mg4785": {
+    "human": "Przyjaciel „zapomina” zaprosić cię na spotkanie, o którym wyraźnie słyszałeś.",
+    "alien": "Zostajesz celowo wykluczony z czegoś.",
+    "scenario": "Przyjaciel „zapomina” zaprosić cię na spotkanie, o którym wyraźnie słyszałeś.",
+    "options": [
+      "Napomknij mimochodem",
+      "Nic nie mów i gotuj się w środku",
+      "Zjaw się mimo to"
+    ]
+  },
+  "dl_k2q8uv": {
+    "human": "Przyjaciel zjada resztki, które trzymałeś przez cały tydzień.",
+    "alien": "Ktoś bierze jedyną rzecz, na którą czekałeś.",
+    "scenario": "Przyjaciel zjada resztki, które trzymałeś przez cały tydzień.",
+    "options": [
+      "Odpuść",
+      "Każ mu odkupić",
+      "Zjedz coś jego, bez uprzedzenia"
+    ]
+  },
+  "dl_1cdpg6x": {
+    "human": "Przyjaciel wypaplał twój sekret całej grupie jako „żart”.",
+    "alien": "Coś, co powiedziałeś jednej osobie, staje się publiczne.",
+    "scenario": "Przyjaciel wypaplał twój sekret całej grupie jako „żart”.",
+    "options": [
+      "Obróć to w śmiech, by zamaskować",
+      "Skonfrontuj się na osobności",
+      "Nigdy więcej mu nie ufaj"
+    ]
+  },
+  "dl_1a093pw": {
+    "human": "Przyjaciel pożyczył pieniądze miesiące temu i zachowuje się, jakby nic się nie stało.",
+    "alien": "Ktoś jest ci coś winien i wygodnie o tym zapomniał.",
+    "scenario": "Przyjaciel pożyczył pieniądze miesiące temu i zachowuje się, jakby nic się nie stało.",
+    "options": [
+      "Przypomnij wprost",
+      "Spisz na straty",
+      "Za każdym razem podnoś to jako „żart”"
+    ]
+  },
+  "dl_c3vl09": {
+    "human": "W grupowym czacie obrywasz za coś, co naprawdę zrobił przyjaciel.",
+    "alien": "Przyjmujesz na siebie cios za cudzy błąd.",
+    "scenario": "W grupowym czacie obrywasz za coś, co naprawdę zrobił przyjaciel.",
+    "options": [
+      "Broń się dowodami",
+      "Przełknij dla zachowania spokoju",
+      "Zdemaskuj prawdziwego winowajcę"
+    ]
+  },
+  "dl_cr0hbt": {
+    "human": "Przyjaciel obiecał dochować sekretu imprezy-niespodzianki i dwa razy prawie go zdradził.",
+    "alien": "Ktoś raz po raz udowadnia, że nie umie dochować sekretu.",
+    "scenario": "Przyjaciel obiecał dochować sekretu imprezy-niespodzianki i dwa razy prawie go zdradził.",
+    "options": [
+      "Następnym razem zostaw go poza sprawą",
+      "Daj mu fałszywy sekret, żeby przetestować",
+      "Zaufaj mu jeszcze raz"
+    ]
+  },
+  "dl_1b2hyrp": {
+    "human": "Orientujesz się, że przyjaciel od tygodni czyta twoje wiadomości przez ramię.",
+    "alien": "Ktoś węszy w twoich prywatnych rzeczach.",
+    "scenario": "Orientujesz się, że przyjaciel od tygodni czyta twoje wiadomości przez ramię.",
+    "options": [
+      "Wytknij mu to",
+      "Zacznij pisać fałszywe wiadomości-przynęty",
+      "Pozwól mu dalej zgadywać"
+    ]
+  },
+  "dl_1oil5rf": {
+    "human": "Przyjaciel przy wszystkim za każdym razem ubiega cię z ostatnim kawałkiem.",
+    "alien": "Ktoś zawsze porywa najlepszy kawałek przed tobą.",
+    "scenario": "Przyjaciel przy wszystkim za każdym razem ubiega cię z ostatnim kawałkiem.",
+    "options": [
+      "Wskaż ten schemat",
+      "Zacznij pilnować swojego talerza",
+      "Ubiegnij go następnym razem"
+    ]
+  },
+  "dl_nahxh1": {
+    "human": "Przyjaciel zapisuje się do tego samego konkursu co ty i zostajecie tylko wy dwaj.",
+    "alien": "Trafiasz w bezpośredni pojedynek z kimś bliskim.",
+    "scenario": "Przyjaciel zapisuje się do tego samego konkursu co ty i zostajecie tylko wy dwaj.",
+    "options": [
+      "Graj o zwycięstwo, bez litości",
+      "Po cichu życz mu wygranej",
+      "Zaproponuj podział nagrody"
+    ]
+  },
+  "dr_vc2dh8": {
+    "human": "Narysuj swoje ulubione jedzenie.",
+    "alien": "Narysuj swój ulubiony deser."
+  },
+  "dr_fijug7": {
+    "human": "Narysuj zwierzę.",
+    "alien": "Narysuj zwierzę domowe."
+  },
+  "dr_17ejwrw": {
+    "human": "Narysuj owoc.",
+    "alien": "Narysuj jagodę."
+  },
+  "dr_1g500zd": {
+    "human": "Narysuj napój.",
+    "alien": "Narysuj gorący napój."
+  },
+  "dr_19uk10s": {
+    "human": "Narysuj roślinę.",
+    "alien": "Narysuj kwiat."
+  },
+  "dr_gy8yax": {
+    "human": "Narysuj pojazd.",
+    "alien": "Narysuj coś na dwóch kołach."
+  },
+  "dr_itk4ob": {
+    "human": "Narysuj coś na niebie.",
+    "alien": "Narysuj coś, co lata."
+  },
+  "dr_6ubcs1": {
+    "human": "Narysuj coś, co znalazłbyś w kuchni.",
+    "alien": "Narysuj coś, co znalazłbyś w lodówce."
+  },
+  "dr_1shl5da": {
+    "human": "Narysuj coś, co nosisz.",
+    "alien": "Narysuj coś, co nosisz na głowie."
+  },
+  "dr_ivmdhi": {
+    "human": "Narysuj rodzaj pogody.",
+    "alien": "Narysuj deszczowy dzień."
+  },
+  "dr_9uw80s": {
+    "human": "Narysuj morskie stworzenie.",
+    "alien": "Narysuj rybę."
+  },
+  "dr_1itlimk": {
+    "human": "Narysuj morskie stworzenie z mackami.",
+    "alien": "Narysuj ośmiornicę."
+  },
+  "dr_1tx26xg": {
+    "human": "Narysuj mebel.",
+    "alien": "Narysuj coś, na czym się siedzi."
+  },
+  "dr_13v31rz": {
+    "human": "Narysuj śniadaniowe jedzenie.",
+    "alien": "Narysuj coś polanego syropem."
+  },
+  "dr_1ipzivm": {
+    "human": "Narysuj sport.",
+    "alien": "Narysuj piłkę używaną w jakimś sporcie."
+  },
+  "dr_iewfis": {
+    "human": "Narysuj coś na plaży.",
+    "alien": "Narysuj coś, co buduje się z piasku."
+  },
+  "dr_kslk0k": {
+    "human": "Narysuj owada.",
+    "alien": "Narysuj robaka ze skrzydłami."
+  },
+  "dr_1nit4if": {
+    "human": "Narysuj instrument muzyczny.",
+    "alien": "Narysuj instrument, w który się dmie."
+  },
+  "dr_1a3xral": {
+    "human": "Narysuj warzywo.",
+    "alien": "Narysuj zielone warzywo."
+  },
+  "dr_w18v74": {
+    "human": "Narysuj budynek.",
+    "alien": "Narysuj dom."
+  },
+  "dr_yzqnd4": {
+    "human": "Narysuj przekąskę.",
+    "alien": "Narysuj coś słonego."
+  },
+  "dr_1i9ptnt": {
+    "human": "Narysuj coś w łazience.",
+    "alien": "Narysuj coś, czym myjesz zęby."
+  },
+  "dr_1i3rs0j": {
+    "human": "Narysuj deser.",
+    "alien": "Narysuj coś z czekoladą."
+  },
+  "dr_1ystwfg": {
+    "human": "Narysuj coś, co zobaczyłbyś na farmie.",
+    "alien": "Narysuj zwierzę hodowlane."
+  },
+  "dr_17la9nh": {
+    "human": "Narysuj coś z uchwytem.",
+    "alien": "Narysuj kubek."
+  },
+  "dr_ycw03r": {
+    "human": "Narysuj coś w klasie.",
+    "alien": "Narysuj coś, czym piszesz."
+  },
+  "dr_1w1akb8": {
+    "human": "Narysuj czapkę.",
+    "alien": "Narysuj czapkę, którą nosisz zimą."
+  },
+  "dr_1q5kltq": {
+    "human": "Narysuj drzewo.",
+    "alien": "Narysuj drzewo z owocami."
+  },
+  "dr_1fnova5": {
+    "human": "Narysuj zabawkę.",
+    "alien": "Narysuj pluszaka."
+  },
+  "dr_2lju2": {
+    "human": "Narysuj danie z fast foodu.",
+    "alien": "Narysuj burgera."
+  },
+  "dr_1ffg2ib": {
+    "human": "Narysuj coś z przyjęcia urodzinowego.",
+    "alien": "Narysuj tort urodzinowy."
+  },
+  "dr_b5g8uw": {
+    "human": "Narysuj coś ciepłego.",
+    "alien": "Narysuj słońce."
+  },
+  "dr_1n7h4fq": {
+    "human": "Narysuj narzędzie.",
+    "alien": "Narysuj młotek."
+  },
+  "dr_16rzsko": {
+    "human": "Narysuj coś, co spakowałbyś na podróż.",
+    "alien": "Narysuj coś, co spakowałbyś na plażę."
+  },
+  "dr_1fx17ef": {
+    "human": "Narysuj część garderoby.",
+    "alien": "Narysuj but."
+  },
+  "dr_11728ng": {
+    "human": "Narysuj coś w ogrodzie.",
+    "alien": "Narysuj kwiat w ogrodzie."
+  },
+  "dr_1yrf4we": {
+    "human": "Narysuj coś okrągłego.",
+    "alien": "Narysuj piłkę."
+  },
+  "dr_1af7m26": {
+    "human": "Narysuj coś zimnego.",
+    "alien": "Narysuj coś zamrożonego."
+  },
+  "dr_12bp44h": {
+    "human": "Narysuj coś w parku.",
+    "alien": "Narysuj coś na placu zabaw."
+  },
+  "dr_dutq1a": {
+    "human": "Narysuj ognisko.",
+    "alien": "Narysuj zapaloną pochodnię."
+  },
+  "dr_1e6pis9": {
+    "human": "Narysuj bałwana.",
+    "alien": "Narysuj trzy gałki lodów w waflu."
+  },
+  "dr_1vn55pw": {
+    "human": "Narysuj kawałek pizzy.",
+    "alien": "Narysuj kawałek arbuza."
+  },
+  "dr_1xuer86": {
+    "human": "Narysuj rakietę.",
+    "alien": "Narysuj latarnię morską."
+  },
+  "dr_wp0ygo": {
+    "human": "Narysuj tort urodzinowy.",
+    "alien": "Narysuj stos naleśników z polewą."
+  },
+  "dr_1kpdkud": {
+    "human": "Narysuj rekina.",
+    "alien": "Narysuj delfina."
+  },
+  "dr_ei4e0r": {
+    "human": "Narysuj kaktusa na pustyni.",
+    "alien": "Narysuj machającą na cześć dłoń."
+  },
+  "dr_1316v0x": {
+    "human": "Narysuj UFO.",
+    "alien": "Narysuj sombrero."
+  },
+  "dr_1r2u49l": {
+    "human": "Narysuj słońce.",
+    "alien": "Narysuj słonecznik."
+  },
+  "dr_1wwhfs9": {
+    "human": "Narysuj choinkę.",
+    "alien": "Narysuj czapeczkę imprezową."
+  },
+  "dr_6kxh9k": {
+    "human": "Narysuj węża.",
+    "alien": "Narysuj kręta rzekę."
+  },
+  "dr_oqbqeu": {
+    "human": "Narysuj pączka.",
+    "alien": "Narysuj koło do pływania."
+  },
+  "dr_1eay4am": {
+    "human": "Narysuj wytworny wąsik.",
+    "alien": "Narysuj ptaka lecącego w oddali."
+  },
+  "dr_1ec9br6": {
+    "human": "Narysuj taco.",
+    "alien": "Narysuj ciasteczko z wróżbą."
+  },
+  "dr_1lv73xl": {
+    "human": "Narysuj ducha.",
+    "alien": "Narysuj kalmara."
+  },
+  "dr_9l7hi": {
+    "human": "Narysuj królewską koronę.",
+    "alien": "Narysuj pasmo górskie."
+  },
+  "dr_dyoup8": {
+    "human": "Narysuj okulary.",
+    "alien": "Narysuj rower."
+  },
+  "dr_pznbxl": {
+    "human": "Narysuj balon na ogrzane powietrze.",
+    "alien": "Narysuj żarówkę."
+  },
+  "dr_17xg4xi": {
+    "human": "Narysuj biedronkę.",
+    "alien": "Narysuj ciastko z kawałkami czekolady."
+  },
+  "dr_1eidxj9": {
+    "human": "Narysuj piłkę nożną.",
+    "alien": "Narysuj kulę dyskotekową."
+  },
+  "dr_14ovuu5": {
+    "human": "Narysuj palmę.",
+    "alien": "Narysuj wybuchające fajerwerki."
+  },
+  "dr_1865u22": {
+    "human": "Narysuj jeża.",
+    "alien": "Narysuj szyszkę."
+  },
+  "dr_1fvprsk": {
+    "human": "Narysuj żaglówkę.",
+    "alien": "Narysuj płetwę rekina nad wodą."
+  },
+  "dr_1y1bsdw": {
+    "human": "Narysuj gąsienicę.",
+    "alien": "Narysuj pociąg z wagonami."
+  },
+  "dr_116srfs": {
+    "human": "Narysuj meduzę.",
+    "alien": "Narysuj wytworny żyrandol."
+  },
+  "dr_jvf89p": {
+    "human": "Narysuj ul.",
+    "alien": "Narysuj lody z automatu."
+  },
+  "dr_1ryrojz": {
+    "human": "Narysuj banana.",
+    "alien": "Narysuj półksiężyc."
+  },
+  "dr_1oibsi8": {
+    "human": "Narysuj zegar ścienny.",
+    "alien": "Narysuj całą pizzę pokrojoną na kawałki."
+  },
+  "dr_1of38e2": {
+    "human": "Narysuj parasol.",
+    "alien": "Narysuj grzyba."
+  },
+  "dr_h7bu7b": {
+    "human": "Narysuj serce.",
+    "alien": "Narysuj truskawkę."
+  },
+  "dr_18a92wy": {
+    "human": "Narysuj różę.",
+    "alien": "Narysuj lizaka."
+  },
+  "dr_1gl29pp": {
+    "human": "Narysuj pingwina.",
+    "alien": "Narysuj kręgiel."
+  },
+  "dr_19uaumq": {
+    "human": "Narysuj jabłko.",
+    "alien": "Narysuj pomidora."
+  },
+  "dr_9f5udb": {
+    "human": "Narysuj babeczkę.",
+    "alien": "Narysuj muffinkę."
+  },
+  "dr_146tqll": {
+    "human": "Narysuj motyla.",
+    "alien": "Narysuj muszkę."
+  },
+  "dr_1yuapn9": {
+    "human": "Narysuj liść.",
+    "alien": "Narysuj piórko."
+  },
+  "dr_1fs5j9x": {
+    "human": "Narysuj marchewkę.",
+    "alien": "Narysuj rożek lodowy."
+  },
+  "dr_o9s0qt": {
+    "human": "Narysuj kawałek ciasta.",
+    "alien": "Narysuj klin sera."
+  },
+  "dr_18ayzdl": {
+    "human": "Narysuj kieliszek do wina.",
+    "alien": "Narysuj tulipana."
+  },
+  "dr_490o6f": {
+    "human": "Narysuj wisienkę.",
+    "alien": "Narysuj balon na sznurku."
+  },
+  "dr_1lzu3p2": {
+    "human": "Narysuj chmurę.",
+    "alien": "Narysuj puszystą owcę."
+  },
+  "dr_5f8f2n": {
+    "human": "Narysuj pachołek drogowy.",
+    "alien": "Narysuj czapeczkę imprezową."
+  },
+  "dr_awwvye": {
+    "human": "Narysuj jajko.",
+    "alien": "Narysuj balon."
+  },
+  "dr_5cekn7": {
+    "human": "Narysuj gruszkę.",
+    "alien": "Narysuj żarówkę."
+  },
+  "dr_1vrjale": {
+    "human": "Narysuj kroplę deszczu.",
+    "alien": "Narysuj płomień."
+  },
+  "dr_ing3d1": {
+    "human": "Narysuj mopa.",
+    "alien": "Narysuj ośmiornicę."
+  },
+  "dr_1ujd416": {
+    "human": "Narysuj najlepszy prezent, jaki dostałeś.",
+    "alien": "Narysuj coś, co chciałbyś dostać."
+  },
+  "dr_1l7k7v9": {
+    "human": "Narysuj pierwszą rzecz, którą kupiłbyś, mając milion.",
+    "alien": "Narysuj coś, czego bardzo chcesz, ale cię nie stać."
+  },
+  "dr_fcijq9": {
+    "human": "Narysuj dom marzeń.",
+    "alien": "Narysuj gigantyczną rezydencję."
+  },
+  "dr_xjpyrl": {
+    "human": "Narysuj wymarzone miejsce na wakacje.",
+    "alien": "Narysuj tropikalną plażę."
+  },
+  "dr_d93rw6": {
+    "human": "Narysuj idealny tort urodzinowy.",
+    "alien": "Narysuj wytworny wielopiętrowy deser."
+  },
+  "dr_14bxnbu": {
+    "human": "Narysuj samochód marzeń.",
+    "alien": "Narysuj szybkie auto sportowe."
+  },
+  "dr_13jc13f": {
+    "human": "Narysuj jedyną przekąskę, którą nigdy byś się nie podzielił.",
+    "alien": "Narysuj swój ulubiony fast food."
+  },
+  "dr_1vymii2": {
+    "human": "Narysuj wymarzone zwierzę domowe.",
+    "alien": "Narysuj egzotyczne zwierzę."
+  },
+  "dr_ky0jut": {
+    "human": "Narysuj trofeum za wieczne zwycięstwo w wieczór gier.",
+    "alien": "Narysuj złotą, lśniącą nagrodę."
+  },
+  "dr_l0n8l": {
+    "human": "Narysuj idealną tajną kryjówkę.",
+    "alien": "Narysuj małą drewnianą chatkę."
+  },
+  "dr_o1uytw": {
+    "human": "Narysuj idealny fort z poduszek.",
+    "alien": "Narysuj fort z koców."
+  },
+  "dr_38aa15": {
+    "human": "Narysuj idealny zapas przekąsek na podróż samochodem.",
+    "alien": "Narysuj torbę wypchaną przekąskami."
+  },
+  "dr_18b9obp": {
+    "human": "Narysuj wymarzone przyjęcie urodzinowe.",
+    "alien": "Narysuj przyjęcie pokryte balonami."
+  },
+  "dr_rs8u9v": {
+    "human": "Narysuj nagrodę, dla której zdradziłbyś przyjaciela.",
+    "alien": "Narysuj skrzynię wypełnioną złotem."
+  },
+  "dr_1rsk9ix": {
+    "human": "Narysuj najbardziej wykwintny posiłek, jaki potrafisz sobie wyobrazić.",
+    "alien": "Narysuj talerz z wytwornej restauracji."
+  },
+  "wr_1o1ecdh": {
+    "human": "Najgorsze, co można usłyszeć od dentysty, to ___.",
+    "alien": "Najgorsze, co można usłyszeć od mechanika, to ___."
+  },
+  "wr_14xppyw": {
+    "human": "___ to natychmiastowy powód, by odpuścić na pierwszej randce.",
+    "alien": "___ to natychmiastowa czerwona lampka u nowego współpracownika."
+  },
+  "wr_16s51yb": {
+    "human": "Najlepsze w podróży samochodem jest ___.",
+    "alien": "Najlepsze w leniwej niedzieli jest ___."
+  },
+  "wr_4j6hu2": {
+    "human": "Nigdy nie zaufałbym komuś, kto ___.",
+    "alien": "Po cichu oceniam ludzi, którzy ___."
+  },
+  "wr_4uvb96": {
+    "human": "Najbardziej bezużyteczna rzecz, jakiej nauczyłem się w szkole, to ___.",
+    "alien": "Najbardziej bezużyteczna umiejętność, jaką mam, to ___."
+  },
+  "wr_19tjh8x": {
+    "human": "Moja historia narodzin czarnego charakteru zaczęłaby się od ___.",
+    "alien": "Najbardziej małostkowa rzecz, która może zrujnować mi cały dzień, to ___."
+  },
+  "wr_19de0tb": {
+    "human": "Ostatnie zdjęcie w mojej galerii to ___.",
+    "alien": "Najbardziej przypadkowa rzecz zapisana w moim telefonie to ___."
+  },
+  "wr_rze63h": {
+    "human": "Gdyby zwierzęta mówiły, najbardziej niegrzeczne byłoby ___.",
+    "alien": "Zwierzę, któremu ufam najmniej, to ___."
+  },
+  "wr_1egzyom": {
+    "human": "Słowo, które powinno być zakazane na zawsze, to ___.",
+    "alien": "Słowo, którego ludzie używają zbyt często, to ___."
+  },
+  "wr_1bgc6cf": {
+    "human": "Moja najbardziej kontrowersyjna opinia o jedzeniu to ___.",
+    "alien": "Połączenie jedzenia, które po cichu lubię, to ___."
+  },
+  "wr_ndaqk0": {
+    "human": "Najszybszy sposób, by mnie zdenerwować, to ___.",
+    "alien": "Najszybszy sposób, by stracić mój szacunek, to ___."
+  },
+  "wr_1byd9dp": {
+    "human": "W horrorze zginąłbym pierwszy, bo ___.",
+    "alien": "Moi przyjaciele powiedzieliby, że moja zgubna wada to ___."
+  },
+  "wr_1ym0m77": {
+    "human": "___ powinno być dyscypliną olimpijską.",
+    "alien": "___ zasługuje na dużo więcej szacunku jako umiejętność."
+  },
+  "wr_u4650t": {
+    "human": "Najdziwniejsza rzecz, jaką kiedykolwiek zjadłem, to ___.",
+    "alien": "Jedzenie, które spróbowałem raz i nigdy więcej nie spróbuję, to ___."
+  },
+  "wr_1sj1shi": {
+    "human": "Mój serial-grzeszna przyjemność to ___.",
+    "alien": "Serial, którego broniłbym z życiem, to ___."
+  },
+  "wr_oi4w0h": {
+    "human": "Pierwsza rzecz, którą kupiłbym po wygranej na loterii, to ___.",
+    "alien": "Mój kompletnie zbędny wymarzony zakup to ___."
+  },
+  "wr_t4b878": {
+    "human": "Gdyby mój zwierzak mówił, pierwsze, co by o mnie wygadał, to ___.",
+    "alien": "Gdyby wyciekła moja historia wyszukiwania, najgorsze byłoby ___."
+  },
+  "wr_mnl7ov": {
+    "human": "Najgorsza wiadomość od szefa to ___.",
+    "alien": "Najgorsza wiadomość od właściciela mieszkania to ___."
+  },
+  "wr_yqc386": {
+    "human": "Mój najbardziej irracjonalny lęk to ___.",
+    "alien": "Jako dziecko niewytłumaczalnie bałem się ___."
+  },
+  "wr_1de7xyi": {
+    "human": "Zapach ___ przenosi mnie prosto do dzieciństwa.",
+    "alien": "Dźwięk ___ natychmiast mnie rozluźnia."
+  },
+  "wr_1cc7f03": {
+    "human": "Nie zamierzam przepraszać za miłość do ___.",
+    "alien": "Nigdy nie zrozumiem nienawiści do ___."
+  },
+  "wr_1no9ixp": {
+    "human": "Moja autobiografia nosiłaby tytuł ___.",
+    "alien": "Na mojej osobistej etykiecie ostrzegawczej byłoby napisane ___."
+  },
+  "wr_1ul8xwe": {
+    "human": "Najgorsza rada, jaką dostałem, to ___.",
+    "alien": "Najgorsza rada, jaką komuś dałem, to ___."
+  },
+  "wr_tikus3": {
+    "human": "Za ___ zawsze warto dopłacić.",
+    "alien": "Dla ___ zawsze warto wstać wcześnie."
+  },
+  "wr_dnr25o": {
+    "human": "Gdybym był duchem, nawiedzałbym ___.",
+    "alien": "Gdybym mógł teleportować się raz dziennie, poszedłbym prosto do ___."
+  },
+  "wr_32pj2": {
+    "human": "Najbardziej chaotyczna rzecz w mojej lodówce teraz to ___.",
+    "alien": "Najbardziej chaotyczna rzecz w mojej torbie lub aucie teraz to ___."
+  },
+  "wr_14hlu53": {
+    "human": "Kosmitów odwiedzających Ziemię najbardziej zdezorientowałoby ___.",
+    "alien": "Kosmitów odwiedzających Ziemię najbardziej zaimponowałoby ___."
+  },
+  "wr_1pqa4g1": {
+    "human": "Jedyna praca domowa, za której nierobienie zapłaciłbym cokolwiek, to ___.",
+    "alien": "Jedyny sprawunek, który zawsze będę odkładał, to ___."
+  },
+  "wr_daq6bs": {
+    "human": "Moja największa czerwona lampka to ___.",
+    "alien": "Moja największa zielona lampka to ___."
+  },
+  "wr_1hdsy1": {
+    "human": "Nic nie rujnuje imprezy szybciej niż ___.",
+    "alien": "Nic nie rujnuje grupowego czatu szybciej niż ___."
+  },
+  "wr_1eb1iif": {
+    "human": "Najbardziej małostkowy powód, dla którego kogoś nie lubiłem, to ___.",
+    "alien": "Najbardziej małostkowe stanowisko, którego bronię do końca, to ___."
+  },
+  "wr_wgsa38": {
+    "human": "Przyjaciele nabijaliby się ze mnie, że wciąż lubię ___.",
+    "alien": "Ulubieniec z dzieciństwa, z którego nigdy nie wyrosłem, to ___."
+  },
+  "wr_1xenw17": {
+    "human": "Najdziwniejszy komplement, jaki dostałem, to ___.",
+    "alien": "Najdziwniejsza rzecz, z której po cichu jestem dumny, to ___."
+  },
+  "wr_1aazfvk": {
+    "human": "Gdyby prokrastynacja była sportem, moją konkurencją byłoby ___.",
+    "alien": "Zadanie, które unikam najdłużej, to ___."
+  },
+  "wr_z1fznz": {
+    "human": "Najgorsza rzecz do znalezienia w pokoju hotelowym to ___.",
+    "alien": "Najgorsza rzecz do znalezienia w wynajętym aucie to ___."
+  },
+  "wr_1h3r68p": {
+    "human": "Supermoc, która brzmi fajnie, ale zrujnowałaby ci życie, to ___.",
+    "alien": "Supermoc, o którą wszyscy zapominają poprosić, to ___."
+  },
+  "wr_u22azz": {
+    "human": "Najbardziej przereklamowana atrakcja turystyczna to ___.",
+    "alien": "Najbardziej przereklamowane święto to ___."
+  },
+  "wr_1j4ofb3": {
+    "human": "Najlepsza przekąska do przemycenia do kina to ___.",
+    "alien": "Najlepsza przekąska na długą podróż samochodem to ___."
+  },
+  "wr_zlznzn": {
+    "human": "Najgorszy możliwy motyw na wesele to ___.",
+    "alien": "Najgorszy możliwy motyw na przyjęcie urodzinowe to ___."
+  },
+  "wr_to39p0": {
+    "human": "Gdybym rządził światem przez jeden dzień, moja pierwsza nowa zasada to ___.",
+    "alien": "Zasada, którą chciałbym, żeby wszyscy już przestrzegali, to ___."
+  },
+  "wr_35veyz": {
+    "human": "Rzecz, którą zawsze gubię, to ___.",
+    "alien": "Rzecz, której jakimś cudem mam o wiele za dużo, to ___."
+  },
+  "wr_klwr7a": {
+    "human": "Mój pewniak na karaoke to ___.",
+    "alien": "Piosenka, która teraz utknęła mi w głowie, to ___."
+  },
+  "wr_1pmjw3m": {
+    "human": "Najdziwniejsza rzecz w mojej szufladzie kuchennej to ___.",
+    "alien": "Najdziwniejsza rzecz w mojej schowku samochodowym to ___."
+  },
+  "wr_1bm7rob": {
+    "human": "Trend, który mam nadzieję nigdy nie wróci, to ___.",
+    "alien": "Trend, za którym po cichu tęsknię, to ___."
+  },
+  "wr_r74zyk": {
+    "human": "Najgorszy prezent, jaki można komuś dać, to ___.",
+    "alien": "Najbardziej dezorientujący prezent, jaki dostałem, to ___."
+  },
+  "wr_rmquh2": {
+    "human": "Moja wymarzona praca w dzieciństwie to ___.",
+    "alien": "Praca, w której byłbym zaskakująco słaby, to ___."
+  },
+  "wr_1k8g3fi": {
+    "human": "Najlepsze miejsce na drzemkę to ___.",
+    "alien": "Najgorsze miejsce, w jakim kiedykolwiek zasnąłem, to ___."
+  },
+  "wr_608ips": {
+    "human": "Jedyna aplikacja, której nigdy nie mógłbym usunąć, to ___.",
+    "alien": "Aplikacja, którą najczęściej otwieram bez zamiaru, to ___."
+  },
+  "wr_10qibk4": {
+    "human": "Najlepsze w byciu dorosłym jest ___.",
+    "alien": "Najbardziej rozczarowujące w byciu dorosłym jest ___."
+  },
+  "wr_pahufh": {
+    "human": "Gdybym otworzył restaurację, serwowałaby tylko ___.",
+    "alien": "Gdybym miał food truck, sprzedawałby ___."
+  },
+  "wr_1t7ajy2": {
+    "human": "Najbardziej zbędna rzecz, na którą wydaję pieniądze, to ___.",
+    "alien": "Jedyna rzecz, na którą nie zamierzam wydawać pieniędzy, to ___."
+  },
+  "wr_jcd8ub": {
+    "human": "Umiejętność, która wygląda łatwo, ale absolutnie taka nie jest, to ___.",
+    "alien": "Umiejętność, którą chciałbym, żeby uczono w szkole, to ___."
+  },
+  "wr_16ria6n": {
+    "human": "Najlepsza wymówka, by wyjść wcześnie z imprezy, to ___.",
+    "alien": "Najlepsza wymówka, by odwołać plany, to ___."
+  },
+  "wr_1xh618l": {
+    "human": "Mój film na pocieszenie to ___.",
+    "alien": "Film, który oglądałem o wiele za wiele razy, to ___."
+  },
+  "wr_1t7djru": {
+    "human": "Najgorsza rzecz do powiedzenia na rozmowie o pracę to ___.",
+    "alien": "Najgorsza rzecz do powiedzenia na pierwszej randce to ___."
+  },
+  "wr_jdybiu": {
+    "human": "Najbardziej magiczny zapach na świecie to ___.",
+    "alien": "Zapach, który natychmiast wywołuje u mnie głód, to ___."
+  },
+  "wr_wrdugl": {
+    "human": "Zwierzę, które najbardziej chciałbym mieć w wielkim rozmiarze, to ___.",
+    "alien": "Zwierzę, które najmniej chciałbym spotkać w ciemności, to ___."
+  },
+  "wr_1xdhhfn": {
+    "human": "Gdybym prowadził talk-show, moim pierwszym gościem byłby ___.",
+    "alien": "Najciekawsza osoba, jaką kiedykolwiek poznałem, to ___."
+  },
+  "wr_16elq7o": {
+    "human": "Najlepszy sposób na spędzenie deszczowego dnia to ___.",
+    "alien": "Najlepszy sposób na spędzenie śnieżnego dnia to ___."
+  },
+  "wr_1r51gyi": {
+    "human": "Jedyne jedzenie, które mógłbym jeść codziennie na zawsze, to ___.",
+    "alien": "Jedyne jedzenie, którym nigdy się nie nudzę, to ___."
+  },
+  "wr_1s8zq27": {
+    "human": "Najdziwniejsza rzecz, w którą wierzyłem jako dziecko, to ___.",
+    "alien": "Najdziwniejsza rzecz, którą ostatnio wygooglowałem, to ___."
+  },
+  "wr_10zk5k1": {
+    "human": "Mój popisowy ruch taneczny to ___.",
+    "alien": "Ruch, który wyciągam, gdy nikt nie patrzy, to ___."
+  },
+  "wr_1xclcol": {
+    "human": "Najlepszy dźwięk na świecie to ___.",
+    "alien": "Dźwięk, który natychmiast mnie irytuje, to ___."
+  },
+  "wr_lvw713": {
+    "human": "Gdyby moje życie miało piosenkę przewodnią, byłaby to ___.",
+    "alien": "Piosenka, która zawsze mnie nakręca, to ___."
+  },
+  "wr_11os1l": {
+    "human": "Najdziwniejsza domowa zasada, z którą dorastałem, to ___.",
+    "alien": "Najdziwniejsza zasada w mojej pierwszej pracy to ___."
+  },
+  "wr_1m0m1af": {
+    "human": "Najbardziej bezużyteczny przedmiot w moim domu to ___.",
+    "alien": "Przedmiot w moim domu z najlepszą historią to ___."
+  },
+  "wr_v6ayqp": {
+    "human": "Najszybszy sposób, by stracić moje zaufanie, to ___.",
+    "alien": "Najszybszy sposób, by działać mi na nerwy, to ___."
+  },
+  "wr_11ua28n": {
+    "human": "Prawdziwy przyjaciel nigdy by nie ___.",
+    "alien": "Dobry współlokator nigdy by nie ___."
+  },
+  "wr_1fzh5ot": {
+    "human": "Najbardziej niewybaczalna zbrodnia w grupowym czacie to ___.",
+    "alien": "Najbardziej irytujący nawyk w grupowym czacie to ___."
+  },
+  "wr_k1zdfw": {
+    "human": "Zakończyłbym całą przyjaźń z powodu ___.",
+    "alien": "Patrzyłbym na kogoś krzywo na zawsze z powodu ___."
+  },
+  "wr_5u33j8": {
+    "human": "Najbardziej małostkowy powód, dla którego chowałem urazę, to ___.",
+    "alien": "Najbardziej małostkowe stanowisko, którego bronię do końca, to ___."
+  },
+  "wr_wj25pu": {
+    "human": "Gdyby mój najlepszy przyjaciel planował moje urodziny, wiązałoby się to z ___.",
+    "alien": "Moje bezwysiłkowe wymarzone urodziny to ___."
+  },
+  "wr_2u7sh6": {
+    "human": "Najbardziej podejrzana rzecz, jaką może powiedzieć przyjaciel, to ___.",
+    "alien": "Największe małe kłamstwo, jakie ludzie mówią przyjaciołom, to ___."
+  },
+  "wr_84q47g": {
+    "human": "Ostateczna zdrada na nocowaniu to ___.",
+    "alien": "Najgorsza rzecz do zrobienia, gdy ktoś śpi, to ___."
+  },
+  "wr_15atx07": {
+    "human": "Jedyna rzecz, której nigdy nie pożyczyłbym przyjacielowi, to ___.",
+    "alien": "Jedyna rzecz, którą odmawiam się dzielić, to ___."
+  },
+  "wr_114vty7": {
+    "human": "Przekąska, dla której wprost zdradziłbym przyjaciela, to ___.",
+    "alien": "Jedzenie, którym nigdy się nie podzielę, to ___."
+  },
+  "wr_n2koyo": {
+    "human": "Najszybszy sposób, by wylecieć z naszej grupy przyjaciół, to ___.",
+    "alien": "Najszybszy sposób, by zostać wyciszonym w grupowym czacie, to ___."
+  },
+  "wr_j6dyf9": {
+    "human": "Gdybym jako przyjaciel miał etykietę ostrzegawczą, byłoby na niej ___.",
+    "alien": "Moja największa czerwona lampka w grupie to ___."
+  },
+  "wr_ggtsbu": {
+    "human": "Najgorszy możliwy prezent dla bliskiego przyjaciela to ___.",
+    "alien": "Najbardziej dezorientujący prezent, jaki dostałem, to ___."
+  },
+  "wr_1uu8oli": {
+    "human": "Najbardziej chaotyczna rzecz w naszej grupie przyjaciół to ___.",
+    "alien": "Powód, dla którego nasze plany zawsze biorą w łeb, to ___."
+  },
+  "wr_vz5zs": {
+    "human": "Zagranie, które natychmiast czyni cię czarnym charakterem grupy, to ___.",
+    "alien": "Rzecz, która najszybciej rujnuje wieczór gier, to ___."
+  },
+  "ml_v7qruw": {
+    "human": "Kto najprawdopodobniej przeżyje apokalipsę zombie?",
+    "alien": "Kto najprawdopodobniej wygra walkę z gęsią?"
+  },
+  "ml_1kqeb0c": {
+    "human": "Kto najprawdopodobniej stanie się sławny przez przypadek?",
+    "alien": "Kto najprawdopodobniej zdobędzie rozgłos za okropną opinię?"
+  },
+  "ml_1r2iqp6": {
+    "human": "Kto najprawdopodobniej rozpłacze się podczas filmu?",
+    "alien": "Kto najprawdopodobniej wzruszy się przy filmiku ze zwierzakiem?"
+  },
+  "ml_1ne8tza": {
+    "human": "Kto najprawdopodobniej przepuści wypłatę na coś głupiego?",
+    "alien": "Kto najprawdopodobniej da się nabrać na oczywisty przekręt?"
+  },
+  "ml_7xdmaz": {
+    "human": "Kto najprawdopodobniej zostanie milionerem?",
+    "alien": "Kto najprawdopodobniej założy trzy firmy w rok?"
+  },
+  "ml_1w0ozl4": {
+    "human": "Kto najprawdopodobniej zgubi się z włączonym GPS-em?",
+    "alien": "Komu najprawdopodobniej zabraknie paliwa na autostradzie?"
+  },
+  "ml_bw0h7d": {
+    "human": "Kto najprawdopodobniej wygada się z mandatu?",
+    "alien": "Kto najprawdopodobniej wgada się do strefy VIP?"
+  },
+  "ml_1rc2qwz": {
+    "human": "Kto najprawdopodobniej adoptuje pięć zwierzaków, nikomu nie mówiąc?",
+    "alien": "Kto najprawdopodobniej nakarmi każdego bezpańskiego kota w okolicy?"
+  },
+  "ml_19vvdcr": {
+    "human": "Kto najprawdopodobniej prześpi budzik?",
+    "alien": "Kto najprawdopodobniej spóźni się na własny ślub?"
+  },
+  "ml_16xplu0": {
+    "human": "Kto najprawdopodobniej wygra reality show?",
+    "alien": "Kto najprawdopodobniej wyleci pierwszy z reality show?"
+  },
+  "ml_dy3xbi": {
+    "human": "Kto najprawdopodobniej zapoczątkuje teorię spiskową?",
+    "alien": "Kto najprawdopodobniej uwierzy w teorię spiskową?"
+  },
+  "ml_m9ulww": {
+    "human": "Kto najprawdopodobniej zje coś z podłogi?",
+    "alien": "Kto najprawdopodobniej zignoruje datę ważności?"
+  },
+  "ml_y4q7s0": {
+    "human": "Kto najprawdopodobniej przez przypadek założy sektę?",
+    "alien": "Kto najprawdopodobniej przez przypadek dołączy do sekty?"
+  },
+  "ml_a03jh3": {
+    "human": "Kto najprawdopodobniej napisze do byłej o 2 w nocy?",
+    "alien": "Kto najprawdopodobniej dogłębnie prześledzi nowego partnera byłej w sieci?"
+  },
+  "ml_1er0yck": {
+    "human": "Kto najprawdopodobniej przetrwa sam na bezludnej wyspie?",
+    "alien": "Kto najprawdopodobniej zaprzyjaźni się z dzikim zwierzęciem?"
+  },
+  "ml_ija8i5": {
+    "human": "Kto najprawdopodobniej roześmieje się na pogrzebie?",
+    "alien": "Kto najprawdopodobniej roześmieje się, gdy ktoś upadnie?"
+  },
+  "ml_dt8usa": {
+    "human": "Kto najprawdopodobniej zapomni o urodzinach przyjaciela?",
+    "alien": "Kto najprawdopodobniej zapomni, gdzie zaparkował?"
+  },
+  "ml_nbzri3": {
+    "human": "Kto najprawdopodobniej zostanie prezydentem?",
+    "alien": "Kto najprawdopodobniej zostanie wyproszony z sesji rady miasta?"
+  },
+  "ml_1q4s6qj": {
+    "human": "Kto najprawdopodobniej ma 47 nieodsłuchanych wiadomości głosowych?",
+    "alien": "Kto najprawdopodobniej zostawi wszystkich na „widziano” na całe dni?"
+  },
+  "ml_70v11t": {
+    "human": "Kto najprawdopodobniej wygra kłótnię czystą pewnością siebie i zerem faktów?",
+    "alien": "Kto najprawdopodobniej brnie dalej, gdy udowodniono mu błąd?"
+  },
+  "ml_1gl1s0l": {
+    "human": "Kto najprawdopodobniej wyda całą wypłatę na bilety na koncert?",
+    "alien": "Kto najprawdopodobniej przenocuje w kolejce po premierę produktu?"
+  },
+  "ml_fhaaj6": {
+    "human": "Kto najprawdopodobniej potknie się, wchodząc na scenę po nagrodę?",
+    "alien": "Kto najprawdopodobniej przewróci ekspozycję w sklepie?"
+  },
+  "ml_ov1vyp": {
+    "human": "Kto najprawdopodobniej zostanie wyproszony z biblioteki za śmiech?",
+    "alien": "Kogo najprawdopodobniej uciszą w kinie?"
+  },
+  "ml_1wl2tl0": {
+    "human": "Kto najprawdopodobniej poślubi kogoś poznanego miesiąc temu?",
+    "alien": "Kto najprawdopodobniej zrobi sobie tatuaż pod wpływem chwili?"
+  },
+  "ml_1j3hh4r": {
+    "human": "Kto najprawdopodobniej zniknie w górach i zostanie pustelnikiem?",
+    "alien": "Kto najprawdopodobniej nie odbierze telefonu przez tydzień?"
+  },
+  "ml_1urmqhw": {
+    "human": "Kto najprawdopodobniej ukradnie frytki z twojego talerza?",
+    "alien": "Kto najprawdopodobniej zamówi „nic” i zje połowę twojego posiłku?"
+  },
+  "ml_1n0qyqh": {
+    "human": "Kto najprawdopodobniej zniknie z grupowego czatu i wróci, jakby nic się nie stało?",
+    "alien": "Kto najprawdopodobniej odpisze na wiadomość trzy tygodnie później?"
+  },
+  "ml_17oqg8d": {
+    "human": "Kto najprawdopodobniej napisze cały akapit, a potem go usunie?",
+    "alien": "Kto najprawdopodobniej ćwiczy rozmowę telefoniczną przed jej wykonaniem?"
+  },
+  "ml_za5g3c": {
+    "human": "Kto najprawdopodobniej jest nieoficjalnym terapeutą grupy?",
+    "alien": "Kto najprawdopodobniej zna sekrety wszystkich?"
+  },
+  "ml_w687ij": {
+    "human": "Kto najprawdopodobniej powie za dużo zupełnie obcej osobie?",
+    "alien": "Kto najprawdopodobniej zaprzyjaźni się w poczekalni?"
+  },
+  "ml_11vk1bk": {
+    "human": "Kto najprawdopodobniej zaplanuje całą imprezę wokół jednego motywu?",
+    "alien": "Kto najprawdopodobniej sprząta ze stresu, zanim przyjdą goście?"
+  },
+  "ml_1srgq53": {
+    "human": "Kto najprawdopodobniej znajdzie całe czyjeś życie w sieci w dziesięć minut?",
+    "alien": "Kto najprawdopodobniej zapamięta drobny szczegół, o którym raz wspomniałeś?"
+  },
+  "ml_1m6yida": {
+    "human": "Kto najprawdopodobniej zostanie uczestnikiem teleturnieju?",
+    "alien": "Kto najprawdopodobniej wykrzykuje odpowiedzi do telewizora?"
+  },
+  "ml_129jvv7": {
+    "human": "Kto najprawdopodobniej zostanie zawodowym sportowcem?",
+    "alien": "Kto najprawdopodobniej zrobi sobie krzywdę, nic nie robiąc?"
+  },
+  "ml_1d3jv7l": {
+    "human": "Kto najprawdopodobniej wygra na loterii i zgubi kupon?",
+    "alien": "Kto najprawdopodobniej zapomni własnego PIN-u?"
+  },
+  "ml_1nc553x": {
+    "human": "Kto najprawdopodobniej zostanie sławnym szefem kuchni?",
+    "alien": "Kto najprawdopodobniej przypaliłby wodę?"
+  },
+  "ml_1xxkoed": {
+    "human": "Kto najprawdopodobniej przeprowadzi się do innego kraju pod wpływem chwili?",
+    "alien": "Kto najprawdopodobniej zarezerwuje wyjazd i o nim zapomni?"
+  },
+  "ml_1h6gugq": {
+    "human": "Kto najprawdopodobniej zna każde słowo piosenki sprzed 20 lat?",
+    "alien": "Kto najprawdopodobniej śpiewa złe słowa z pełną pewnością siebie?"
+  },
+  "ml_8ytuc5": {
+    "human": "Kto najprawdopodobniej przetrwa tydzień bez telefonu?",
+    "alien": "Kto najprawdopodobniej godzinami nie zauważy, że telefon się rozładował?"
+  },
+  "ml_1biugh0": {
+    "human": "Kto najprawdopodobniej zaprzyjaźni się z kelnerem?",
+    "alien": "Kto najprawdopodobniej zna baristę po imieniu?"
+  },
+  "ml_j8gpsb": {
+    "human": "Kto najprawdopodobniej zostanie nauczycielem?",
+    "alien": "Kto najprawdopodobniej wytłumaczy coś, o co nikt nie pytał?"
+  },
+  "ml_1v81ull": {
+    "human": "Kto najprawdopodobniej wygra w gapienie się bez mrugania?",
+    "alien": "Kto najprawdopodobniej mrugnie pierwszy w każdym pojedynku?"
+  },
+  "ml_dnfhdp": {
+    "human": "Kto najprawdopodobniej nada zwierzakowi śmieszne imię?",
+    "alien": "Kto najprawdopodobniej rozmawia ze zwierzętami, jakby rozumiały?"
+  },
+  "ml_3xe3di": {
+    "human": "Kto najprawdopodobniej przez przypadek zdobędzie sławę w internecie?",
+    "alien": "Kto najprawdopodobniej ma tajne drugie konto?"
+  },
+  "ml_l0avri": {
+    "human": "Kto najprawdopodobniej zaśnie podczas filmu?",
+    "alien": "Kto najprawdopodobniej zaśnie w połowie zdania?"
+  },
+  "ml_hoetg6": {
+    "human": "Kto najprawdopodobniej zaplanuje idealne wakacje dla wszystkich?",
+    "alien": "Kto najprawdopodobniej strasznie się przepakuje na weekendowy wypad?"
+  },
+  "ml_153zhsr": {
+    "human": "Kto najprawdopodobniej wygra wieczór quizowy?",
+    "alien": "Kto najprawdopodobniej ma bezużyteczny fakt na każdą sytuację?"
+  },
+  "ml_871qx2": {
+    "human": "Kto najprawdopodobniej zdobędzie sławę dzięki tańcowi?",
+    "alien": "Kto najprawdopodobniej zacznie tańczyć, gdy nie gra muzyka?"
+  },
+  "ml_1g1osqk": {
+    "human": "Kto najprawdopodobniej rozpłacze się na ślubie?",
+    "alien": "Kto najprawdopodobniej rozpłacze się przy reklamie?"
+  },
+  "ml_62zub8": {
+    "human": "Kto najprawdopodobniej zostanie detektywem?",
+    "alien": "Kto najprawdopodobniej rozgryzie zwrot akcji o wiele za wcześnie?"
+  },
+  "ml_80bm3j": {
+    "human": "Kto najprawdopodobniej utrzyma roślinę przy życiu przez dziesięć lat?",
+    "alien": "Kto najprawdopodobniej nada imiona wszystkim swoim doniczkom?"
+  },
+  "ml_1xjecgw": {
+    "human": "Kto najprawdopodobniej wygra konkurs jedzenia?",
+    "alien": "Kto najprawdopodobniej jest zawsze głodny?"
+  },
+  "ml_1ta3x5p": {
+    "human": "Kto najprawdopodobniej da najlepszą radę?",
+    "alien": "Kto najprawdopodobniej nigdy nie stosuje własnych rad?"
+  },
+  "ml_12eobsg": {
+    "human": "Kto najprawdopodobniej zgubi się we własnej okolicy?",
+    "alien": "Kto najprawdopodobniej zaufa skrótowi, który dodaje godzinę?"
+  },
+  "ml_18avkvs": {
+    "human": "Kto najprawdopodobniej założy zespół muzyczny?",
+    "alien": "Kto najprawdopodobniej jest tym, kto najgłośniej śpiewa w aucie?"
+  },
+  "ml_wxb90p": {
+    "human": "Kto najprawdopodobniej zostanie milionerem i wciąż będzie wycinał kupony?",
+    "alien": "Kto najprawdopodobniej zachowuje każdy paragon?"
+  },
+  "ml_16gqhtk": {
+    "human": "Kto najprawdopodobniej co roku organizuje święta u siebie?",
+    "alien": "Kto najprawdopodobniej przyprowadzi nieproszoną osobę towarzyszącą?"
+  },
+  "ml_kvuaqc": {
+    "human": "Kto najprawdopodobniej wygra konkurs przebrań?",
+    "alien": "Kto najprawdopodobniej da z siebie wszystko przy jakimś motywie?"
+  },
+  "ml_frejyt": {
+    "human": "Kto najprawdopodobniej zostanie przewodnikiem turystycznym?",
+    "alien": "Kto najprawdopodobniej zawrze przyjaźnie na wakacjach?"
+  },
+  "ml_1amtspb": {
+    "human": "Kto najprawdopodobniej pamięta wszystkich z liceum?",
+    "alien": "Kto najprawdopodobniej wszędzie wpadnie na kogoś znajomego?"
+  },
+  "ml_u0fucy": {
+    "human": "Kto najprawdopodobniej naprawi wszystko taśmą?",
+    "alien": "Kto najprawdopodobniej powie „mogę to zbudować sam”?"
+  },
+  "ml_5uxnsn": {
+    "human": "Kto najprawdopodobniej nabierze się na każdy primaaprilisowy żart?",
+    "alien": "Kto najprawdopodobniej uwierzy w oczywiste kłamstwo?"
+  },
+  "ml_e94yel": {
+    "human": "Kto najprawdopodobniej na zawsze zostanie nocnym markiem?",
+    "alien": "Kto najprawdopodobniej napisze wiadomość o 3 w nocy?"
+  },
+  "ml_tcmeqj": {
+    "human": "Kto najprawdopodobniej zdobędzie nagrodę dla najmilszego?",
+    "alien": "Kto najprawdopodobniej przeprosi krzesło, w które się uderzył?"
+  },
+  "ml_knxwkg": {
+    "human": "Kto najprawdopodobniej uruchomi czujnik dymu, robiąc tosty?",
+    "alien": "Kto najprawdopodobniej za każdym razem przypala popcorn?"
+  },
+  "ml_w5p2jd": {
+    "human": "Kto najprawdopodobniej nie zjawi się na twoich urodzinach?",
+    "alien": "Kto najprawdopodobniej zapomni, jaki jest dziś dzień?"
+  },
+  "ml_j38pw2": {
+    "human": "Kto najprawdopodobniej przeczyta grupowy czat i nigdy nie odpisze?",
+    "alien": "Kto najprawdopodobniej zostawi wszystkich na „widziano”?"
+  },
+  "ml_1msag0x": {
+    "human": "Kto najprawdopodobniej wrobi cię w projekcie grupowym?",
+    "alien": "Kto najprawdopodobniej przypisze sobie zasługi za cudzą pracę?"
+  },
+  "ml_lsej6k": {
+    "human": "Kto najprawdopodobniej wygada sekret zupełnie przez przypadek?",
+    "alien": "Kto najprawdopodobniej powie złą rzecz w złym momencie?"
+  },
+  "ml_1lkhxz7": {
+    "human": "Kto najprawdopodobniej zje twoje frytki w chwili, gdy odwrócisz wzrok?",
+    "alien": "Kto najprawdopodobniej „tylko spróbuje kęsa” z całego twojego posiłku?"
+  },
+  "ml_1yd8kwb": {
+    "human": "Kto najprawdopodobniej odwoła plany godzinę wcześniej?",
+    "alien": "Kto najprawdopodobniej wycofa się i zwali winę na zwierzaka?"
+  },
+  "ml_13pnk8b": {
+    "human": "Kto najprawdopodobniej „zapomni” portfela na kolacji?",
+    "alien": "Kto najprawdopodobniej znika, gdy przychodzi rachunek?"
+  },
+  "ml_1wvy3w5": {
+    "human": "Kto najprawdopodobniej spóźni się godzinę i zachowuje się zupełnie normalnie?",
+    "alien": "Kto najprawdopodobniej mówi „będę za pięć minut” z własnej kanapy?"
+  },
+  "ml_1nlwbq7": {
+    "human": "Kto najprawdopodobniej wystawi plan, który sam ustalił?",
+    "alien": "Kto najprawdopodobniej zorganizuje wydarzenie i sam się nie zjawi?"
+  },
+  "ml_7cm3pb": {
+    "human": "Kto najprawdopodobniej pożyczy bluzę i zatrzyma ją na zawsze?",
+    "alien": "Kto najprawdopodobniej po kawałku zwędzi całą twoją garderobę?"
+  },
+  "ml_1o3m5ok": {
+    "human": "Kto najprawdopodobniej wywoła dramę i pójdzie sobie?",
+    "alien": "Kto najprawdopodobniej podkręca plotki tak dla zabawy?"
+  },
+  "ml_14rey3t": {
+    "human": "Kto najprawdopodobniej sprzeda grupę za darmowy posiłek?",
+    "alien": "Kto najprawdopodobniej zmieni stronę dla przekąsek?"
+  },
+  "ml_3407q3": {
+    "human": "Kto najprawdopodobniej wsypie grupę, żeby samemu uniknąć kłopotów?",
+    "alien": "Kto najprawdopodobniej wie o sprawach każdego?"
+  },
+  "ml_1mg7o2k": {
+    "human": "Kto najprawdopodobniej udaje chorego, żeby wymigać się ze spotkania?",
+    "alien": "Kto najprawdopodobniej zmyśli nagły wypadek, żeby wyjść wcześniej?"
+  },
+  "ml_yo7fl3": {
+    "human": "Kto najprawdopodobniej zagłosuje przeciwko tobie w grze, by wygrać?",
+    "alien": "Kto najprawdopodobniej zdradzi sojusznika, gdy tylko mu się to opłaca?"
+  },
+  "ml_j20zzp": {
+    "human": "Kto najprawdopodobniej „przez przypadek” za każdym razem bierze ostatni kawałek?",
+    "alien": "Kto najprawdopodobniej zawsze zajmuje najlepsze miejsce jako pierwszy?"
+  }
+}
