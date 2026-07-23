@@ -330,7 +330,8 @@
     "identityReveal": "IDENTITY REVEAL",
     "returnToBase": "Return to base",
     "winCrewEjectedInnocent": "The crew ejected an innocent crew member. Infiltrators win.",
-    "winAllInfiltratorsEjected": "Every infiltrator was ejected into space. Crew wins!"
+    "winAllInfiltratorsEjected": "Every infiltrator was ejected into space. Crew wins!",
+    "someone": "Someone"
   },
   "packs": {
     "betrayalName": "Betrayal Pack",
@@ -464,7 +465,8 @@
     "noHacksYet": "No hacks used yet — tap Hack in the HUD.",
     "nothingLogged": "Nothing logged yet",
     "nothingLoggedDesc": "Completed tasks and crew answers will show up here.",
-    "missionNum": "Mission {{round}}"
+    "missionNum": "Mission {{round}}",
+    "submittedDrawing": "Submitted a drawing"
   },
   "hack": {
     "title": "Neural Hack",

@@ -276,8 +276,8 @@
     "hudLeave": "AYRIL",
     "roleInfiltrator": "SIZMACI",
     "roleCrew": "MÜRETTEBAT",
-    "roleDescAlien": "Mürettebattan farklı sorular görürsün. Aralarına karış. İstediğin zaman HACK'e dokun — hak, ortağınla paylaşılır.",
-    "roleDescHuman": "Dürüstçe cevapla ve görev günlüğünde tutmayan cevapları izle.",
+    "roleDescAlien": "Mürettebattan farklı sorular görürsün. Aralarına karış. İstediğin zaman HACK'e dokun — havuz ortağınla paylaşılır.",
+    "roleDescHuman": "Dürüstçe cevapla ve görev günlüğünde birbirini tutmayan cevapları izle.",
     "partner": "Ortak: {{names}}",
     "hideIdentity": "Kimliği gizle",
     "classifiedDossier": "GİZLİ DOSYA",
@@ -330,7 +330,8 @@
     "identityReveal": "KİMLİK AÇIKLAMASI",
     "returnToBase": "Üsse dön",
     "winCrewEjectedInnocent": "Mürettebat masum bir üyeyi attı. Sızmacılar kazanır.",
-    "winAllInfiltratorsEjected": "Her sızmacı uzaya atıldı. Mürettebat kazanır!"
+    "winAllInfiltratorsEjected": "Her sızmacı uzaya atıldı. Mürettebat kazanır!",
+    "someone": "Biri"
   },
   "packs": {
     "betrayalName": "İhanet Paketi",
@@ -464,7 +465,8 @@
     "noHacksYet": "Henüz hack kullanılmadı — HUD'daki Hack'e dokun.",
     "nothingLogged": "Henüz bir şey kaydedilmedi",
     "nothingLoggedDesc": "Tamamlanan görevler ve mürettebat cevapları burada görünecek.",
-    "missionNum": "Görev {{round}}"
+    "missionNum": "Görev {{round}}",
+    "submittedDrawing": "Bir çizim gönderdi"
   },
   "hack": {
     "title": "Nöral Hack",
@@ -534,7 +536,7 @@
         "crewPlaceholder": "Doğum gününe gelmemesi en olası kim?",
         "imposterLabel": "Sahtekâr sorusu",
         "imposterPlaceholder": "Bugünün ne olduğunu unutması en olası kim?",
-        "hint": "İki benzer “gelmemesi en olası kim…” sorusu. Sahtekârınki de aynı şekilde cevaplanabilmeli — ipucu turlar boyunca birikir."
+        "hint": "İki benzer “… en olası kim” sorusu. Sahtekârınki de aynı şekilde cevaplanabilmeli — ipucu turlar boyunca birikir."
       },
       "writing_pod": {
         "label": "Boşluk Doldur",
@@ -547,7 +549,7 @@
       "opinion_hold": {
         "label": "Görüş",
         "crewLabel": "Mürettebat ifadesi",
-        "crewPlaceholder": "Bir arkadaşı bütün gün görüp yanıtsız bırakmak tamamen normal.",
+        "crewPlaceholder": "Bir arkadaşı bütün gün görüldüde bırakmak tamamen normal.",
         "imposterLabel": "Sahtekâr ifadesi",
         "imposterPlaceholder": "Kimseye hızlı yanıt verme borcun yoktur.",
         "hint": "Aynı konuda katılıyorum/katılmıyorum tarzı iki ifade. İkisi de sesli savunulabilmeli."

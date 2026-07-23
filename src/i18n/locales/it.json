@@ -330,7 +330,8 @@
     "identityReveal": "RIVELAZIONE IDENTITÀ",
     "returnToBase": "Torna alla base",
     "winCrewEjectedInnocent": "L'equipaggio ha espulso un innocente. Gli infiltrati vincono.",
-    "winAllInfiltratorsEjected": "Ogni infiltrato è stato espulso nello spazio. L'equipaggio vince!"
+    "winAllInfiltratorsEjected": "Ogni infiltrato è stato espulso nello spazio. L'equipaggio vince!",
+    "someone": "Qualcuno"
   },
   "packs": {
     "betrayalName": "Pacchetto Tradimento",
@@ -464,7 +465,8 @@
     "noHacksYet": "Nessun hack usato ancora — tocca Hack nell'HUD.",
     "nothingLogged": "Ancora niente nel registro",
     "nothingLoggedDesc": "I compiti completati e le risposte dell'equipaggio appariranno qui.",
-    "missionNum": "Missione {{round}}"
+    "missionNum": "Missione {{round}}",
+    "submittedDrawing": "Ha inviato un disegno"
   },
   "hack": {
     "title": "Hack Neurale",

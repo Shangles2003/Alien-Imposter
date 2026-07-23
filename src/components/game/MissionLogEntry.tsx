@@ -42,7 +42,7 @@ export function MissionLogEntry({
               <DrawingPreview paths={r.drawingPaths} height={compact ? 52 : 72} />
             ) : (
               <View style={styles.answerBox}>
-                <Text style={[styles.answerText, { color: accentSoft }]}>{formatChamberAnswer(r, game)}</Text>
+                <Text style={[styles.answerText, { color: accentSoft }]}>{formatChamberAnswer(r, game, t)}</Text>
               </View>
             )}
           </View>

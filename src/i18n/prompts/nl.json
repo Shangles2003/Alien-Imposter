@@ -112,7 +112,7 @@
     "alien": "Restjes smaken beter dan de oorspronkelijke maaltijd."
   },
   "op_vlb1bf": {
-    "human": "Je kunt alles over iemand weten aan hoe die het bedienend personeel behandelt.",
+    "human": "Je kunt alles over iemand zien aan hoe die het bedienend personeel behandelt.",
     "alien": "Eerste indrukken kloppen meestal."
   },
   "op_8acctm": {
@@ -256,7 +256,7 @@
     "alien": "Eerlijkheid is niet altijd alles gelijk verdelen."
   },
   "op_t7pl1g": {
-    "human": "De raamstoel komt met volledige controle over het rolgordijn.",
+    "human": "De stoel bij het raam komt met volledige controle over het zonnescherm.",
     "alien": "Ergens de baas over zijn komt met verantwoordelijkheid."
   },
   "op_1ur5bwa": {
@@ -409,7 +409,7 @@
   },
   "dl_1as3it3": {
     "human": "De groepsapp plant een reis die je je absoluut niet kunt veroorloven.",
-    "alien": "De vrienden plannen iets wat voor jou niet werkt.",
+    "alien": "Je vrienden plannen iets wat voor jou niet werkt.",
     "scenario": "De groepsapp plant een reis die je je absoluut niet kunt veroorloven.",
     "options": [
       "Eerlijk zijn over het budget",
@@ -628,9 +628,9 @@
     ]
   },
   "dl_17du2cc": {
-    "human": "Je bracht een gerecht mee naar het meeneembuffet en na twee uur heeft niemand het aangeraakt.",
+    "human": "Je bracht een gerecht mee naar het buffet en na twee uur heeft niemand het aangeraakt.",
     "alien": "Iets wat jij bijdroeg wordt door iedereen genegeerd.",
-    "scenario": "Je bracht een gerecht mee naar het meeneembuffet en na twee uur heeft niemand het aangeraakt.",
+    "scenario": "Je bracht een gerecht mee naar het buffet en na twee uur heeft niemand het aangeraakt.",
     "options": [
       "Er luid reclame voor maken",
       "Jezelf een groot bord opscheppen om het op gang te brengen",
@@ -763,7 +763,7 @@
     "scenario": "Een vriend eet de restjes op die je de hele week bewaarde.",
     "options": [
       "Laten gaan",
-      "Hem laten vervangen",
+      "Hem ze laten vervangen",
       "Iets van hem opeten, zonder waarschuwing"
     ]
   },
@@ -819,7 +819,7 @@
   },
   "dl_1oil5rf": {
     "human": "Een vriend pakt je bij alles elke keer het laatste stuk af.",
-    "alien": "Iemand grist altijd het beste stuk weg voor jou.",
+    "alien": "Iemand grist altijd het beste stuk voor je neus weg.",
     "scenario": "Een vriend pakt je bij alles elke keer het laatste stuk af.",
     "options": [
       "Op het patroon wijzen",
@@ -846,7 +846,7 @@
     "alien": "Teken een huisdier."
   },
   "dr_17ejwrw": {
-    "human": "Teken een fruit.",
+    "human": "Teken een stuk fruit.",
     "alien": "Teken een bes."
   },
   "dr_1g500zd": {
@@ -1183,7 +1183,7 @@
   },
   "dr_1l7k7v9": {
     "human": "Teken het eerste wat je zou kopen als je een miljoen had.",
-    "alien": "Teken iets wat je heel graag wilt maar je niet kunt veroorloven."
+    "alien": "Teken iets wat je heel graag wilt maar je je niet kunt veroorloven."
   },
   "dr_fcijq9": {
     "human": "Teken je droomhuis.",
@@ -1291,7 +1291,7 @@
   },
   "wr_u4650t": {
     "human": "Het vreemdste dat ik ooit heb gegeten is ___.",
-    "alien": "Een eten dat ik één keer probeerde en nooit meer zal proberen is ___."
+    "alien": "Een gerecht dat ik één keer probeerde en nooit meer zal proberen is ___."
   },
   "wr_1sj1shi": {
     "human": "Mijn guilty pleasure-serie is ___.",
@@ -1334,7 +1334,7 @@
     "alien": "___ is het altijd waard om vroeg voor op te staan."
   },
   "wr_dnr25o": {
-    "human": "Als ik een spook was, zou ik ___ spoken.",
+    "human": "Als ik een spook was, zou ik rondspoken in ___.",
     "alien": "Als ik me één keer per dag kon teleporteren, ging ik meteen naar ___."
   },
   "wr_32pj2": {
@@ -1443,7 +1443,7 @@
   },
   "wr_jcd8ub": {
     "human": "Een vaardigheid die makkelijk lijkt maar dat absoluut niet is is ___.",
-    "alien": "Een vaardigheid die ze op school hadden moeten leren is ___."
+    "alien": "Een vaardigheid die ze je op school hadden moeten leren is ___."
   },
   "wr_16ria6n": {
     "human": "De beste smoes om een feest vroeg te verlaten is ___.",
@@ -1474,8 +1474,8 @@
     "alien": "De beste manier om een sneeuwdag door te brengen is ___."
   },
   "wr_1r51gyi": {
-    "human": "Het ene eten dat ik voor altijd elke dag zou kunnen eten is ___.",
-    "alien": "Het ene eten waar ik nooit genoeg van krijg is ___."
+    "human": "Het ene gerecht dat ik voor altijd elke dag zou kunnen eten is ___.",
+    "alien": "Het ene gerecht waar ik nooit genoeg van krijg is ___."
   },
   "wr_1s8zq27": {
     "human": "Het vreemdste dat ik als kind geloofde was ___.",
@@ -1743,7 +1743,7 @@
   },
   "ml_hoetg6": {
     "human": "Wie plant het waarschijnlijkst de perfecte vakantie voor iedereen?",
-    "alien": "Wie pakt het waarschijnlijkst enorm veel te veel in voor een weekendtrip?"
+    "alien": "Wie pakt het waarschijnlijkst veel te veel in voor een weekendtrip?"
   },
   "ml_153zhsr": {
     "human": "Wie wint het waarschijnlijkst de quizavond?",
@@ -1794,7 +1794,7 @@
     "alien": "Wie gaat het waarschijnlijkst helemaal los op een thema?"
   },
   "ml_frejyt": {
-    "human": "Wie wordt het waarschijnlijkst reisgids?",
+    "human": "Wie wordt het waarschijnlijkst reisleider?",
     "alien": "Wie maakt het waarschijnlijkst vrienden op vakantie?"
   },
   "ml_1amtspb": {
@@ -1815,7 +1815,7 @@
   },
   "ml_tcmeqj": {
     "human": "Wie wint het waarschijnlijkst een prijs voor de aardigste?",
-    "alien": "Wie verontschuldigt zich het waarschijnlijkst tegen een stoel waar hij tegenaan liep?"
+    "alien": "Wie verontschuldigt zich het waarschijnlijkst bij een stoel waar hij tegenaan liep?"
   },
   "ml_knxwkg": {
     "human": "Wie laat het waarschijnlijkst het rookalarm afgaan bij het maken van toast?",

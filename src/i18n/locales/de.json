@@ -68,7 +68,7 @@
     "crewNamePlaceholder": "Dein Crew-Name",
     "usernamePlaceholder": "ihr_benutzername",
     "noBlockedUsers": "Keine blockierten Nutzer.",
-    "unblock": "Freigeben",
+    "unblock": "Entblocken",
     "error": "Fehler",
     "couldNotSaveCallsign": "Rufname konnte nicht gespeichert werden",
     "copied": "Kopiert",
@@ -90,9 +90,9 @@
     "blockedTitle": "Blockiert",
     "blockedBody": "@{{name}} wurde blockiert.",
     "blockFailed": "Blockieren fehlgeschlagen",
-    "unblockedTitle": "Freigegeben",
-    "unblockedBody": "{{name}} wurde freigegeben.",
-    "unblockFailed": "Freigeben fehlgeschlagen"
+    "unblockedTitle": "Entblockt",
+    "unblockedBody": "{{name}} wurde entblockt.",
+    "unblockFailed": "Entblocken fehlgeschlagen"
   },
   "howToPlay": {
     "kicker": "SPIELANLEITUNG",
@@ -267,12 +267,12 @@
     "crewEntersTogether": "DIE GANZE CREW TRITT GEMEINSAM EIN",
     "answerLocked": "Antwort bestätigt",
     "everyoneIn": "Alle sind bereit",
-    "crewResponding": "{{count}} Crew antworten noch",
+    "crewResponding": "{{count}} Crewmitglieder antworten noch",
     "syncingCrew": "Crew wird synchronisiert",
     "syncingSub": "Einen Moment — wir gehen gemeinsam weiter",
     "hudMission": "MISSION",
     "hudHack": "HACK",
-    "hudLog": "LOG",
+    "hudLog": "PROTOKOLL",
     "hudLeave": "VERLASSEN",
     "roleInfiltrator": "EINDRINGLING",
     "roleCrew": "CREW",
@@ -330,7 +330,8 @@
     "identityReveal": "IDENTITÄTEN AUFGEDECKT",
     "returnToBase": "Zurück zur Basis",
     "winCrewEjectedInnocent": "Die Crew hat ein unschuldiges Mitglied rausgeworfen. Die Eindringlinge gewinnen.",
-    "winAllInfiltratorsEjected": "Alle Eindringlinge wurden ins All geworfen. Die Crew gewinnt!"
+    "winAllInfiltratorsEjected": "Alle Eindringlinge wurden ins All geworfen. Die Crew gewinnt!",
+    "someone": "Jemand"
   },
   "packs": {
     "betrayalName": "Betrayal Pack",
@@ -443,7 +444,7 @@
     "trialDesc_other": "Die Stimmen haben diese Spieler benannt. Die Mehrheit entscheidet: mehr Rauswürfe als Behalten und sie fliegen durch die Schleuse. Ein Gleichstand hält sie an Bord und löst eine neue Abstimmung aus.",
     "accusedBy": "BESCHULDIGT VON {{count}} VON {{total}}",
     "votesIn": "{{votesIn}}/{{total}} Stimmen · die Mehrheit entscheidet",
-    "yourVoteLocked": "Deine Stimme ist gesperrt",
+    "yourVoteLocked": "Deine Stimme ist abgegeben",
     "voteEject": "RAUSWERFEN",
     "voteKeepAboard": "AN BORD BEHALTEN",
     "waitingRest": "Warte auf den Rest der Crew...",
@@ -464,7 +465,8 @@
     "noHacksYet": "Noch keine Hacks benutzt — tippe im HUD auf Hack.",
     "nothingLogged": "Noch nichts protokolliert",
     "nothingLoggedDesc": "Abgeschlossene Aufgaben und Crew-Antworten erscheinen hier.",
-    "missionNum": "Mission {{round}}"
+    "missionNum": "Mission {{round}}",
+    "submittedDrawing": "Zeichnung abgegeben"
   },
   "hack": {
     "title": "Neural-Hack",
@@ -533,7 +535,7 @@
         "crewLabel": "Crew-Frage",
         "crewPlaceholder": "Wer verpasst am ehesten deinen Geburtstag?",
         "imposterLabel": "Eindringlings-Frage",
-        "imposterPlaceholder": "Wer vergisst am ehesten, welcher Tag ist?",
+        "imposterPlaceholder": "Wer vergisst am ehesten, welcher Tag heute ist?",
         "hint": "Zwei ähnliche „Wer am ehesten…“-Fragen. Die des Eindringlings sollte sich genauso beantworten lassen — der Hinweis baut sich über die Runden auf."
       },
       "writing_pod": {

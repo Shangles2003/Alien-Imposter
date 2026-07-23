@@ -8,7 +8,7 @@
     "alien": "Essenskategorien sind ausgedacht und eigentlich egal."
   },
   "op_yqa2g8": {
-    "human": "Die Rückenlehne im Flugzeug zurückzulehnen ist völlig in Ordnung.",
+    "human": "Die Rückenlehne im Flugzeug nach hinten zu stellen ist völlig in Ordnung.",
     "alien": "Wenn du dafür bezahlt hast, nutz jede Funktion davon."
   },
   "op_16lwzuq": {
@@ -128,7 +128,7 @@
     "alien": "Benachrichtigungen sind der Feind des Glücks."
   },
   "op_1b20tj4": {
-    "human": "Sprachnachrichten statt zu tippen ist faul.",
+    "human": "Sprachnachrichten zu schicken statt zu tippen ist faul.",
     "alien": "Reden ist einfacher als Tippen."
   },
   "op_1p4lidc": {
@@ -184,7 +184,7 @@
     "alien": "Kleine Nettigkeiten gegenüber Fremden lohnen sich immer."
   },
   "op_17ohdp0": {
-    "human": "Milch vors Müsli zu gießen ist reines Chaos.",
+    "human": "Die Milch vor dem Müsli einzufüllen ist reines Chaos.",
     "alien": "Die Reihenfolge, in der du Dinge tust, ist wirklich wichtig."
   },
   "op_yynou": {
@@ -240,7 +240,7 @@
     "alien": "Bei einem Geschenk schlägt Aufmerksamkeit das Praktische."
   },
   "op_1i8pg15": {
-    "human": "Jeder hat einen Song, den er nie zugeben würde zu lieben.",
+    "human": "Jeder hat einen Song, von dem er nie zugeben würde, dass er ihn liebt.",
     "alien": "Leute verstecken ihren ehrlichsten Geschmack."
   },
   "op_itzezu": {
@@ -296,7 +296,7 @@
     "alien": "Loyalität zählt mehr als recht zu haben."
   },
   "op_wdwe9l": {
-    "human": "Jemandem über die Schulter die Nachrichten zu lesen ist ein Verrat.",
+    "human": "Jemandes Nachrichten über die Schulter mitzulesen ist ein Verrat.",
     "alien": "Manche kleinen Angewohnheiten sind heimlich zum Verrücktwerden."
   },
   "op_etyi83": {
@@ -614,7 +614,7 @@
     "options": [
       "Im Moment etwas sagen",
       "Danach unter vier Augen mit ihm reden",
-      "Laufen lassen und es für immer nicht vergessen"
+      "Laufen lassen und es sich für immer merken"
     ]
   },
   "dl_bc5bdv": {
@@ -654,7 +654,7 @@
     "options": [
       "Einen Mitarbeiter heranwinken",
       "Ruhig alles neu starten",
-      "Das sinkende Schiff verlassen und den Laden verlassen"
+      "Das sinkende Schiff aufgeben und den Laden verlassen"
     ]
   },
   "dl_1eolmis": {
@@ -779,7 +779,7 @@
   },
   "dl_1a093pw": {
     "human": "Ein Freund hat sich vor Monaten Geld geliehen und tut, als wäre es nie passiert.",
-    "alien": "Jemand schuldet dir etwas und hat es günstig vergessen.",
+    "alien": "Jemand schuldet dir etwas und hat es praktischerweise vergessen.",
     "scenario": "Ein Freund hat sich vor Monaten Geld geliehen und tut, als wäre es nie passiert.",
     "options": [
       "Direkt daran erinnern",
@@ -789,7 +789,7 @@
   },
   "dl_c3vl09": {
     "human": "Im Gruppenchat wird dir etwas angehängt, das eigentlich ein Freund getan hat.",
-    "alien": "Du nimmst den Sturm für den Fehler von jemand anderem auf dich.",
+    "alien": "Du nimmst die Schuld für den Fehler von jemand anderem auf dich.",
     "scenario": "Im Gruppenchat wird dir etwas angehängt, das eigentlich ein Freund getan hat.",
     "options": [
       "Dich mit Beweisen verteidigen",
@@ -828,9 +828,9 @@
     ]
   },
   "dl_nahxh1": {
-    "human": "Ein Freund tritt im selben Wettbewerb an wie du und ihr zwei seid die Letzten.",
+    "human": "Ein Freund tritt im selben Wettbewerb an wie du und am Ende seid nur noch ihr zwei übrig.",
     "alien": "Du landest im direkten Duell mit jemandem, der dir nahesteht.",
-    "scenario": "Ein Freund tritt im selben Wettbewerb an wie du und ihr zwei seid die Letzten.",
+    "scenario": "Ein Freund tritt im selben Wettbewerb an wie du und am Ende seid nur noch ihr zwei übrig.",
     "options": [
       "Auf Sieg spielen, ohne Gnade",
       "Heimlich hoffen, dass er gewinnt",
@@ -1131,7 +1131,7 @@
   },
   "dr_146tqll": {
     "human": "Zeichne einen Schmetterling.",
-    "alien": "Zeichne eine Fliege (Krawatte)."
+    "alien": "Zeichne eine Fliege (zum Anzug)."
   },
   "dr_1yuapn9": {
     "human": "Zeichne ein Blatt.",
@@ -1287,7 +1287,7 @@
   },
   "wr_1ym0m77": {
     "human": "___ sollte eine olympische Disziplin sein.",
-    "alien": "___ verdient viel mehr Respekt als Fähigkeit."
+    "alien": "___ verdient als Fähigkeit viel mehr Respekt."
   },
   "wr_u4650t": {
     "human": "Das Seltsamste, was ich je gegessen habe, ist ___.",
@@ -1338,8 +1338,8 @@
     "alien": "Wenn ich mich einmal am Tag teleportieren könnte, würde ich direkt zu ___ gehen."
   },
   "wr_32pj2": {
-    "human": "Das chaotischste Ding in meinem Kühlschrank gerade ist ___.",
-    "alien": "Das chaotischste Ding in meiner Tasche oder meinem Auto gerade ist ___."
+    "human": "Das chaotischste Ding in meinem Kühlschrank ist gerade ___.",
+    "alien": "Das chaotischste Ding in meiner Tasche oder meinem Auto ist gerade ___."
   },
   "wr_14hlu53": {
     "human": "Außerirdische auf der Erde wären am verwirrtesten von ___.",
@@ -1351,7 +1351,7 @@
   },
   "wr_daq6bs": {
     "human": "Mein größtes Warnsignal ist ___.",
-    "alien": "Mein größtes gutes Zeichen ist ___."
+    "alien": "Mein größter Pluspunkt ist ___."
   },
   "wr_1hdsy1": {
     "human": "Nichts ruiniert eine Party schneller als ___.",
@@ -1443,7 +1443,7 @@
   },
   "wr_jcd8ub": {
     "human": "Eine Fähigkeit, die einfach aussieht, es aber absolut nicht ist, ist ___.",
-    "alien": "Eine Fähigkeit, die ich mir gewünscht hätte, dass sie in der Schule gelehrt wird, ist ___."
+    "alien": "Eine Fähigkeit, von der ich wünschte, dass sie in der Schule unterrichtet würde, ist ___."
   },
   "wr_16ria6n": {
     "human": "Die beste Ausrede, um eine Party früh zu verlassen, ist ___.",
@@ -1495,7 +1495,7 @@
   },
   "wr_11os1l": {
     "human": "Die seltsamste Hausregel, mit der ich aufgewachsen bin, war ___.",
-    "alien": "Die seltsamste Regel auf meinem ersten Job war ___."
+    "alien": "Die seltsamste Regel in meinem ersten Job war ___."
   },
   "wr_1m0m1af": {
     "human": "Der nutzloseste Gegenstand in meinem Haus ist ___.",
@@ -1766,7 +1766,7 @@
     "alien": "Wer gibt am ehesten allen seinen Zimmerpflanzen Namen?"
   },
   "ml_1xjecgw": {
-    "human": "Wer gewinnt am ehesten einen Wettessen?",
+    "human": "Wer gewinnt am ehesten ein Wettessen?",
     "alien": "Wer hat am ehesten ständig Hunger?"
   },
   "ml_1ta3x5p": {
@@ -1863,7 +1863,7 @@
   },
   "ml_1o3m5ok": {
     "human": "Wer startet am ehesten ein Drama und geht dann?",
-    "alien": "Wer stochert am ehesten im Klatsch, nur zum Spaß?"
+    "alien": "Wer stiftet am ehesten Unruhe, nur zum Spaß?"
   },
   "ml_14rey3t": {
     "human": "Wer verkauft am ehesten die Gruppe für ein Gratisessen?",

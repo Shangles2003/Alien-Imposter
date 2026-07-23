@@ -117,11 +117,11 @@
       },
       "trial": {
         "title": "Le procès",
-        "body": "Après les missions, chacun accuse en secret ceux qu'il soupçonne. Les plus accusés passent en jugement, et la majorité vote leur expulsion."
+        "body": "Après les missions, chacun accuse en secret ceux qu'il soupçonne. Les plus accusés passent en jugement, et la majorité vote leur éjection."
       },
       "win": {
         "title": "Gagne la partie",
-        "body": "Expulse tous les Infiltrés et l'Équipage gagne. Expulse un innocent et les Infiltrés l'emportent."
+        "body": "Éjecte tous les Infiltrés et l'Équipage gagne. Éjecte un innocent et les Infiltrés l'emportent."
       }
     }
   },
@@ -276,7 +276,7 @@
     "hudLeave": "QUITTER",
     "roleInfiltrator": "INFILTRÉ",
     "roleCrew": "ÉQUIPAGE",
-    "roleDescAlien": "Tu vois des questions différentes de l'équipage. Fonds-toi dans la masse. Touche PIRATAGE quand tu veux — le pool est partagé avec ton partenaire.",
+    "roleDescAlien": "Tu vois des questions différentes de l'équipage. Fonds-toi dans la masse. Touche PIRATAGE quand tu veux — la réserve est partagée avec ton partenaire.",
     "roleDescHuman": "Réponds honnêtement et surveille le journal pour repérer les réponses qui ne collent pas.",
     "partner": "Partenaire : {{names}}",
     "hideIdentity": "Masquer l'identité",
@@ -330,7 +330,8 @@
     "identityReveal": "RÉVÉLATION DES IDENTITÉS",
     "returnToBase": "Retour à la base",
     "winCrewEjectedInnocent": "L'équipage a éjecté un membre innocent. Les infiltrés gagnent.",
-    "winAllInfiltratorsEjected": "Tous les infiltrés ont été éjectés dans l'espace. L'équipage gagne !"
+    "winAllInfiltratorsEjected": "Tous les infiltrés ont été éjectés dans l'espace. L'équipage gagne !",
+    "someone": "Quelqu’un"
   },
   "packs": {
     "betrayalName": "Betrayal Pack",
@@ -388,7 +389,7 @@
     "revoteDesc": "Le vote est partagé. Choisis encore — une autre égalité annule le scan.",
     "nominateDesc": "Réacteur stable, scanner prêt. Vote en secret — le plus voté sera scanné.",
     "ballotsIn": "VOTES {{done}}/{{total}}",
-    "cantVoteYourself": "Tu ne peux pas te voter",
+    "cantVoteYourself": "Tu ne peux pas voter pour toi",
     "nominated": "DÉSIGNÉ",
     "tapToNominate": "Touche pour désigner",
     "castSecretBallot": "Voter en secret",
@@ -432,7 +433,7 @@
     "selectedOf": "SÉLECTIONNÉS {{selected}} SUR {{needed}} · VOTES {{done}}/{{total}}",
     "accused": "ACCUSÉ",
     "tapToAccuse": "Touche pour accuser",
-    "cantVoteYourself": "Tu ne peux pas te voter",
+    "cantVoteYourself": "Tu ne peux pas voter pour toi",
     "castBallot": "Voter en secret",
     "pickMore_one": "Choisis 1 suspect de plus",
     "pickMore_other": "Choisis {{count}} suspects de plus",
@@ -464,7 +465,8 @@
     "noHacksYet": "Aucun piratage utilisé — touche Pirater dans le HUD.",
     "nothingLogged": "Rien d'enregistré pour l'instant",
     "nothingLoggedDesc": "Les tâches terminées et les réponses de l'équipage apparaîtront ici.",
-    "missionNum": "Mission {{round}}"
+    "missionNum": "Mission {{round}}",
+    "submittedDrawing": "A envoyé un dessin"
   },
   "hack": {
     "title": "Piratage neuronal",

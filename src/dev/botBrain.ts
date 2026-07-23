@@ -43,7 +43,10 @@ function buildChamberResponse(
     }
     case 'deliberation_deck': {
       const options = prompt.options ?? ['Option A', 'Option B'];
-      return { promptShown, value: pickRandom(options) };
+      const i = Math.floor(Math.random() * options.length);
+      // Store the English option + its index so each viewer can see it in their
+      // own language (see chamberFormat / localizedDeliberationOption).
+      return { promptShown, value: options[i], optionIndex: i, promptId: prompt.promptId };
     }
     case 'writing_pod': {
       const answers = [

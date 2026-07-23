@@ -122,6 +122,13 @@ export interface ChamberResponse {
   drawingPaths?: string;
   selectedPlayerId?: string;
   selectedGlyphs?: number[];
+  /**
+   * Deliberation deck only: the stable id + index of the chosen option, so the
+   * mission log can re-render the pick in each VIEWER's language. `value` holds
+   * the English option text as a fallback when no translation exists.
+   */
+  promptId?: string;
+  optionIndex?: number;
 }
 
 /** A user-authored prompt from their personal custom deck. */

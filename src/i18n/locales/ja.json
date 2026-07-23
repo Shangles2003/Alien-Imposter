@@ -265,7 +265,7 @@
   },
   "game": {
     "crewEntersTogether": "クルー全員が一緒に入る",
-    "answerLocked": "回答を確定",
+    "answerLocked": "回答を確定しました",
     "everyoneIn": "全員そろいました",
     "crewResponding": "あと{{count}}人が回答中",
     "syncingCrew": "クルーを同期中",
@@ -300,9 +300,9 @@
     "agreeStrongNo": "絶対ノー",
     "agreeStrongNoSub": "反対",
     "agreeNo": "ノー",
-    "agreeNoSub": "どちらかといえば否",
+    "agreeNoSub": "どちらかといえば反対",
     "agreeYes": "イエス",
-    "agreeYesSub": "どちらかといえば賛",
+    "agreeYesSub": "どちらかといえば賛成",
     "agreeStrongYes": "絶対イエス",
     "agreeStrongYesSub": "賛成",
     "submitDrawing": "絵を提出",
@@ -330,7 +330,8 @@
     "identityReveal": "正体の公開",
     "returnToBase": "基地に戻る",
     "winCrewEjectedInnocent": "クルーは無実の乗組員を追放しました。潜入者の勝ちです。",
-    "winAllInfiltratorsEjected": "すべての潜入者が宇宙へ追放されました。クルーの勝ちです！"
+    "winAllInfiltratorsEjected": "すべての潜入者が宇宙へ追放されました。クルーの勝ちです！",
+    "someone": "誰か"
   },
   "packs": {
     "betrayalName": "裏切りパック",
@@ -383,7 +384,7 @@
     "ballotCast": "投票しました",
     "ballotsInScan": "{{done}}/{{total}} 票 — 最多票がスキャン対象に",
     "scannerOnline": "スキャナー起動",
-    "revoteTie": "再投票 — 同数を決着",
+    "revoteTie": "再投票 — 同数に決着を",
     "whoScanned": "誰をスキャンする？",
     "revoteDesc": "票が割れました。もう一度選んで — 再び同数ならスキャンは中止です。",
     "nominateDesc": "リアクター安定、スキャナー準備完了。秘密に投票 — 最多票がスキャンされます。",
@@ -423,7 +424,7 @@
     "ballotCast": "投票しました",
     "ballotsInTrial": "{{done}}/{{total}} 票 — 最多告発が裁判に",
     "ballotRound": "投票ラウンド {{round}} — もう一度投票",
-    "finalExtraction": "最終脱出",
+    "finalExtraction": "最終追放",
     "whoInfiltrators": "潜入者は誰だ？",
     "voteDescFirst_one": "全員が秘密に投票 — 疑わしいプレイヤーを1人選んで。最多告発が裁判にかけられます。",
     "voteDescFirst_other": "全員が秘密に投票 — 疑わしいプレイヤーを{{count}}人選んで。最多告発が裁判にかけられます。",
@@ -464,7 +465,8 @@
     "noHacksYet": "まだハックは使われていません — HUDのハックをタップ。",
     "nothingLogged": "まだ何も記録されていません",
     "nothingLoggedDesc": "完了した課題とクルーの回答がここに表示されます。",
-    "missionNum": "ミッション {{round}}"
+    "missionNum": "ミッション {{round}}",
+    "submittedDrawing": "絵を提出"
   },
   "hack": {
     "title": "ニューラルハック",
@@ -480,7 +482,7 @@
     "missionTime": "ミッション {{mission}} · {{time}}",
     "hackCrew": "クルーをハック",
     "hackCrewHint": "相手は潜入者のお題を見ます",
-    "hackQueued": "ハックを予約",
+    "hackQueued": "ハック予約済み",
     "giveInfiltratorPrompts": "潜入者のお題を与える",
     "hackYourself": "自分をハック",
     "hackYourselfHint": "あなたはクルーのお題を見ます",

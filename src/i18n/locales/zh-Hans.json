@@ -113,7 +113,7 @@
       },
       "spot": {
         "title": "找出那个格格不入的人",
-        "body": "船员：留意那些不太对劲的答案。渗透者：混入其中，别被抓住地活下去。"
+        "body": "船员：留意那些不太对劲的答案。渗透者：混入其中，活下去，别被抓住。"
       },
       "trial": {
         "title": "审判",
@@ -330,7 +330,8 @@
     "identityReveal": "身份揭晓",
     "returnToBase": "返回基地",
     "winCrewEjectedInnocent": "船员驱逐了一名无辜的船员。渗透者获胜。",
-    "winAllInfiltratorsEjected": "所有渗透者都被抛入太空。船员获胜！"
+    "winAllInfiltratorsEjected": "所有渗透者都被抛入太空。船员获胜！",
+    "someone": "某人"
   },
   "packs": {
     "betrayalName": "背叛包",
@@ -464,7 +465,8 @@
     "noHacksYet": "尚未使用任何入侵——点按 HUD 中的「入侵」。",
     "nothingLogged": "暂无记录",
     "nothingLoggedDesc": "已完成的任务和船员答案将显示在此。",
-    "missionNum": "任务 {{round}}"
+    "missionNum": "任务 {{round}}",
+    "submittedDrawing": "提交了一幅画"
   },
   "hack": {
     "title": "神经入侵",

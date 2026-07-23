@@ -104,7 +104,7 @@
     "alien": "Comida simples ganha de comida chique."
   },
   "op_lhus3f": {
-    "human": "Molhar a comida duas vezes é aceitável entre amigos próximos.",
+    "human": "Mergulhar o salgadinho no molho duas vezes é aceitável entre amigos próximos.",
     "alien": "Germe de quem você ama não conta."
   },
   "op_1hesa3e": {
@@ -133,7 +133,7 @@
   },
   "op_1p4lidc": {
     "human": "Salgadinho de posto pega mais forte que sobremesa chique.",
-    "alien": "Guloseima barata ganha da cara."
+    "alien": "Guloseima barata ganha de guloseima cara."
   },
   "op_xad2ps": {
     "human": "Ketchup vai na geladeira, não no armário.",
@@ -213,7 +213,7 @@
   },
   "op_82mzpp": {
     "human": "Nunca é possível ter cobertores demais.",
-    "alien": "Mais de uma coisa boa é sempre melhor."
+    "alien": "Quanto mais de uma coisa boa, melhor."
   },
   "op_1rvrqf8": {
     "human": "Café requentado é um crime de verdade.",
@@ -289,7 +289,7 @@
   },
   "op_tw3zbt": {
     "human": "Cancelar planos uma hora antes deveria te custar uma advertência.",
-    "alien": "Gente relaxada arruína silenciosamente qualquer grupo."
+    "alien": "Gente que vive furando arruína silenciosamente qualquer grupo."
   },
   "op_39mzxa": {
     "human": "Você sempre deve ficar do lado de um amigo, mesmo quando ele está errado.",
@@ -628,9 +628,9 @@
     ]
   },
   "dl_17du2cc": {
-    "human": "Você levou um prato pra o amigo-oculto de comida e, duas horas depois, ninguém tocou nele.",
+    "human": "Você levou um prato pra uma festa em que cada um leva algo e, duas horas depois, ninguém tocou nele.",
     "alien": "Algo que você contribuiu está sendo ignorado por todos.",
-    "scenario": "Você levou um prato pra o amigo-oculto de comida e, duas horas depois, ninguém tocou nele.",
+    "scenario": "Você levou um prato pra uma festa em que cada um leva algo e, duas horas depois, ninguém tocou nele.",
     "options": [
       "Divulgar em voz alta",
       "Se servir de um bom prato pra começar",
@@ -818,19 +818,19 @@
     ]
   },
   "dl_1oil5rf": {
-    "human": "Um amigo sempre te ganha a última fatia de tudo, toda vez.",
+    "human": "Um amigo sempre pega a última fatia de tudo antes de você, toda vez.",
     "alien": "Alguém sempre pega a melhor parte antes de você.",
-    "scenario": "Um amigo sempre te ganha a última fatia de tudo, toda vez.",
+    "scenario": "Um amigo sempre pega a última fatia de tudo antes de você, toda vez.",
     "options": [
       "Apontar o padrão",
-      "Começar a guardar seu prato",
+      "Começar a vigiar seu prato",
       "Ganhar dele na próxima"
     ]
   },
   "dl_nahxh1": {
-    "human": "Um amigo entra no mesmo concurso que você e sobra vocês dois.",
+    "human": "Um amigo entra no mesmo concurso que você e só sobram vocês dois.",
     "alien": "Você acaba competindo cara a cara com alguém próximo.",
-    "scenario": "Um amigo entra no mesmo concurso que você e sobra vocês dois.",
+    "scenario": "Um amigo entra no mesmo concurso que você e só sobram vocês dois.",
     "options": [
       "Jogar pra vencer, sem dó",
       "Secretamente torcer pra ele ganhar",
@@ -942,7 +942,7 @@
     "alien": "Desenhe algo com que você escreve."
   },
   "dr_1w1akb8": {
-    "human": "Desenhe um gorro.",
+    "human": "Desenhe um chapéu.",
     "alien": "Desenhe um gorro que você usa no inverno."
   },
   "dr_1q5kltq": {
@@ -1203,7 +1203,7 @@
   },
   "dr_13jc13f": {
     "human": "Desenhe o único lanche que você jamais dividiria.",
-    "alien": "Desenhe sua comida besteira favorita."
+    "alien": "Desenhe sua besteira favorita."
   },
   "dr_1vymii2": {
     "human": "Desenhe o bicho de estimação dos seus sonhos.",
@@ -1530,7 +1530,7 @@
     "alien": "A maior mentirinha que as pessoas contam aos amigos é ___."
   },
   "wr_84q47g": {
-    "human": "A traição definitiva num pijama party é ___.",
+    "human": "A traição definitiva numa festa do pijama é ___.",
     "alien": "A pior coisa pra fazer enquanto alguém dorme é ___."
   },
   "wr_15atx07": {

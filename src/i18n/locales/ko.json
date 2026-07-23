@@ -225,7 +225,7 @@
     "completed": "{{label}} 완료됨.",
     "purchaseUnavailable": "구매할 수 없음",
     "somethingWrong": "문제가 발생했습니다.",
-    "manageSubBody": "설정 앱 → Apple ID → 구독 에서 변경 또는 취소하세요.",
+    "manageSubBody": "설정 앱 → Apple ID → 구독에서 변경 또는 취소하세요.",
     "devSimulate": "개발: 프리미엄 시뮬레이션",
     "devExpoGo": "Expo Go — 테스트용으로 확장을 켜고 끕니다.",
     "devBuild": "개발 빌드",
@@ -330,7 +330,8 @@
     "identityReveal": "정체 공개",
     "returnToBase": "기지로 복귀",
     "winCrewEjectedInnocent": "크루가 무고한 크루원을 추방했습니다. 침입자의 승리입니다.",
-    "winAllInfiltratorsEjected": "모든 침입자가 우주로 추방되었습니다. 크루의 승리입니다!"
+    "winAllInfiltratorsEjected": "모든 침입자가 우주로 추방되었습니다. 크루의 승리입니다!",
+    "someone": "누군가"
   },
   "packs": {
     "betrayalName": "배신 팩",
@@ -423,7 +424,7 @@
     "ballotCast": "투표 완료",
     "ballotsInTrial": "{{done}}/{{total}} 표 — 최다 고발이 재판에",
     "ballotRound": "투표 라운드 {{round}} — 다시 투표하세요",
-    "finalExtraction": "최종 탈출",
+    "finalExtraction": "최종 추방",
     "whoInfiltrators": "침입자는 누구인가?",
     "voteDescFirst_one": "모두 비밀 투표 — 의심되는 플레이어 1명을 고르세요. 최다 고발이 재판에 회부됩니다.",
     "voteDescFirst_other": "모두 비밀 투표 — 의심되는 플레이어 {{count}}명을 고르세요. 최다 고발이 재판에 회부됩니다.",
@@ -464,7 +465,8 @@
     "noHacksYet": "아직 사용한 해킹이 없습니다 — HUD의 해킹을 탭하세요.",
     "nothingLogged": "아직 기록된 것이 없습니다",
     "nothingLoggedDesc": "완료한 과제와 크루의 답변이 여기에 표시됩니다.",
-    "missionNum": "미션 {{round}}"
+    "missionNum": "미션 {{round}}",
+    "submittedDrawing": "그림 제출함"
   },
   "hack": {
     "title": "뉴럴 해킹",

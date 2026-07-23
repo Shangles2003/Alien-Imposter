@@ -139,7 +139,7 @@
     "missions": "{{count}} misji",
     "packs": "{{count}} pakietów",
     "corePack": "Podstawowa załoga",
-    "rulesBrief": "{{missions}} · {{packs}} · 4–5 załogi = 1 infiltrator · 6–10 = 2",
+    "rulesBrief": "{{missions}} · {{packs}} · 4–5 graczy = 1 infiltrator · 6–10 = 2",
     "crewRoster": "Lista załogi",
     "readyUp": "🎯 Gotów!",
     "unready": "✓ Gotów — dotknij, aby anulować",
@@ -330,7 +330,8 @@
     "identityReveal": "UJAWNIENIE TOŻSAMOŚCI",
     "returnToBase": "Powrót do bazy",
     "winCrewEjectedInnocent": "Załoga wyrzuciła niewinnego członka. Infiltratorzy wygrywają.",
-    "winAllInfiltratorsEjected": "Każdy infiltrator został wyrzucony w kosmos. Załoga wygrywa!"
+    "winAllInfiltratorsEjected": "Każdy infiltrator został wyrzucony w kosmos. Załoga wygrywa!",
+    "someone": "Ktoś"
   },
   "packs": {
     "betrayalName": "Pakiet Zdrady",
@@ -374,7 +375,7 @@
     "conduitRules": [
       "Jeśli NIE ma czerwonych przewodów → przetnij przewód 2.",
       "W przeciwnym razie, jeśli ostatni przewód jest niebieski, a ID Reaktora jest nieparzyste → przetnij pierwszy czerwony przewód.",
-      "W przeciwnym razie, jeśli są dwa lub więcej żółte przewody → przetnij ostatni żółty przewód.",
+      "W przeciwnym razie, jeśli są dwa lub więcej żółtych przewodów → przetnij ostatni żółty przewód.",
       "W przeciwnym razie, jeśli ID Reaktora jest parzyste → przetnij ostatni przewód.",
       "W przeciwnym razie → przetnij przewód 1."
     ]
@@ -474,7 +475,8 @@
     "noHacksYet": "Nie użyto jeszcze żadnego haka — dotknij Hak w HUD.",
     "nothingLogged": "Nic jeszcze nie zapisano",
     "nothingLoggedDesc": "Ukończone zadania i odpowiedzi załogi pojawią się tutaj.",
-    "missionNum": "Misja {{round}}"
+    "missionNum": "Misja {{round}}",
+    "submittedDrawing": "Przesłał rysunek"
   },
   "hack": {
     "title": "Neuralny Hak",
@@ -544,7 +546,7 @@
         "crewPlaceholder": "Kto najpewniej nie pojawi się na Twoich urodzinach?",
         "imposterLabel": "Pytanie oszusta",
         "imposterPlaceholder": "Kto najpewniej zapomni, który jest dzień?",
-        "hint": "Dwa podobne pytania „kto najpewniej…”. To oszusta powinno dać się odpowiedzieć tak samo — trop narasta przez rundy."
+        "hint": "Dwa podobne pytania „kto najpewniej…”. Na pytanie oszusta powinno dać się odpowiedzieć tak samo — trop narasta przez rundy."
       },
       "writing_pod": {
         "label": "Uzupełnij",
@@ -594,7 +596,7 @@
     "unblock": "Odblokuj",
     "report": "Zgłoś",
     "blockTitle": "Zablokować {{name}}?",
-    "blockBody": "Nie będą mogli dołączać do lobby z Tobą. Możesz ich odblokować w Ustawieniach.",
+    "blockBody": "Ta osoba nie będzie mogła dołączać do lobby z Tobą. Możesz ją odblokować w Ustawieniach.",
     "blockedTitle": "Zablokowano",
     "blockedBody": "{{name}} został zablokowany.",
     "blockFailed": "Blokowanie nie powiodło się",

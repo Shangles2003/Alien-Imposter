@@ -105,7 +105,7 @@
       },
       "roles": {
         "title": "Tripulación vs. Infiltrados",
-        "body": "La mayoría sois Tripulación leal. Pero 1–2 jugadores son secretamente Infiltrados. Nadie sabe quién es quién."
+        "body": "La mayoría son Tripulación leal. Pero 1–2 jugadores son secretamente Infiltrados. Nadie sabe quién es quién."
       },
       "missions": {
         "title": "Juega las misiones",
@@ -276,8 +276,8 @@
     "hudLeave": "SALIR",
     "roleInfiltrator": "INFILTRADO",
     "roleCrew": "TRIPULACIÓN",
-    "roleDescAlien": "Ves preguntas diferentes a las de la tripulación. Mézclate. Toca HACKEO cuando quieras: el grupo lo compartes con tu compañero.",
-    "roleDescHuman": "Responde con sinceridad y vigila el registro por respuestas que no cuadren.",
+    "roleDescAlien": "Ves preguntas diferentes a las de la tripulación. Mézclate. Toca HACKEO cuando quieras: la bolsa se comparte con tu compañero.",
+    "roleDescHuman": "Responde con sinceridad y vigila el registro en busca de respuestas que no cuadren.",
     "partner": "Compañero: {{names}}",
     "hideIdentity": "Ocultar identidad",
     "classifiedDossier": "EXPEDIENTE CLASIFICADO",
@@ -330,7 +330,8 @@
     "identityReveal": "REVELACIÓN DE IDENTIDADES",
     "returnToBase": "Volver a la base",
     "winCrewEjectedInnocent": "La tripulación expulsó a un miembro inocente. Ganan los infiltrados.",
-    "winAllInfiltratorsEjected": "Todos los infiltrados fueron expulsados al espacio. ¡Gana la tripulación!"
+    "winAllInfiltratorsEjected": "Todos los infiltrados fueron expulsados al espacio. ¡Gana la tripulación!",
+    "someone": "Alguien"
   },
   "packs": {
     "betrayalName": "Betrayal Pack",
@@ -464,7 +465,8 @@
     "noHacksYet": "Aún no se han usado hackeos — toca Hackear en el HUD.",
     "nothingLogged": "Nada registrado aún",
     "nothingLoggedDesc": "Las tareas completadas y las respuestas de la tripulación aparecerán aquí.",
-    "missionNum": "Misión {{round}}"
+    "missionNum": "Misión {{round}}",
+    "submittedDrawing": "Envió un dibujo"
   },
   "hack": {
     "title": "Hackeo neuronal",

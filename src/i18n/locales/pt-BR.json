@@ -141,7 +141,7 @@
     "corePack": "Tripulação Base",
     "rulesBrief": "{{missions}} · {{packs}} · 4–5 tripulantes = 1 infiltrado · 6–10 = 2",
     "crewRoster": "Lista da Tripulação",
-    "readyUp": "🎯 Prontos!",
+    "readyUp": "🎯 Pronto!",
     "unready": "✓ Pronto — Toque p/ Cancelar",
     "launchMission": "🚀 Iniciar Missão",
     "waitingForCrew": "Aguardando tripulação ({{count}}/{{min}})",
@@ -330,7 +330,8 @@
     "identityReveal": "REVELAÇÃO DE IDENTIDADE",
     "returnToBase": "Voltar à base",
     "winCrewEjectedInnocent": "A tripulação expulsou um inocente. Os infiltrados vencem.",
-    "winAllInfiltratorsEjected": "Todos os infiltrados foram lançados ao espaço. A tripulação vence!"
+    "winAllInfiltratorsEjected": "Todos os infiltrados foram lançados ao espaço. A tripulação vence!",
+    "someone": "Alguém"
   },
   "packs": {
     "betrayalName": "Pacote Traição",
@@ -347,8 +348,8 @@
     "color_green": "VERDE",
     "color_white": "BRANCO",
     "armed": "ARMADO",
-    "severConduit": "✂  CORTAR CONDUTE {{n}}",
-    "armToSever": "Arme uma condute para cortar",
+    "severConduit": "✂  CORTAR CONDUÍTE {{n}}",
+    "armToSever": "Arme um conduíte para cortar",
     "reset": "Redefinir",
     "lockSequence": "🔒  SEQUÊNCIA DE TRAVA",
     "pressAllFour": "Pressione os quatro ({{n}}/4)",
@@ -368,15 +369,15 @@
     "aCrewmateLower": "um tripulante",
     "engineer": "ENGENHEIRO",
     "operator": "OPERADOR",
-    "moduleConduit": "Matriz de Condutes",
+    "moduleConduit": "Matriz de Conduítes",
     "moduleGlyph": "Cifra da Comporta",
     "moduleFrequency": "Trava de Frequência",
     "conduitRules": [
-      "Se NÃO houver condutes vermelhas → corte a condute 2.",
-      "Senão, se a última condute for azul e o ID do Reator for ímpar → corte a primeira condute vermelha.",
-      "Senão, se houver duas ou mais condutes amarelas → corte a última condute amarela.",
-      "Senão, se o ID do Reator for par → corte a última condute.",
-      "Senão → corte a condute 1."
+      "Se NÃO houver conduítes vermelhos → corte o conduíte 2.",
+      "Senão, se o último conduíte for azul e o ID do Reator for ímpar → corte o primeiro conduíte vermelho.",
+      "Senão, se houver dois ou mais conduítes amarelos → corte o último conduíte amarelo.",
+      "Senão, se o ID do Reator for par → corte o último conduíte.",
+      "Senão → corte o conduíte 1."
     ]
   },
   "identity": {
@@ -415,7 +416,7 @@
     "scanAborted": "Scan cancelado",
     "debriefDefault": "Os reparos resistiram. O capitão fez o scan — os detalhes ficam confidenciais.",
     "debriefNoConsensus": "Sem consenso sobre o alvo do scan. A verificação de identidade é pulada.",
-    "debriefRepairFailed": "Reparo falhou — scan cancelado. Nenhum dado de papel foi recuperado.",
+    "debriefRepairFailed": "Reparo falhou — scan cancelado. Nenhum dado de identidade foi recuperado.",
     "debriefScanDone": "O scan em {{name}} está completo. Só o capitão sabe o resultado.",
     "continueMission": "Continuar missão"
   },
@@ -464,7 +465,8 @@
     "noHacksYet": "Nenhum hack usado ainda — toque em Hack no HUD.",
     "nothingLogged": "Nada registrado ainda",
     "nothingLoggedDesc": "Tarefas concluídas e respostas da tripulação aparecerão aqui.",
-    "missionNum": "Missão {{round}}"
+    "missionNum": "Missão {{round}}",
+    "submittedDrawing": "Enviou um desenho"
   },
   "hack": {
     "title": "Hack Neural",

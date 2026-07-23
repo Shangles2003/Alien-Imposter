@@ -20,7 +20,7 @@
     "alien": "Terbang memunculkan sisi terburuk semua orang."
   },
   "op_1f6j8gp": {
-    "human": "Kucing teman sekamar yang lebih baik daripada anjing.",
+    "human": "Kucing adalah teman sekamar yang lebih baik daripada anjing.",
     "alien": "Peliharaan yang tak merepotkan adalah peliharaan terbaik."
   },
   "op_14sb1ka": {
@@ -145,7 +145,7 @@
   },
   "op_87cgga": {
     "human": "Kamu harus membilas piring sebelum memasukkannya ke mesin cuci piring.",
-    "alien": "Mengerjakan sesuatu dua kali lebih baik daripada salah satu kali."
+    "alien": "Lebih baik mengerjakan sesuatu dua kali daripada salah sekali."
   },
   "op_8vot88": {
     "human": "Buku audio sepenuhnya terhitung sebagai membaca.",
@@ -257,7 +257,7 @@
   },
   "op_t7pl1g": {
     "human": "Kursi dekat jendela datang dengan kendali penuh atas tirainya.",
-    "alien": "Bertanggung jawab atas sesuatu datang dengan tanggung jawab."
+    "alien": "Memegang kendali atas sesuatu datang dengan tanggung jawab."
   },
   "op_1ur5bwa": {
     "human": "Orang diam-diam bangga dengan tulisan tangannya sendiri.",
@@ -309,7 +309,7 @@
   },
   "op_ttruar": {
     "human": "Menyimpan hoodie pinjaman lebih dari setahun membuatnya jadi milikmu.",
-    "alien": "Penguasaan pada dasarnya sembilan persepuluh hukum."
+    "alien": "Pada dasarnya, siapa yang memegang barangnya, dialah pemiliknya."
   },
   "op_1ryok5o": {
     "human": "Membuat peringkat teman dari terbaik ke terburuk itu adil.",
@@ -454,7 +454,7 @@
     "options": [
       "Berimprovisasi dari ingatan",
       "Umumkan istirahat lima menit",
-      "Beralih ke bertanya kepada ruangan"
+      "Balik bertanya ke seisi ruangan"
     ]
   },
   "dl_oy33pr": {
@@ -639,7 +639,7 @@
   },
   "dl_1ki67yu": {
     "human": "Kamu sadar sudah dua minggu memanggil rekan barumu dengan nama yang salah.",
-    "alien": "Kamu tahu sudah beberapa waktu salah dalam hal kecil.",
+    "alien": "Kamu baru tahu bahwa sudah beberapa waktu kamu salah soal hal kecil.",
     "scenario": "Kamu sadar sudah dua minggu memanggil rekan barumu dengan nama yang salah.",
     "options": [
       "Segera minta maaf",
@@ -719,7 +719,7 @@
   },
   "dl_ckyktf": {
     "human": "Seorang teman memintamu menutupinya dengan kebohongan yang cukup besar.",
-    "alien": "Seorang teman memintamu bantuan yang kamu ragu.",
+    "alien": "Seorang teman meminta bantuanmu untuk hal yang membuatmu ragu.",
     "scenario": "Seorang teman memintamu menutupinya dengan kebohongan yang cukup besar.",
     "options": [
       "Tutupi dia — itu yang teman lakukan",
@@ -1242,7 +1242,7 @@
     "alien": "Hal terburuk yang didengar dari montirmu adalah ___."
   },
   "wr_14xppyw": {
-    "human": "___ langsung jadi pemutus di kencan pertama.",
+    "human": "___ langsung bikin ilfil di kencan pertama.",
     "alien": "___ langsung jadi tanda bahaya pada rekan kerja baru."
   },
   "wr_16s51yb": {
@@ -1407,7 +1407,7 @@
   },
   "wr_1pmjw3m": {
     "human": "Hal teraneh di laci dapurku adalah ___.",
-    "alien": "Hal teraneh di dasbor mobilku adalah ___."
+    "alien": "Hal teraneh di laci dasbor mobilku adalah ___."
   },
   "wr_1bm7rob": {
     "human": "Tren yang kuharap tak pernah kembali adalah ___.",
@@ -1494,7 +1494,7 @@
     "alien": "Lagu yang selalu membuatku bersemangat adalah ___."
   },
   "wr_11os1l": {
-    "human": "Aturan rumah teraneh yang membesarkanku adalah ___.",
+    "human": "Aturan rumah teraneh saat aku tumbuh besar adalah ___.",
     "alien": "Aturan teraneh di pekerjaan pertamaku adalah ___."
   },
   "wr_1m0m1af": {
@@ -1651,7 +1651,7 @@
   },
   "ml_ov1vyp": {
     "human": "Siapa yang paling mungkin diusir dari perpustakaan karena tertawa?",
-    "alien": "Siapa yang paling mungkin dishush di bioskop?"
+    "alien": "Siapa yang paling mungkin disuruh diam di bioskop?"
   },
   "ml_1wl2tl0": {
     "human": "Siapa yang paling mungkin menikahi seseorang yang baru dikenalnya sebulan lalu?",
@@ -1810,7 +1810,7 @@
     "alien": "Siapa yang paling mungkin memercayai kebohongan yang jelas?"
   },
   "ml_e94yel": {
-    "human": "Siapa yang paling mungkin jadi burung hantu malam selamanya?",
+    "human": "Siapa yang paling mungkin begadang selamanya?",
     "alien": "Siapa yang paling mungkin mengirim pesan jam 3 pagi?"
   },
   "ml_tcmeqj": {
@@ -1855,7 +1855,7 @@
   },
   "ml_1nlwbq7": {
     "human": "Siapa yang paling mungkin membatalkan rencana yang ia buat sendiri?",
-    "alien": "Siapa yang paling mungkin menyelenggarakan acara lalu tak datang sendiri?"
+    "alien": "Siapa yang paling mungkin menyelenggarakan acara lalu tidak datang?"
   },
   "ml_7cm3pb": {
     "human": "Siapa yang paling mungkin meminjam hoodie dan menyimpannya selamanya?",

@@ -165,6 +165,7 @@ export default function GameScreen() {
               runPlayerAction((s) =>
                 engine.submitChamberResponse(s, me.uid, {
                   promptShown: getPromptForPlayer(s.activePrompt!, me.role, me.isHacked),
+                  promptId: s.activePrompt!.promptId,
                   value,
                   ...extra,
                 })

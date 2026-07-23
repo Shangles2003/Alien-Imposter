@@ -76,6 +76,20 @@ export function localizedPromptForPlayer(
   return english;
 }
 
+/**
+ * A single deliberation option, by promptId + index, in the viewer's language.
+ * Returns undefined when there's no translation so callers can fall back to the
+ * English text stored on the response.
+ */
+export function localizedDeliberationOption(
+  promptId: string | undefined,
+  index: number | undefined
+): string | undefined {
+  if (!promptId || index == null) return undefined;
+  const opt = lookup(promptId)?.options?.[index];
+  return typeof opt === 'string' && opt ? opt : undefined;
+}
+
 /** Decision-deck answer options, localized (English fallback, order preserved). */
 export function localizedPromptOptions(prompt: ChamberPrompt): string[] {
   const english = prompt.options ?? [];

@@ -45,11 +45,11 @@
   },
   "op_162eode": {
     "human": "Papier toaletowy musi zwisać od góry, nie od dołu.",
-    "alien": "Prawie każda praca domowa ma właściwy sposób wykonania."
+    "alien": "Prawie każdy obowiązek domowy ma właściwy sposób wykonania."
   },
   "op_fiaayk": {
     "human": "Zima to najlepsza pora roku.",
-    "alien": "Zostać w domu jest lepiej niż wyjść."
+    "alien": "Lepiej zostać w domu niż wyjść."
   },
   "op_zmra1u": {
     "human": "Zniknięcie bez słowa bywa czasem najżyczliwszą opcją.",
@@ -88,7 +88,7 @@
     "alien": "Długie pożegnania są gorsze niż brak pożegnania."
   },
   "op_3t7az8": {
-    "human": "Skarpetki w sandałach to prawomocny wygląd.",
+    "human": "Skarpetki w sandałach to pełnoprawny wygląd.",
     "alien": "Wygoda za każdym razem bije modę."
   },
   "op_1t8q3up": {
@@ -145,11 +145,11 @@
   },
   "op_87cgga": {
     "human": "Naczynia trzeba opłukać przed włożeniem do zmywarki.",
-    "alien": "Zrobić coś dwa razy jest lepiej niż raz źle."
+    "alien": "Lepiej zrobić coś dwa razy niż raz źle."
   },
   "op_8vot88": {
     "human": "Audiobooki całkowicie liczą się jako czytanie.",
-    "alien": "Jak się czegoś uczysz, ma mniejsze znaczenie niż to, że się nauczyłeś."
+    "alien": "To, jak się czegoś uczysz, ma mniejsze znaczenie niż to, że się nauczyłeś."
   },
   "op_184hb11": {
     "human": "Rozmowa telefoniczna jest bardziej irytująca niż wiadomość.",
@@ -205,7 +205,7 @@
   },
   "op_slqoqw": {
     "human": "Każdy powinien nauczyć się gotować jedno naprawdę imponujące danie.",
-    "alien": "Opłaca się być świetnym w jednym niż niezłym w wielu rzeczach."
+    "alien": "Bardziej opłaca się być świetnym w jednej rzeczy niż niezłym w wielu."
   },
   "op_1xsr9uu": {
     "human": "Odręczna kartka z podziękowaniem zawsze jest warta wysiłku.",
@@ -213,7 +213,7 @@
   },
   "op_82mzpp": {
     "human": "Koców nigdy nie jest za dużo.",
-    "alien": "Więcej czegoś dobrego jest zawsze lepiej."
+    "alien": "Więcej czegoś dobrego zawsze znaczy lepiej."
   },
   "op_1rvrqf8": {
     "human": "Odgrzewana kawa to prawdziwa zbrodnia.",
@@ -240,7 +240,7 @@
     "alien": "W prezencie troska bije praktyczność."
   },
   "op_1i8pg15": {
-    "human": "Każdy ma jedną piosenkę, której miłości nigdy by nie przyznał.",
+    "human": "Każdy ma jedną piosenkę, którą kocha, ale nigdy by się do tego nie przyznał.",
     "alien": "Ludzie ukrywają swoje najszczersze gusta."
   },
   "op_itzezu": {
@@ -257,7 +257,7 @@
   },
   "op_t7pl1g": {
     "human": "Miejsce przy oknie daje pełną kontrolę nad roletką.",
-    "alien": "Odpowiadanie za coś wiąże się z odpowiedzialnością."
+    "alien": "Kierowanie czymś wiąże się z odpowiedzialnością."
   },
   "op_1ur5bwa": {
     "human": "Ludzie są potajemnie dumni ze swojego charakteru pisma.",
@@ -317,7 +317,7 @@
   },
   "op_onmp3m": {
     "human": "Wydanie przyjaciela, by ratować siebie, bywa czasem usprawiedliwione.",
-    "alien": "Samozachowanie jest ważniejsze od lojalności."
+    "alien": "Instynkt samozachowawczy jest ważniejszy od lojalności."
   },
   "op_gatknn": {
     "human": "Opuszczenie ważnego wydarzenia przyjaciela, bo jesteś zmęczony, jest w porządku.",
@@ -344,7 +344,7 @@
     "options": [
       "Zatrzymaj — los przemówił",
       "Oddaj do sklepu",
-      "Zatrzymaj połowę, połowę oddaj na cel"
+      "Zatrzymaj połowę, połowę oddaj na cel charytatywny"
     ]
   },
   "dl_uy801w": {
@@ -724,7 +724,7 @@
     "options": [
       "Kryj go — tak robią przyjaciele",
       "Odmów i powiedz prawdę",
-      "Skryj tym razem, ale nigdy więcej"
+      "Kryj go tym razem, ale nigdy więcej"
     ]
   },
   "dl_13ouh8y": {
@@ -1019,7 +1019,7 @@
   },
   "dr_ei4e0r": {
     "human": "Narysuj kaktusa na pustyni.",
-    "alien": "Narysuj machającą na cześć dłoń."
+    "alien": "Narysuj dłoń machającą na powitanie."
   },
   "dr_1316v0x": {
     "human": "Narysuj UFO.",
@@ -1035,7 +1035,7 @@
   },
   "dr_6kxh9k": {
     "human": "Narysuj węża.",
-    "alien": "Narysuj kręta rzekę."
+    "alien": "Narysuj krętą rzekę."
   },
   "dr_oqbqeu": {
     "human": "Narysuj pączka.",
@@ -1291,11 +1291,11 @@
   },
   "wr_u4650t": {
     "human": "Najdziwniejsza rzecz, jaką kiedykolwiek zjadłem, to ___.",
-    "alien": "Jedzenie, które spróbowałem raz i nigdy więcej nie spróbuję, to ___."
+    "alien": "Jedzenie, którego spróbowałem raz i nigdy więcej nie spróbuję, to ___."
   },
   "wr_1sj1shi": {
     "human": "Mój serial-grzeszna przyjemność to ___.",
-    "alien": "Serial, którego broniłbym z życiem, to ___."
+    "alien": "Serial, którego broniłbym za wszelką cenę, to ___."
   },
   "wr_oi4w0h": {
     "human": "Pierwsza rzecz, którą kupiłbym po wygranej na loterii, to ___.",
@@ -1343,10 +1343,10 @@
   },
   "wr_14hlu53": {
     "human": "Kosmitów odwiedzających Ziemię najbardziej zdezorientowałoby ___.",
-    "alien": "Kosmitów odwiedzających Ziemię najbardziej zaimponowałoby ___."
+    "alien": "Kosmitom odwiedzającym Ziemię najbardziej zaimponowałoby ___."
   },
   "wr_1pqa4g1": {
-    "human": "Jedyna praca domowa, za której nierobienie zapłaciłbym cokolwiek, to ___.",
+    "human": "Jedyny obowiązek domowy, za którego nierobienie zapłaciłbym każde pieniądze, to ___.",
     "alien": "Jedyny sprawunek, który zawsze będę odkładał, to ___."
   },
   "wr_daq6bs": {
@@ -1371,7 +1371,7 @@
   },
   "wr_1aazfvk": {
     "human": "Gdyby prokrastynacja była sportem, moją konkurencją byłoby ___.",
-    "alien": "Zadanie, które unikam najdłużej, to ___."
+    "alien": "Zadanie, którego unikam najdłużej, to ___."
   },
   "wr_z1fznz": {
     "human": "Najgorsza rzecz do znalezienia w pokoju hotelowym to ___.",
@@ -1407,7 +1407,7 @@
   },
   "wr_1pmjw3m": {
     "human": "Najdziwniejsza rzecz w mojej szufladzie kuchennej to ___.",
-    "alien": "Najdziwniejsza rzecz w mojej schowku samochodowym to ___."
+    "alien": "Najdziwniejsza rzecz w moim schowku samochodowym to ___."
   },
   "wr_1bm7rob": {
     "human": "Trend, który mam nadzieję nigdy nie wróci, to ___.",
@@ -1535,7 +1535,7 @@
   },
   "wr_15atx07": {
     "human": "Jedyna rzecz, której nigdy nie pożyczyłbym przyjacielowi, to ___.",
-    "alien": "Jedyna rzecz, którą odmawiam się dzielić, to ___."
+    "alien": "Jedyna rzecz, którą nigdy się nie podzielę, to ___."
   },
   "wr_114vty7": {
     "human": "Przekąska, dla której wprost zdradziłbym przyjaciela, to ___.",
@@ -1586,7 +1586,7 @@
     "alien": "Komu najprawdopodobniej zabraknie paliwa na autostradzie?"
   },
   "ml_bw0h7d": {
-    "human": "Kto najprawdopodobniej wygada się z mandatu?",
+    "human": "Kto najprawdopodobniej wykręci się z mandatu?",
     "alien": "Kto najprawdopodobniej wgada się do strefy VIP?"
   },
   "ml_1rc2qwz": {

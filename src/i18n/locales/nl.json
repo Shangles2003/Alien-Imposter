@@ -127,7 +127,7 @@
   },
   "lobby": {
     "docking": "Aanmeren bij lobby...",
-    "codeCopied": "✓ Gekopieerd — plak het naar je bemanning",
+    "codeCopied": "✓ Gekopieerd — stuur het naar je bemanning",
     "codeHint": "Tik op de code om te kopiëren · vrienden doen mee via het hoofdmenu",
     "partyCode": "Spelcode",
     "kicker": "PRE-VLUCHT",
@@ -255,7 +255,7 @@
     "writing_pod": {
       "label": "Aanvul-Pod",
       "tagline": "Maak de zin hieronder af",
-      "description": "Elke speler vult de blanco in op zijn eigen pod-terminal."
+      "description": "Elke speler vult de lege plek in op zijn eigen pod-terminal."
     },
     "most_likely_to": {
       "label": "Kluisje der Waarschijnlijkheid",
@@ -269,7 +269,7 @@
     "everyoneIn": "Iedereen is binnen",
     "crewResponding": "{{count}} bemanningsleden reageren nog",
     "syncingCrew": "Bemanning synchroniseren",
-    "syncingSub": "Hou vast — we gaan samen verder",
+    "syncingSub": "Even geduld — we gaan samen verder",
     "hudMission": "MISSIE",
     "hudHack": "HACK",
     "hudLog": "LOG",
@@ -330,7 +330,8 @@
     "identityReveal": "IDENTITEIT ONTHULD",
     "returnToBase": "Terug naar basis",
     "winCrewEjectedInnocent": "De bemanning heeft een onschuldige eruit gestemd. De infiltranten winnen.",
-    "winAllInfiltratorsEjected": "Elke infiltrant is de ruimte in geslingerd. De bemanning wint!"
+    "winAllInfiltratorsEjected": "Elke infiltrant is de ruimte in geslingerd. De bemanning wint!",
+    "someone": "Iemand"
   },
   "packs": {
     "betrayalName": "Verraadpack",
@@ -369,7 +370,7 @@
     "engineer": "TECHNICUS",
     "operator": "OPERATOR",
     "moduleConduit": "Leidingenmatrix",
-    "moduleGlyph": "Luchtsluiscijfer",
+    "moduleGlyph": "Luchtsluiscode",
     "moduleFrequency": "Frequentievergrendeling",
     "conduitRules": [
       "Als er GEEN rode leidingen zijn → kap leiding 2.",
@@ -450,7 +451,7 @@
     "ejectBtn": "ERUIT",
     "outAirlock": "De luchtsluis uit",
     "keepBtn": "HOUDEN",
-    "revoteSuspects": "Verdachten opnieuw stemmen"
+    "revoteSuspects": "Opnieuw stemmen over verdachten"
   },
   "log": {
     "title": "Missielog",
@@ -464,7 +465,8 @@
     "noHacksYet": "Nog geen hacks gebruikt — tik op Hack in de HUD.",
     "nothingLogged": "Nog niets gelogd",
     "nothingLoggedDesc": "Voltooide opdrachten en antwoorden van de bemanning verschijnen hier.",
-    "missionNum": "Missie {{round}}"
+    "missionNum": "Missie {{round}}",
+    "submittedDrawing": "Tekening ingediend"
   },
   "hack": {
     "title": "Neurale Hack",
@@ -485,7 +487,7 @@
     "hackYourself": "Jezelf hacken",
     "hackYourselfHint": "Jij ziet bemanningsopdrachten",
     "seeCorrectCrew": "Zie de juiste bemanningsopdrachten",
-    "noHacksRemaining": "Geen hacks meer over deze missie.",
+    "noHacksRemaining": "Geen hacks meer over in deze missie.",
     "willSeeInfiltrator": "Ziet straks infiltrant-opdrachten",
     "willSeeCrew": "Ziet straks bemanningsopdrachten",
     "seeingInfiltrator": "Ziet infiltrant-opdrachten",
@@ -497,10 +499,10 @@
     "compareCrew": "Vergelijk de bemanning",
     "partnerSignal": "Partnersignaal",
     "partnerHacked": "{{hacker}} hackte {{target}}",
-    "scrambleDesc": "Verhusselt de opdrachten van een bemanningslid zodat het alien-taken ziet. Let in het rapport op fouten. Je partner krijgt een melding.",
+    "scrambleDesc": "Verhussel de opdrachten van een bemanningslid zodat het alien-taken ziet. Let in het rapport op fouten. Je partner krijgt een melding.",
     "remaining": "{{remaining}} van {{total}} over",
     "promptsScrambled": "Opdrachten verhusseld",
-    "scrambleYourOwn": "Verhusselt je eigen opdrachten",
+    "scrambleYourOwn": "Verhussel je eigen opdrachten",
     "tapToScramble": "Tik om opdrachten te verhusselen"
   },
   "sync": {
@@ -584,7 +586,7 @@
     "unblock": "Deblokkeren",
     "report": "Rapporteren",
     "blockTitle": "{{name}} blokkeren?",
-    "blockBody": "Ze kunnen dan geen lobby's met jou joinen. Je kunt ze deblokkeren in Instellingen.",
+    "blockBody": "Ze kunnen dan niet meer meedoen aan lobby's met jou. Je kunt ze deblokkeren in Instellingen.",
     "blockedTitle": "Geblokkeerd",
     "blockedBody": "{{name}} is geblokkeerd.",
     "blockFailed": "Blokkeren mislukt",

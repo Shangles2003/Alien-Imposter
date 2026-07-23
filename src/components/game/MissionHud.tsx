@@ -63,7 +63,7 @@ export function MissionHud({
             onPress={onOpenHack}
             style={({ pressed }) => [styles.hackBtnWrap, pressed && styles.btnPressed]}
           >
-            <Text style={styles.hackBtn}>{t('game.hudHack')}</Text>
+            <Text style={styles.hackBtn} numberOfLines={1}>{t('game.hudHack')}</Text>
             <Text style={styles.hackCount}>{hacksRemaining ?? 0}</Text>
           </Pressable>
         ) : null}
@@ -72,7 +72,7 @@ export function MissionHud({
             onPress={onOpenLog}
             style={({ pressed }) => [styles.logBtnWrap, pressed && styles.btnPressed]}
           >
-            <Text style={[styles.logBtn, { color: accentSoft }]}>
+            <Text style={[styles.logBtn, { color: accentSoft }]} numberOfLines={1}>
               {t('game.hudLog')}{logCount > 0 ? ` ${logCount}` : ''}
             </Text>
           </Pressable>
@@ -83,7 +83,7 @@ export function MissionHud({
             style={({ pressed }) => [styles.leaveBtnWrap, pressed && styles.btnPressed]}
             hitSlop={4}
           >
-            <Text style={styles.leaveBtn}>{t('game.hudLeave')}</Text>
+            <Text style={styles.leaveBtn} numberOfLines={1}>{t('game.hudLeave')}</Text>
           </Pressable>
         ) : null}
       </View>
@@ -125,7 +125,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
-    flexShrink: 0,
+    flexShrink: 1,
+    minWidth: 0,
   },
   btnPressed: { opacity: 0.7 },
   logBtnWrap: {
@@ -135,6 +136,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surfaceElevated,
     borderWidth: 1,
     borderColor: colors.borderBright,
+    flexShrink: 1,
+    minWidth: 0,
   },
   logBtn: {
     ...typography.small,
@@ -152,6 +155,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(251,113,133,0.15)',
     borderWidth: 1,
     borderColor: 'rgba(251,113,133,0.45)',
+    flexShrink: 1,
+    minWidth: 0,
   },
   hackBtn: {
     ...typography.small,
@@ -175,6 +180,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,
+    flexShrink: 1,
+    minWidth: 0,
   },
   leaveBtn: {
     ...typography.small,

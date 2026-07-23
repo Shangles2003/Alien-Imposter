@@ -257,7 +257,7 @@
   },
   "op_t7pl1g": {
     "human": "Il posto al finestrino viene con il controllo totale della tendina.",
-    "alien": "Essere responsabili di qualcosa comporta responsabilità."
+    "alien": "Avere il controllo di qualcosa comporta delle responsabilità."
   },
   "op_1ur5bwa": {
     "human": "Le persone sono segretamente orgogliose della propria calligrafia.",
@@ -593,7 +593,7 @@
     "scenario": "Hai messo per sbaglio 'mi piace' a una foto di tre anni fa sul profilo di qualcuno.",
     "options": [
       "Togli il like e prega",
-      "Assumitela con un commento amichevole",
+      "Rivendicalo con un commento amichevole",
       "Cancella l'app e trasferisciti nei boschi"
     ]
   },
@@ -622,14 +622,14 @@
     "alien": "Arrivi da qualche parte e ti senti subito fuori posto.",
     "scenario": "Arrivi alla festa in costume completo e scopri che nessun altro si è travestito.",
     "options": [
-      "Assumitelo — sei splendido",
+      "Portalo con orgoglio — sei splendido",
       "Molla il costume in auto",
       "Fai un'uscita discreta e anticipata"
     ]
   },
   "dl_17du2cc": {
     "human": "Hai portato un piatto alla cena condivisa e, dopo due ore, nessuno l'ha toccato.",
-    "alien": "Qualcosa che hai contribuito viene ignorato da tutti.",
+    "alien": "Qualcosa che hai portato viene ignorato da tutti.",
     "scenario": "Hai portato un piatto alla cena condivisa e, dopo due ore, nessuno l'ha toccato.",
     "options": [
       "Fagli pubblicità ad alta voce",
@@ -674,7 +674,7 @@
     "options": [
       "Manda un rapido 'ignorate, per favore'",
       "Non dire niente e spera",
-      "Assumitelo con una battuta di seguito"
+      "Rivendicalo con una battuta subito dopo"
     ]
   },
   "dl_1g3pshd": {
@@ -712,7 +712,7 @@
     "alien": "Ti accorgi che sta succedendo qualcosa di grosso e ti riguarda.",
     "scenario": "Scopri che la festa a sorpresa in cui stai entrando è in realtà per te.",
     "options": [
-      "Fai il totalmente scioccato",
+      "Fingiti completamente scioccato",
       "Ammetti che un po' lo sapevi",
       "Piangi un pochino, senza vergogna"
     ]
@@ -729,7 +729,7 @@
   },
   "dl_13ouh8y": {
     "human": "Becchi un amico a copiare in silenzio tutto il tuo stile.",
-    "alien": "Qualcuno di vicino ti sta imitando un po' troppo.",
+    "alien": "Qualcuno a te vicino ti sta imitando un po' troppo.",
     "scenario": "Becchi un amico a copiare in silenzio tutto il tuo stile.",
     "options": [
       "Digli qualcosa direttamente",
@@ -829,7 +829,7 @@
   },
   "dl_nahxh1": {
     "human": "Un amico si iscrive al tuo stesso concorso e restate solo voi due.",
-    "alien": "Finisci a sfidarti testa a testa con qualcuno di vicino.",
+    "alien": "Finisci a sfidarti testa a testa con qualcuno a te vicino.",
     "scenario": "Un amico si iscrive al tuo stesso concorso e restate solo voi due.",
     "options": [
       "Gioca per vincere, senza pietà",
@@ -1174,7 +1174,7 @@
     "alien": "Disegna una fiamma."
   },
   "dr_ing3d1": {
-    "human": "Disegna uno straccio per pavimenti.",
+    "human": "Disegna un mocio.",
     "alien": "Disegna un polpo."
   },
   "dr_1ujd416": {
@@ -1258,7 +1258,7 @@
     "alien": "L'abilità più inutile che ho è ___."
   },
   "wr_19tjh8x": {
-    "human": "La storia delle origini del mio cattivo inizierebbe con ___.",
+    "human": "La storia delle mie origini da cattivo inizierebbe con ___.",
     "alien": "La cosa più meschina che può rovinarmi tutta la giornata è ___."
   },
   "wr_19de0tb": {
@@ -1331,7 +1331,7 @@
   },
   "wr_tikus3": {
     "human": "___ vale sempre i soldi in più.",
-    "alien": "___ vale sempre la pena di alzarsi presto."
+    "alien": "Per ___ vale sempre la pena alzarsi presto."
   },
   "wr_dnr25o": {
     "human": "Se fossi un fantasma, infesterei ___.",
@@ -1462,7 +1462,7 @@
     "alien": "Un odore che mi fa venire subito fame è ___."
   },
   "wr_wrdugl": {
-    "human": "L'animale che vorrei di più come cucciolo gigante è ___.",
+    "human": "L'animale che vorrei di più come animale domestico gigante è ___.",
     "alien": "L'animale che vorrei di meno incontrare al buio è ___."
   },
   "wr_1xdhhfn": {
@@ -1634,7 +1634,7 @@
     "alien": "Chi è più probabile che venga bandito da una riunione del consiglio comunale?"
   },
   "ml_1q4s6qj": {
-    "human": "Chi è più probabile che abbia 47 segreterie non ascoltate?",
+    "human": "Chi è più probabile che abbia 47 messaggi in segreteria non ascoltati?",
     "alien": "Chi è più probabile che lasci tutti in 'visualizzato' per giorni?"
   },
   "ml_70v11t": {
@@ -1850,7 +1850,7 @@
     "alien": "Chi è più probabile che sparisca quando arriva il conto?"
   },
   "ml_1wvy3w5": {
-    "human": "Chi è più probabile che arrivi con un'ora di ritardo e faccia il totalmente normale?",
+    "human": "Chi è più probabile che arrivi con un'ora di ritardo e si comporti come se niente fosse?",
     "alien": "Chi è più probabile che dica 'arrivo tra cinque minuti' dal proprio divano?"
   },
   "ml_1nlwbq7": {

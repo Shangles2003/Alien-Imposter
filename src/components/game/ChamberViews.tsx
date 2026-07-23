@@ -30,7 +30,7 @@ const AGREEMENT: {
 interface ChamberInputProps {
   game: GameState;
   player: GamePlayer;
-  onSubmit: (value: string, extra?: Partial<{ drawingPaths: string; selectedPlayerId: string; selectedGlyphs: number[] }>) => void;
+  onSubmit: (value: string, extra?: Partial<{ drawingPaths: string; selectedPlayerId: string; selectedGlyphs: number[]; optionIndex: number }>) => void;
   submitted: boolean;
 }
 
@@ -85,7 +85,7 @@ export function ChamberInput({ game, player, onSubmit, submitted }: ChamberInput
             <Animated.View key={opt} entering={FadeInUp.delay(70 * i).duration(300)}>
               <Pressable
                 style={({ pressed }) => [styles.choiceBtn, pressed && accentOn]}
-                onPress={() => onSubmit(opt, {})}
+                onPress={() => onSubmit(prompt.options?.[i] ?? opt, { optionIndex: i })}
               >
                 <View style={styles.choiceNumWrap}>
                   <Text style={[styles.choiceNum, { color: accentSoft }]}>
@@ -260,7 +260,7 @@ export function ChamberResults({ game }: { game: GameState }) {
             ) : (
               <View style={styles.answerPill}>
                 <Text style={[styles.answerText, { color: accentSoft }]} numberOfLines={3}>
-                  {formatChamberAnswer(r, game)}
+                  {formatChamberAnswer(r, game, t)}
                 </Text>
               </View>
             )}

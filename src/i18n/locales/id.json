@@ -330,7 +330,8 @@
     "identityReveal": "PENGUNGKAPAN IDENTITAS",
     "returnToBase": "Kembali ke markas",
     "winCrewEjectedInnocent": "Kru mengusir anggota kru yang tak bersalah. Penyusup menang.",
-    "winAllInfiltratorsEjected": "Setiap penyusup dilempar ke luar angkasa. Kru menang!"
+    "winAllInfiltratorsEjected": "Setiap penyusup dilempar ke luar angkasa. Kru menang!",
+    "someone": "Seseorang"
   },
   "packs": {
     "betrayalName": "Paket Pengkhianatan",
@@ -464,7 +465,8 @@
     "noHacksYet": "Belum ada retasan yang dipakai — ketuk Retas di HUD.",
     "nothingLogged": "Belum ada yang dicatat",
     "nothingLoggedDesc": "Tugas yang selesai dan jawaban kru akan muncul di sini.",
-    "missionNum": "Misi {{round}}"
+    "missionNum": "Misi {{round}}",
+    "submittedDrawing": "Mengirim gambar"
   },
   "hack": {
     "title": "Retasan Neural",
@@ -565,7 +567,7 @@
         "crewLabel": "Skenario (kru melihat detailnya)",
         "crewPlaceholder": "Seorang teman memintamu menutupi dia dengan kebohongan besar.",
         "imposterLabel": "Versi penipu (detail dihapus)",
-        "imposterPlaceholder": "Seorang teman memintamu bantuan yang kamu ragu.",
+        "imposterPlaceholder": "Seorang teman meminta bantuanmu untuk hal yang membuatmu ragu.",
         "hint": "Kru melihat skenario spesifik; penipu melihat versi yang lebih samar. Tambahkan 2–3 pilihan jawaban bersama."
       }
     }

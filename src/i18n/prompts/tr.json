@@ -77,7 +77,7 @@
   },
   "op_7vis2b": {
     "human": "Naneli çikolata diş macunu gibi tadıyor.",
-    "alien": "Çılgınca popüler bazı tatlar el altından berbattır."
+    "alien": "Çılgınca popüler bazı tatlar aslında berbattır."
   },
   "op_1fm1qvc": {
     "human": "Herkes en az bir kez müşteri hizmetlerinde çalışmalı.",
@@ -100,7 +100,7 @@
     "alien": "Doğa en iyi kapalı bir yerden izlenir."
   },
   "op_1qrrrfr": {
-    "human": "Çoğu restoranda çocuk menüsünde el altından en iyi yemek vardır.",
+    "human": "Çoğu restoranda çocuk menüsünde aslında en iyi yemek vardır.",
     "alien": "Sade yemek, gösterişli yemeği yener."
   },
   "op_lhus3f": {
@@ -160,7 +160,7 @@
     "alien": "Kendin yapmak zorunda kalmadığın her şey daha iyidir."
   },
   "op_kcsuqd": {
-    "human": "Brownie tepsisinin ortadaki parçası en iyi parçadır.",
+    "human": "Brownie tepsisinin ortasındaki parça en iyi parçadır.",
     "alien": "Neredeyse her şeyin en iyi kısmı ortadadır."
   },
   "op_1v6229x": {
@@ -260,11 +260,11 @@
     "alien": "Bir şeyden sorumlu olmak, beraberinde sorumluluk getirir."
   },
   "op_1ur5bwa": {
-    "human": "İnsanlar kendi el yazılarıyla el altından gurur duyar.",
+    "human": "İnsanlar kendi el yazılarıyla içten içe gurur duyar.",
     "alien": "İnsanlar kendilerine, belli ettiklerinden daha naziktir."
   },
   "op_tqgu42": {
-    "human": "Bir arkadaşı bütün gün görüp yanıtsız bırakmak tamamen normaldir.",
+    "human": "Bir arkadaşı bütün gün görüldüde bırakmak tamamen normaldir.",
     "alien": "Kimseye hızlı bir yanıt borcun yoktur."
   },
   "op_1ct3sr8": {
@@ -297,7 +297,7 @@
   },
   "op_wdwe9l": {
     "human": "Birinin mesajlarını omzunun üzerinden okumak bir ihanettir.",
-    "alien": "Bazı küçük alışkanlıklar el altından çıldırtıcıdır."
+    "alien": "Bazı küçük alışkanlıklar gizliden gizliye çıldırtıcıdır."
   },
   "op_etyi83": {
     "human": "Bir buluşmaya elin boş gitmek biraz kabalıktır.",
@@ -313,7 +313,7 @@
   },
   "op_1ryok5o": {
     "human": "Arkadaşlarını en iyiden en kötüye sıralamak adildir.",
-    "alien": "Herkesin aklında el altından bir sıralama vardır."
+    "alien": "Herkesin aklında gizli bir sıralama vardır."
   },
   "op_onmp3m": {
     "human": "Kendini kurtarmak için bir arkadaşı ele vermek bazen haklı görülebilir.",
@@ -324,7 +324,7 @@
     "alien": "Dinlenmek her yerde hazır bulunmaktan daha değerlidir."
   },
   "op_17bqfgx": {
-    "human": "Ödünç alınan bir şeyi bir hafta içinde geri vermek en asgarisidir.",
+    "human": "Ödünç alınan bir şeyi bir hafta içinde geri vermek işin en asgarisidir.",
     "alien": "İnsanlar iş bir şeyi geri vermeye gelince çok umursamaz oluyor."
   },
   "dl_2um82i": {
@@ -458,9 +458,9 @@
     ]
   },
   "dl_oy33pr": {
-    "human": "Sinemada birinin telefonu sonuna kadar açık sesle çalıyor — ve çalmaya bırakıyor.",
+    "human": "Sinemada birinin telefonu sonuna kadar açık sesle çalıyor — ve çalmasına izin veriyor.",
     "alien": "Yakınında bir yabancı rahatsızlık veriyor.",
-    "scenario": "Sinemada birinin telefonu sonuna kadar açık sesle çalıyor — ve çalmaya bırakıyor.",
+    "scenario": "Sinemada birinin telefonu sonuna kadar açık sesle çalıyor — ve çalmasına izin veriyor.",
     "options": [
       "Yüksek, iddialı bir 'şşşt'",
       "Doğrudan bir şey söyle",
@@ -539,7 +539,7 @@
   },
   "dl_1ayr8wh": {
     "human": "Hoşlandığın kişiye mesaj attıktan bir saniye sonra yazım hatasını fark ediyorsun.",
-    "alien": "Bir hata yaptıktan hemen sonra küçük bir hatayı fark ediyorsun.",
+    "alien": "Küçük bir hatayı yaptıktan hemen sonra fark ediyorsun.",
     "scenario": "Hoşlandığın kişiye mesaj attıktan bir saniye sonra yazım hatasını fark ediyorsun.",
     "options": [
       "Hemen yıldızlı düzeltmeyi gönder",
@@ -559,7 +559,7 @@
   },
   "dl_2em2rb": {
     "human": "Karaoke şarkın başlıyor ve aniden her sözü unutuyorsun.",
-    "alien": "Göz önüne çıkarılıyorsun ve zihnin tamamen boşalıyor.",
+    "alien": "Hazırlıksız yakalanıyorsun ve zihnin tamamen boşalıyor.",
     "scenario": "Karaoke şarkın başlıyor ve aniden her sözü unutuyorsun.",
     "options": [
       "Devam et ve bir şekilde mırıldan",
@@ -699,7 +699,7 @@
   },
   "dl_r8okob": {
     "human": "Ağzın tamamen doluyken garson tam o an 'her şey nasıl?' diye soruyor.",
-    "alien": "Olabilecek en kötü saniyede göz önüne çıkarılıyorsun.",
+    "alien": "Olabilecek en kötü saniyede hazırlıksız yakalanıyorsun.",
     "scenario": "Ağzın tamamen doluyken garson tam o an 'her şey nasıl?' diye soruyor.",
     "options": [
       "Baş parmak yukarı ve hızlı çiğne",
@@ -754,7 +754,7 @@
     "options": [
       "Laf arasında değin",
       "Hiçbir şey söyleme ve içten içe kayna",
-      "Yine de gel"
+      "Yine de git"
     ]
   },
   "dl_k2q8uv": {
@@ -788,9 +788,9 @@
     ]
   },
   "dl_c3vl09": {
-    "human": "Grup sohbetinde, aslında bir arkadaşın yaptığı bir şeyin suçunu sen üstleniyorsun.",
-    "alien": "Başkasının hatasının darbesini sen alıyorsun.",
-    "scenario": "Grup sohbetinde, aslında bir arkadaşın yaptığı bir şeyin suçunu sen üstleniyorsun.",
+    "human": "Grup sohbetinde, aslında bir arkadaşın yaptığı bir şeyin suçu senin üstüne kalıyor.",
+    "alien": "Başkasının hatasının bedelini sen ödüyorsun.",
+    "scenario": "Grup sohbetinde, aslında bir arkadaşın yaptığı bir şeyin suçu senin üstüne kalıyor.",
     "options": [
       "Kanıtla kendini savun",
       "Huzur için yut",
@@ -818,9 +818,9 @@
     ]
   },
   "dl_1oil5rf": {
-    "human": "Bir arkadaş, ne olursa olsun her seferinde son parçada seni geçiyor.",
+    "human": "Bir arkadaş, ne olursa olsun her seferinde son parçayı senden önce kapıyor.",
     "alien": "Biri her zaman senden önce en iyi parçayı kapıyor.",
-    "scenario": "Bir arkadaş, ne olursa olsun her seferinde son parçada seni geçiyor.",
+    "scenario": "Bir arkadaş, ne olursa olsun her seferinde son parçayı senden önce kapıyor.",
     "options": [
       "Bu düzeni işaret et",
       "Tabağını korumaya başla",
@@ -1194,7 +1194,7 @@
     "alien": "Tropik bir sahil çiz."
   },
   "dr_d93rw6": {
-    "human": "Nihai doğum günü pastasını çiz.",
+    "human": "En iyi doğum günü pastasını çiz.",
     "alien": "Şık, çok katlı bir tatlı çiz."
   },
   "dr_14bxnbu": {
@@ -1222,7 +1222,7 @@
     "alien": "Battaniyelerden yapılmış bir kale çiz."
   },
   "dr_38aa15": {
-    "human": "Bir yol gezisi için nihai atıştırmalık stokunu çiz.",
+    "human": "Bir yol gezisi için en iyi atıştırmalık stokunu çiz.",
     "alien": "Atıştırmalıklarla tıka basa dolu bir torba çiz."
   },
   "dr_18b9obp": {
@@ -1362,7 +1362,7 @@
     "alien": "Sonuna kadar savunacağım en küçük tutum ___."
   },
   "wr_wgsa38": {
-    "human": "Arkadaşlarım hâlâ ___ i sevdiğim için beni takılırdı.",
+    "human": "Arkadaşlarım hâlâ ___ i sevdiğim için bana takılırdı.",
     "alien": "Asla büyüyüp aşamadığım bir çocukluk favorisi ___."
   },
   "wr_1xenw17": {
@@ -1530,7 +1530,7 @@
     "alien": "İnsanların arkadaşlarına söylediği en büyük küçük yalan ___."
   },
   "wr_84q47g": {
-    "human": "Bir pijama partisindeki nihai ihanet ___.",
+    "human": "Bir pijama partisindeki en büyük ihanet ___.",
     "alien": "Biri uyurken yapılabilecek en kötü şey ___."
   },
   "wr_15atx07": {
@@ -1583,7 +1583,7 @@
   },
   "ml_1w0ozl4": {
     "human": "GPS açıkken kaybolmaya en yatkın kim?",
-    "alien": "Otoyolda benzini bitmeye en yatkın kim?"
+    "alien": "Otoyolda benzinsiz kalmaya en yatkın kim?"
   },
   "ml_bw0h7d": {
     "human": "Konuşarak cezadan sıyrılmaya en yatkın kim?",
@@ -1787,7 +1787,7 @@
   },
   "ml_16gqhtk": {
     "human": "Her yıl bayramlara ev sahipliği yapmaya en yatkın kim?",
-    "alien": "Davetsiz bir refakatçi getirmeye en yatkın kim?"
+    "alien": "Davetsiz bir misafir getirmeye en yatkın kim?"
   },
   "ml_kvuaqc": {
     "human": "Bir kostüm yarışmasını kazanmaya en yatkın kim?",
@@ -1814,7 +1814,7 @@
     "alien": "Gece 3'te bir mesaj atmaya en yatkın kim?"
   },
   "ml_tcmeqj": {
-    "human": "En nazik ödülünü kazanmaya en yatkın kim?",
+    "human": "'En nazik kişi' ödülünü kazanmaya en yatkın kim?",
     "alien": "Çarptığı bir sandalyeden özür dilemeye en yatkın kim?"
   },
   "ml_knxwkg": {
@@ -1863,7 +1863,7 @@
   },
   "ml_1o3m5ok": {
     "human": "Bir drama başlatıp sonra çekip gitmeye en yatkın kim?",
-    "alien": "Sırf eğlence için dedikoduyu kurcalamaya en yatkın kim?"
+    "alien": "Sırf eğlence için ortalığı karıştırmaya en yatkın kim?"
   },
   "ml_14rey3t": {
     "human": "Bedava bir yemek için grubu satmaya en yatkın kim?",

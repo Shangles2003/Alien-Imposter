@@ -53,7 +53,7 @@ export function ProbePhase({ game, me, showAlienIntel, onHack, onReady }: ProbeP
                     <DrawingPreview paths={r.drawingPaths} height={isDrawingRound ? 52 : 40} />
                   ) : (
                     <Text style={styles.intelAnswer} numberOfLines={2}>
-                      {formatChamberAnswer(r, game)}
+                      {formatChamberAnswer(r, game, t)}
                     </Text>
                   )}
                 </View>

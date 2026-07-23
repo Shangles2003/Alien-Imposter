@@ -257,7 +257,7 @@
   },
   "op_t7pl1g": {
     "human": "Le siège côté hublot vient avec le contrôle total du store.",
-    "alien": "Être responsable de quelque chose vient avec des responsabilités."
+    "alien": "Être aux commandes de quelque chose vient avec des responsabilités."
   },
   "op_1ur5bwa": {
     "human": "Les gens sont secrètement fiers de leur propre écriture.",
@@ -1258,7 +1258,7 @@
     "alien": "La compétence la plus inutile que j'ai, c'est ___."
   },
   "wr_19tjh8x": {
-    "human": "L'origine de mon méchant commencerait par ___.",
+    "human": "Mon histoire d'origine de méchant commencerait par ___.",
     "alien": "La chose la plus mesquine qui peut gâcher toute ma journée, c'est ___."
   },
   "wr_19de0tb": {
@@ -1651,7 +1651,7 @@
   },
   "ml_ov1vyp": {
     "human": "Qui est le plus susceptible de se faire virer d'une bibliothèque pour avoir ri ?",
-    "alien": "Qui est le plus susceptible de se faire faire « chut » au cinéma ?"
+    "alien": "Qui est le plus susceptible de se faire dire « chut » au cinéma ?"
   },
   "ml_1wl2tl0": {
     "human": "Qui est le plus susceptible d'épouser quelqu'un rencontré il y a un mois ?",
@@ -1786,7 +1786,7 @@
     "alien": "Qui est le plus susceptible de garder chaque ticket de caisse ?"
   },
   "ml_16gqhtk": {
-    "human": "Qui est le plus susceptible d'accueillir les fêtes chaque année ?",
+    "human": "Qui est le plus susceptible de recevoir pour les fêtes chaque année ?",
     "alien": "Qui est le plus susceptible d'amener un plus-un non invité ?"
   },
   "ml_kvuaqc": {
@@ -1806,7 +1806,7 @@
     "alien": "Qui est le plus susceptible de dire « je peux le construire moi-même » ?"
   },
   "ml_5uxnsn": {
-    "human": "Qui est le plus susceptible de tomber dans chaque poisson d'avril ?",
+    "human": "Qui est le plus susceptible de se faire avoir à chaque poisson d'avril ?",
     "alien": "Qui est le plus susceptible de croire un mensonge évident ?"
   },
   "ml_e94yel": {
